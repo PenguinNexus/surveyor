@@ -41,11 +41,10 @@ class Reflector
         }
 
         if ($reflection->getDocComment()) {
-            $result = $this->docBlockParser->parseReturn($reflection->getDocComment(), $node);
-
-            if ($result) {
-                array_push($returnTypes, ...$result);
-            }
+            array_push(
+                $returnTypes,
+                ...($this->docBlockParser->parseReturn($reflection->getDocComment(), $node) ?? []),
+            );
         }
 
         return $returnTypes;

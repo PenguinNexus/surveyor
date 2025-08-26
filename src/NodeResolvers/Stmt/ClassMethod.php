@@ -51,8 +51,6 @@ class ClassMethod extends AbstractResolver
     {
         $analyzer = app(ReturnTypeAnalyzer::class);
 
-        dd($analyzer->analyze($node));
-
         return $analyzer->analyze($node);
     }
 }

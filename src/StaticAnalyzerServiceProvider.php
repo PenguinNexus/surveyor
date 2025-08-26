@@ -49,7 +49,7 @@ class StaticAnalyzerServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/static-analyzer.php' => config_path('static-analyzer.php'),
+                __DIR__.'/../config/static-analyzer.php' => config_path('static-analyzer.php'),
             ], 'static-analyzer-config');
         }
     }

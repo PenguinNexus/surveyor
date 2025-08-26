@@ -15,8 +15,8 @@ class Analyze extends Command
     {
         $path = $this->option('path');
 
-        $path = dirname(__DIR__, 2) . '/workbench/app/Http/Controllers/UserController.php';
+        $path = dirname(__DIR__, 2).'/workbench/app/Http/Controllers/UserController.php';
 
-        $analyzer->analyze($path);
+        dd($analyzer->analyze($path)->analyzed());
     }
 }

@@ -3,6 +3,7 @@
 namespace Laravel\StaticAnalyzer\Analysis;
 
 use Illuminate\Support\Collection;
+use Illuminate\View\View as ViewView;
 use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
 use Laravel\StaticAnalyzer\Types\ClassType;
 use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
@@ -20,26 +21,11 @@ class ReturnTypeAnalyzer extends AbstractResolver
     {
         $this->returnTypes = [];
 
-        if ($methodNode->returnType) {
-            $this->returnTypes[] = $this->from($methodNode->returnType);
-        }
-
         $this->processStatements($methodNode->stmts ?? []);
 
-        // $finalReturnTypes = collect($this->returnTypes)->unique()->values();
-
-        // [$interfaces, $concrete] = $finalReturnTypes->partition(fn(TypeContract $type) => $type instanceof ClassType && $type->isInterface());
-
-        // // Only return interfaces that are not implemented by any concrete class we've already found
-        // $interfaces = $interfaces->filter(function (ClassType $type) use ($concrete) {
-        //     return $concrete->first(
-        //         fn(TypeContract $concreteType) =>
-        //         $concreteType instanceof ClassType
-        //             && in_array($type->value, class_implements($concreteType->resolved()))
-        //     ) === null;
-        // })->values();
-
-        // dd($interfaces, $concrete);
+        if ($methodNode->returnType) {
+            $this->addMethodNativeReturnType($methodNode);
+        }
 
         return collect($this->returnTypes)
             ->groupBy(fn ($type) => $type::class)
@@ -47,6 +33,28 @@ class ReturnTypeAnalyzer extends AbstractResolver
             ->values()
             ->flatten()
             ->all();
+    }
+
+    /**
+     * Add the native return type only if we don't already have something more specific.
+     */
+    protected function addMethodNativeReturnType(Node\Stmt\ClassMethod $methodNode): void
+    {
+        $type = $this->from($methodNode->returnType);
+
+        if (! $type instanceof ClassType) {
+            $this->returnTypes[] = $type;
+
+            return;
+        }
+
+        $hasView = collect($this->returnTypes)->first(fn ($type) => $type instanceof View);
+
+        if ($type->value === ViewView::class && $hasView) {
+            return;
+        }
+
+        $this->returnTypes[] = $type;
     }
 
     protected function collapseReturnTypes(Collection $returnTypes, string $class)
@@ -81,11 +89,7 @@ class ReturnTypeAnalyzer extends AbstractResolver
             }
 
             foreach ($newData as $key => $value) {
-                if (count($value) === 1) {
-                    $newData[$key] = $value[0];
-                } else {
-                    $newData[$key] = Type::union(...$value);
-                }
+                $newData[$key] = Type::union(...$value);
             }
 
             return View::from(new ClassType($group->first()->value), $group->first()->name, $newData);
@@ -156,7 +160,7 @@ class ReturnTypeAnalyzer extends AbstractResolver
                 return $this->mapToView($returnType, $returnStmt);
         }
 
-        dd($returnType);
+        // dd($returnType);
 
         return $returnType;
     }
@@ -170,7 +174,7 @@ class ReturnTypeAnalyzer extends AbstractResolver
             dd('not call like', $returnStmt->expr);
         }
 
-        return View::from($returnType, $args[0]->value, $args[1]->value);
+        return View::from($returnType, $args[0]->value, $args[1]?->value ?? []);
     }
 
     protected function processIfStatement(Node\Stmt\If_ $ifStmt): void

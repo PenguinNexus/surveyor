@@ -24,30 +24,18 @@ class UserController extends Controller
             if (request()->has('nameasdfsd')) {
                 $whatever = 'third';
 
-                return view('users.empty', compact('users'));
+                return view('users.empty', compact('users', 'whatever'));
             }
         } elseif (request()->has('asdf')) {
             $whatever = 'fourth';
         }
 
-        // $ok = collect([1, 2, 3])->map(function ($item) {
-        //     if (request()->has('name')) {
-        //         return $item * 2;
-        //     }
-
-        //     return $item * 2;
-        // });
-
         if (request()->has('whatever')) {
             return view('users.index', [
                 'whatever' => $whatever,
-                // 'users' => $users,
+                'users' => $users,
             ]);
         }
-
-        // if ($users->isEmpty()) {
-        //     return view('users.empty', compact('users'));
-        // }
 
         return view('users.index', compact('users'));
     }
@@ -82,10 +70,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user): View
-    {
-        return view('users.show', compact('user'));
-    }
+    // public function show(User $user): View
+    // {
+    //     return view('users.show', compact('user'));
+    // }
 
     /**
      * Update the specified resource in storage.
