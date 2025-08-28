@@ -12,6 +12,8 @@ class Analyzer
 {
     protected array $analyzed = [];
 
+    protected Scope $scope;
+
     public function __construct(
         protected Parser $parser,
         protected NodeResolver $resolver,
@@ -25,12 +27,19 @@ class Analyzer
 
         Debug::log('🧠 Analyzing: '.$path);
 
+        $this->scope = new Scope;
+
         $this->analyzed = collect($parsed)
-            ->map(fn ($node) => $this->resolver->from($node, new Scope))
+            ->map(fn ($node) => $this->resolver->from($node, $this->scope))
             ->map(fn ($nodes) => array_values(array_filter($nodes)))
             ->all();
 
         return $this;
+    }
+
+    public function scope(): Scope
+    {
+        return $this->scope;
     }
 
     public function analyzed()

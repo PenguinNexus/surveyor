@@ -48,7 +48,6 @@ class DocBlockParser
     public function parseReturn(string $docBlock, ?CallLike $node = null): ?Collection
     {
         $this->node = $node;
-
         $this->parse($docBlock);
 
         $returnTypeValues = $this->parsed->getReturnTagValues();

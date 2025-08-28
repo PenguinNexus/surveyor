@@ -27,7 +27,7 @@ class Scope
 
     public function newChildScope(): self
     {
-        $instance = new self;
+        $instance = new self($this);
 
         if ($this->className) {
             $instance->setClassName($this->className);
@@ -37,7 +37,7 @@ class Scope
             $instance->setMethodName($this->methodName);
         }
 
-        // $this->children[] = $instance;
+        $this->children[] = $instance;
 
         return $instance;
     }
@@ -60,5 +60,10 @@ class Scope
     public function variableTracker()
     {
         return $this->variableTracker;
+    }
+
+    public function methodScope(string $methodName): Scope
+    {
+        return collect($this->children)->first(fn ($child) => $child->methodName() === $methodName);
     }
 }

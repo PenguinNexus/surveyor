@@ -41,7 +41,7 @@ abstract class AbstractType
         return $this->nullable;
     }
 
-    public function __toString()
+    public function toString()
     {
         return static::class.':'.$this->id();
     }

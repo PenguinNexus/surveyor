@@ -14,6 +14,7 @@ use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
 use Laravel\StaticAnalyzer\Types\Type;
 use PhpParser\Node;
 use PhpParser\Node\Expr\CallLike;
+use PhpParser\Node\Stmt\ClassMethod;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionIntersectionType;
@@ -86,10 +87,18 @@ class Reflector
 
         if (! $reflection->hasProperty($name)) {
             if ($reflection->getDocComment()) {
-                dd($reflection->getDocComment(), $class, $name, 'not a property but has a docblock??');
+                $result = $this->docBlockParser->parseProperties($reflection->getDocComment());
+
+                if (array_key_exists($name, $result)) {
+                    return $result[$name];
+                }
             }
 
-            dd($reflection, $name, 'doesnt have property??');
+            if ($reflection->isSubclassOf(Model::class) && $reflection->hasMethod($name)) {
+                return Type::union(...$this->methodReturnType($class, $name));
+            }
+
+            dd('property doesnt exist', $name, $class, $reflection);
         }
 
         $propertyReflection = $reflection->getProperty($name);
@@ -134,7 +143,7 @@ class Reflector
             );
         }
 
-        if ($reflection->isSubclassOf(Model::class)) {
+        if (count($returnTypes) === 0 && $reflection->isSubclassOf(Model::class)) {
             array_push(
                 $returnTypes,
                 ...$this->methodReturnType(Builder::class, $method, $node),
@@ -151,32 +160,48 @@ class Reflector
         //     return RangerType::mixed();
         // }
 
-        if (count($returnTypes) === 0 && (method_exists($className, 'hasMacro') || $className::hasMacro($node->name->name))) {
-            $reflectionProperty = $reflection->getProperty('macros');
-            $reflectionProperty->setAccessible(true);
-            $macros = $reflectionProperty->getValue($reflection);
-
-            $funcReflection = new ReflectionFunction($macros[$node->name->name]);
-            $parser = app(Parser::class);
-
-            $parsed = $parser->parse($funcReflection);
-
-            app(Analyzer::class)->analyze($funcReflection->getFilename());
-
-            $funcNode = $parser->nodeFinder()->findFirst(
-                $parsed,
-                fn ($n) => ($n instanceof Node\Expr\Closure || $n instanceof Node\Expr\ArrowFunction)
-                    && $n->getStartLine() === $funcReflection->getStartLine(),
-            );
-
-            $result = app(NodeResolver::class)->from($funcNode);
-
-            if ($result) {
-                $returnTypes[] = $result;
-            }
+        if (count($returnTypes) > 0) {
+            return $returnTypes;
         }
 
-        return $returnTypes;
+        if (! $node || ! $this->hasMacro($className, $node)) {
+            return [Type::mixed()];
+        }
+
+        $reflectionProperty = $reflection->getProperty('macros');
+        $reflectionProperty->setAccessible(true);
+        $macros = $reflectionProperty->getValue($reflection);
+
+        $funcReflection = new ReflectionFunction($macros[$node->name->name]);
+        $parser = app(Parser::class);
+
+        $parsed = $parser->parse($funcReflection);
+
+        $analyzed = app(Analyzer::class)->analyze($funcReflection->getFilename());
+
+        $funcNode = $parser->nodeFinder()->findFirst(
+            $parsed,
+            fn ($n) => ($n instanceof Node\Expr\Closure || $n instanceof Node\Expr\ArrowFunction)
+                && $n->getStartLine() === $funcReflection->getStartLine(),
+        );
+
+        $methodNodes = $parser->nodeFinder()->find(
+            $parsed,
+            fn ($n) => $n instanceof ClassMethod && $n->getStartLine() < $funcReflection->getStartLine(),
+        );
+
+        $methodName = end($methodNodes)->name->name;
+
+        $result = app(NodeResolver::class)->from(
+            $funcNode,
+            $analyzed->scope()->methodScope($methodName),
+        );
+
+        if ($result) {
+            return [$result];
+        }
+
+        return [Type::mixed()];
     }
 
     public function returnType(ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType $returnType): ?TypeContract
@@ -210,11 +235,7 @@ class Reflector
 
         $result = $this->docBlockParser->parseReturn($docBlock, $node);
 
-        if ($result) {
-            return $result->toArray();
-        }
-
-        return [];
+        return $result?->toArray() ?? [];
     }
 
     protected function reflectClass(ClassType|string $class): ReflectionClass
@@ -222,5 +243,10 @@ class Reflector
         $className = $class instanceof ClassType ? $class->value : $class;
 
         return new ReflectionClass($className);
+    }
+
+    protected function hasMacro(string $className, Node $node): bool
+    {
+        return method_exists($className, 'hasMacro') || $className::hasMacro($node->name->name);
     }
 }

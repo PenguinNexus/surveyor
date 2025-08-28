@@ -17,10 +17,6 @@ class Analyze extends Command
         Debug::$dump = (bool) $this->option('dump');
         Debug::$log = (bool) $this->option('log');
 
-        if ($this->option('verbose')) {
-            Debug::$currentlyInterested = true;
-        }
-
         $path = $this->option('path');
 
         $analyzer->analyze(getcwd().'/'.$path)->analyzed();

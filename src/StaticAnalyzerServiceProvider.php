@@ -24,9 +24,9 @@ class StaticAnalyzerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Parser::class);
+        $this->app->singleton(DocBlockParser::class);
         $this->app->singleton(NodeResolver::class);
         $this->app->singleton(DocBlockResolver::class);
-        $this->app->singleton(DocBlockParser::class);
     }
 
     /**

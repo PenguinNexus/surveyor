@@ -3,7 +3,7 @@
 namespace Laravel\StaticAnalyzer\DocBlockResolvers\Type;
 
 use Laravel\StaticAnalyzer\DocBlockResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
+use Laravel\StaticAnalyzer\Types\GenericObjectType;
 use Laravel\StaticAnalyzer\Types\Type;
 use PHPStan\PhpDocParser\Ast;
 
@@ -13,10 +13,21 @@ class ConditionalTypeForParameterNode extends AbstractResolver
     {
         $arg = $this->getArgForConditional($node);
 
-        // TODO: Is this correct and if so should we use Container?
-        $argType = $arg ? app(NodeResolver::class)->from($arg->value, $this->scope) : Type::null();
+        $argType = $arg ? $this->nodeResolver->from($arg->value, $this->scope) : Type::null();
 
         $targetType = $this->from($node->targetType);
+
+        if ($targetType instanceof GenericObjectType) {
+            if ($targetType->base === 'class-string') {
+                $returnTypeTarget = $node->negated ? $this->from($node->else) : $this->from($node->if);
+
+                foreach ($targetType->types as $genericType) {
+                    if (Type::isSame($returnTypeTarget, $genericType)) {
+                        return $argType;
+                    }
+                }
+            }
+        }
 
         if ($targetType === 'class-string' && class_exists($argType)) {
             return $node->negated ? $this->from($node->else) : $this->from($node->if);

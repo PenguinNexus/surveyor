@@ -121,15 +121,20 @@ class Type
     public static function union(...$args): Contracts\Type
     {
         $args = self::flattenUnion($args)
-            ->unique(fn ($type) => (string) $type)
-            ->values()
-            ->all();
+            ->unique(fn ($type) => $type->toString())
+            ->values();
 
-        if (count($args) === 1) {
-            return $args[0];
+        $nullType = $args->filter(fn ($type) => $type instanceof NullType);
+
+        if ($nullType->isNotEmpty()) {
+            $args = $args->map(fn ($type) => $type instanceof NullType ? null : $type->nullable())->filter()->values();
         }
 
-        return new UnionType($args);
+        if ($args->count() === 1) {
+            return $args->first();
+        }
+
+        return new UnionType($args->all());
     }
 
     public static function intersection(...$args): Contracts\Type
