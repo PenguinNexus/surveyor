@@ -9,6 +9,6 @@ class DoctrineArray extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\Doctrine\DoctrineArray $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

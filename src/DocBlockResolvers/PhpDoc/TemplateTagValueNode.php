@@ -9,6 +9,6 @@ class TemplateTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\TemplateTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

@@ -59,6 +59,7 @@ class ExecutionPath
             // Can't fork from terminated path
             $fork = new ExecutionPath($newPathId, array_merge($this->conditions, $additionalConditions), $this, $startLine, $endLine);
             $fork->terminate(0); // Mark as terminated immediately
+
             return $fork;
         }
 
@@ -75,7 +76,7 @@ class ExecutionPath
     {
         // Simple heuristic: if path is terminated and we're asking about a line
         // after termination, it's not reachable
-        return !$this->terminated;
+        return ! $this->terminated;
     }
 
     public function getLatestVariableBeforeLine(string $name, int $lineNumber): ?VariableState

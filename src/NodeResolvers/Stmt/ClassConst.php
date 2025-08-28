@@ -9,6 +9,6 @@ class ClassConst extends AbstractResolver
 {
     public function resolve(Node\Stmt\ClassConst $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

@@ -9,6 +9,6 @@ class AssignOp extends AbstractResolver
 {
     public function resolve(Node\Expr\AssignOp $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

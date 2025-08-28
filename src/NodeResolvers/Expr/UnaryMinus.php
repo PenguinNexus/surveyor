@@ -9,6 +9,6 @@ class UnaryMinus extends AbstractResolver
 {
     public function resolve(Node\Expr\UnaryMinus $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

@@ -9,6 +9,6 @@ class Equal extends AbstractResolver
 {
     public function resolve(Node\Expr\BinaryOp\Equal $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

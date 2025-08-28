@@ -9,6 +9,6 @@ class Exit_ extends AbstractResolver
 {
     public function resolve(Node\Expr\Exit_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

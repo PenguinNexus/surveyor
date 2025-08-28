@@ -9,6 +9,6 @@ class EncapsedStringPart extends AbstractResolver
 {
     public function resolve(Node\Scalar\EncapsedStringPart $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

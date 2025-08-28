@@ -9,6 +9,6 @@ class ArrayTypeNode extends AbstractResolver
 {
     public function resolve(Ast\Type\ArrayTypeNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

@@ -9,6 +9,6 @@ class Throw_ extends AbstractResolver
 {
     public function resolve(Node\Expr\Throw_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

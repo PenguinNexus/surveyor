@@ -9,6 +9,6 @@ class CallLike extends AbstractResolver
 {
     public function resolve(Node\Expr\CallLike $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

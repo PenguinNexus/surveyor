@@ -9,6 +9,6 @@ class CloningVisitor extends AbstractResolver
 {
     public function resolve(Ast\NodeVisitor\CloningVisitor $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

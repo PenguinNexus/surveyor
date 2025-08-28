@@ -9,6 +9,6 @@ class Int_ extends AbstractResolver
 {
     public function resolve(Node\Expr\Cast\Int_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

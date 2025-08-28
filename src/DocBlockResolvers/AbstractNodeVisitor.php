@@ -9,6 +9,6 @@ class AbstractNodeVisitor extends AbstractResolver
 {
     public function resolve(Ast\AbstractNodeVisitor $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

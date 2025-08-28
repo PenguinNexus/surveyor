@@ -9,6 +9,6 @@ class ParamLaterInvokedCallableTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\ParamLaterInvokedCallableTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

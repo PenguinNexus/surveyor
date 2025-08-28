@@ -9,6 +9,6 @@ class IntersectionTypeNode extends AbstractResolver
 {
     public function resolve(Ast\Type\IntersectionTypeNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

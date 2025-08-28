@@ -5,23 +5,26 @@ namespace StaticAnalyzer\Analysis;
 class ControlFlowVariableTracker
 {
     protected array $branches = [];
+
     protected array $variableSnapshots = [];
+
     protected array $pathConditions = [];
 
     public function addBranch(string $condition, int $startLine, int $mergePoint): ExecutionBranch
     {
         $branch = new ExecutionBranch($condition, $startLine, $mergePoint);
         $this->branches[] = $branch;
+
         return $branch;
     }
 
     public function setVariableState(int $lineNumber, string $variableName, mixed $value, array $pathConditions = []): void
     {
-        if (!isset($this->variableSnapshots[$lineNumber])) {
+        if (! isset($this->variableSnapshots[$lineNumber])) {
             $this->variableSnapshots[$lineNumber] = [];
         }
 
-        if (!isset($this->variableSnapshots[$lineNumber][$variableName])) {
+        if (! isset($this->variableSnapshots[$lineNumber][$variableName])) {
             $this->variableSnapshots[$lineNumber][$variableName] = new VariableState($variableName);
         }
 
@@ -107,9 +110,13 @@ class ControlFlowVariableTracker
 class ExecutionBranch
 {
     protected string $condition;
+
     protected int $startLine;
+
     protected int $mergePoint;
+
     protected array $truePath = [];
+
     protected array $falsePath = [];
 
     public function __construct(string $condition, int $startLine, int $mergePoint)
@@ -168,6 +175,7 @@ class ExecutionBranch
 class VariableState
 {
     protected string $variableName;
+
     protected array $possibleValues = [];
 
     public function __construct(string $variableName)
@@ -179,7 +187,7 @@ class VariableState
     {
         $this->possibleValues[] = [
             'value' => $value,
-            'conditions' => $pathConditions
+            'conditions' => $pathConditions,
         ];
     }
 
@@ -209,7 +217,7 @@ class VariableState
         }
 
         foreach ($assignmentConditions as $condition => $expectedValue) {
-            if (!isset($pathConditions[$condition]) || $pathConditions[$condition] !== $expectedValue) {
+            if (! isset($pathConditions[$condition]) || $pathConditions[$condition] !== $expectedValue) {
                 return false;
             }
         }

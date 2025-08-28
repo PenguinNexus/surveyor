@@ -21,7 +21,7 @@ class Assignment
         }
 
         foreach ($this->pathConditions as $condition => $expectedValue) {
-            if (!isset($activeConditions[$condition])) {
+            if (! isset($activeConditions[$condition])) {
                 return false; // Condition not met in this path
             }
 
@@ -41,7 +41,7 @@ class Assignment
 
         $conditions = [];
         foreach ($this->pathConditions as $condition => $value) {
-            $conditions[] = $condition . ' === ' . var_export($value, true);
+            $conditions[] = $condition.' === '.var_export($value, true);
         }
 
         return implode(' && ', $conditions);

@@ -9,6 +9,6 @@ class NullableTypeNode extends AbstractResolver
 {
     public function resolve(Ast\Type\NullableTypeNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

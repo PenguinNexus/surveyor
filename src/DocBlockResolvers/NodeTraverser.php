@@ -9,6 +9,6 @@ class NodeTraverser extends AbstractResolver
 {
     public function resolve(Ast\NodeTraverser $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

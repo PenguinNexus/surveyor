@@ -9,6 +9,6 @@ class PropertyProperty extends AbstractResolver
 {
     public function resolve(Node\Stmt\PropertyProperty $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

@@ -58,6 +58,7 @@ class SimpleVariableTracker
             strlen($assignmentTarget) > strlen($queryTarget)
         ) {
             $remainder = substr($assignmentTarget, strlen($queryTarget));
+
             return str_starts_with($remainder, '[') || str_starts_with($remainder, '->');
         }
 
@@ -70,7 +71,7 @@ class SimpleVariableTracker
 
         foreach ($assignments as $assignment) {
             $pathKey = $this->getPathKey($assignment->pathConditions);
-            if (!isset($groups[$pathKey])) {
+            if (! isset($groups[$pathKey])) {
                 $groups[$pathKey] = [];
             }
             $groups[$pathKey][] = $assignment;
@@ -86,6 +87,7 @@ class SimpleVariableTracker
         }
 
         ksort($pathConditions);
+
         return md5(serialize($pathConditions));
     }
 
@@ -106,14 +108,14 @@ class SimpleVariableTracker
 
     protected function getLatestAssignment(array $assignments, int $line): ?Assignment
     {
-        $validAssignments = array_filter($assignments, fn($a) => $a->line <= $line);
+        $validAssignments = array_filter($assignments, fn ($a) => $a->line <= $line);
 
         if (empty($validAssignments)) {
             return null;
         }
 
         // Sort by line number descending to get the most recent
-        usort($validAssignments, fn($a, $b) => $b->line <=> $a->line);
+        usort($validAssignments, fn ($a, $b) => $b->line <=> $a->line);
 
         return $validAssignments[0];
     }
@@ -122,15 +124,16 @@ class SimpleVariableTracker
     {
         $targetAssignments = array_filter(
             $this->assignments,
-            fn($a) => $this->targetsMatch($a->target, $target)
+            fn ($a) => $this->targetsMatch($a->target, $target)
         );
 
-        return array_map(fn($a) => (string) $a, $targetAssignments);
+        return array_map(fn ($a) => (string) $a, $targetAssignments);
     }
 
     public function getAllTargets(): array
     {
-        $targets = array_map(fn($a) => $a->target, $this->assignments);
+        $targets = array_map(fn ($a) => $a->target, $this->assignments);
+
         return array_unique($targets);
     }
 
@@ -138,7 +141,7 @@ class SimpleVariableTracker
     {
         $targetAssignments = array_filter(
             $this->assignments,
-            fn($a) => $this->targetsMatch($a->target, $target)
+            fn ($a) => $this->targetsMatch($a->target, $target)
         );
 
         $valuesByLine = [];
@@ -160,14 +163,14 @@ class SimpleVariableTracker
             'reaching_assignments' => count($reachingAssignments),
             'path_groups' => count($pathGroups),
             'possible_values' => $this->getPossibleValuesAt($target, $line),
-            'assignments_detail' => []
+            'assignments_detail' => [],
         ];
 
         foreach ($reachingAssignments as $assignment) {
             $debug['assignments_detail'][] = [
                 'value' => $assignment->value,
                 'line' => $assignment->line,
-                'conditions' => $assignment->getPathConditionsString()
+                'conditions' => $assignment->getPathConditionsString(),
             ];
         }
 

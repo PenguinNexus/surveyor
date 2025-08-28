@@ -9,6 +9,6 @@ class DeclareDeclare extends AbstractResolver
 {
     public function resolve(Node\Stmt\DeclareDeclare $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

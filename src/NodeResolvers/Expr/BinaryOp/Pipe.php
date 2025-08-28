@@ -9,6 +9,6 @@ class Pipe extends AbstractResolver
 {
     public function resolve(Node\Expr\BinaryOp\Pipe $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

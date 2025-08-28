@@ -9,6 +9,6 @@ class NullsafeMethodCall extends AbstractResolver
 {
     public function resolve(Node\Expr\NullsafeMethodCall $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

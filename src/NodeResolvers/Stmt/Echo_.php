@@ -9,6 +9,6 @@ class Echo_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Echo_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

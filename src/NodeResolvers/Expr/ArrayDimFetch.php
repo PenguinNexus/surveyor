@@ -9,6 +9,6 @@ class ArrayDimFetch extends AbstractResolver
 {
     public function resolve(Node\Expr\ArrayDimFetch $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

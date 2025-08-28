@@ -4,9 +4,9 @@ namespace Laravel\StaticAnalyzer\NodeResolvers;
 
 use Laravel\StaticAnalyzer\Analysis\Scope;
 use Laravel\StaticAnalyzer\Debug\Debug;
+use Laravel\StaticAnalyzer\Parser\DocBlockParser;
 use Laravel\StaticAnalyzer\Reflector\Reflector;
 use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
-use Laravel\StaticAnalyzer\Parser\DocBlockParser;
 use PhpParser\NodeAbstract;
 
 abstract class AbstractResolver
@@ -22,8 +22,8 @@ abstract class AbstractResolver
 
     protected function from(NodeAbstract $node)
     {
-        Debug::log('🔍 Resolving Node: ' . $node->getType());
-        Debug::log('🔬 Scope: ' . $this->scope->className() . '::' . $this->scope->methodName());
+        Debug::log('🔍 Resolving Node: '.$node->getType());
+        Debug::log('🔬 Scope: '.$this->scope->className().'::'.$this->scope->methodName());
 
         return $this->resolver->from($node, $this->scope);
     }

@@ -9,6 +9,6 @@ class RequireExtendsTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\RequireExtendsTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

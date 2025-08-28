@@ -9,6 +9,6 @@ class TypelessParamTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\TypelessParamTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

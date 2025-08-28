@@ -9,6 +9,6 @@ class LogicalXor extends AbstractResolver
 {
     public function resolve(Node\Expr\BinaryOp\LogicalXor $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

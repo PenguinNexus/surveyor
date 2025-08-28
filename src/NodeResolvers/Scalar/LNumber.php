@@ -9,6 +9,6 @@ class LNumber extends AbstractResolver
 {
     public function resolve(Node\Scalar\LNumber $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

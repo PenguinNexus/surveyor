@@ -9,6 +9,6 @@ class CallableTypeParameterNode extends AbstractResolver
 {
     public function resolve(Ast\Type\CallableTypeParameterNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

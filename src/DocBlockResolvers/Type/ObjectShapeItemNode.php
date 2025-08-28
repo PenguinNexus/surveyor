@@ -9,6 +9,6 @@ class ObjectShapeItemNode extends AbstractResolver
 {
     public function resolve(Ast\Type\ObjectShapeItemNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

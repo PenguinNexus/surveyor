@@ -9,6 +9,6 @@ class ConstExprFloatNode extends AbstractResolver
 {
     public function resolve(Ast\ConstExpr\ConstExprFloatNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

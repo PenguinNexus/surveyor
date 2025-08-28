@@ -9,6 +9,6 @@ class Finally_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Finally_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

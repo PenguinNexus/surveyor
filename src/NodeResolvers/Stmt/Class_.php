@@ -12,7 +12,7 @@ class Class_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Class_ $node)
     {
-        Debug::log('Resolving Class: ' . $node->namespacedName->name);
+        Debug::log('Resolving Class: '.$node->namespacedName->name);
 
         $extends = $this->getAllExtends($node);
 
@@ -21,7 +21,7 @@ class Class_ extends AbstractResolver
         return (new ClassDeclaration(
             name: $node->namespacedName->name,
             extends: $extends,
-            implements: array_map(fn($node) => $node->toString(), $node->implements),
+            implements: array_map(fn ($node) => $node->toString(), $node->implements),
             properties: $this->getAllProperties($node),
             methods: $this->getAllMethods($node),
             constants: $this->getAllConstants($node),
@@ -30,17 +30,17 @@ class Class_ extends AbstractResolver
 
     protected function getAllProperties(Node\Stmt\Class_ $node)
     {
-        return array_map(fn($node) => $this->from($node), $node->getProperties());
+        return array_map(fn ($node) => $this->from($node), $node->getProperties());
     }
 
     protected function getAllMethods(Node\Stmt\Class_ $node)
     {
-        return array_map(fn($node) => $this->from($node), $node->getMethods());
+        return array_map(fn ($node) => $this->from($node), $node->getMethods());
     }
 
     protected function getAllConstants(Node\Stmt\Class_ $node)
     {
-        return array_map(fn($node) => $this->from($node), $node->getConstants());
+        return array_map(fn ($node) => $this->from($node), $node->getConstants());
     }
 
     protected function getAllExtends(Node\Stmt\Class_ $node)

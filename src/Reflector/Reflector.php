@@ -9,7 +9,6 @@ use Laravel\StaticAnalyzer\Analyzer\Analyzer;
 use Laravel\StaticAnalyzer\Parser\DocBlockParser;
 use Laravel\StaticAnalyzer\Parser\Parser;
 use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
-use Laravel\StaticAnalyzer\Result\VariableTracker;
 use Laravel\StaticAnalyzer\Types\ClassType;
 use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
 use Laravel\StaticAnalyzer\Types\Type;
@@ -142,8 +141,6 @@ class Reflector
             );
         }
 
-
-
         // if (method_exists($classType->value, $node->name->name)) {
         //     // We couldn't figure it out...
         //     return RangerType::mixed();
@@ -168,7 +165,7 @@ class Reflector
 
             $funcNode = $parser->nodeFinder()->findFirst(
                 $parsed,
-                fn($n) => ($n instanceof Node\Expr\Closure || $n instanceof Node\Expr\ArrowFunction)
+                fn ($n) => ($n instanceof Node\Expr\Closure || $n instanceof Node\Expr\ArrowFunction)
                     && $n->getStartLine() === $funcReflection->getStartLine(),
             );
 
@@ -191,14 +188,14 @@ class Reflector
         if ($returnType instanceof ReflectionUnionType) {
             return Type::union(
                 ...collect($returnType->getTypes())
-                    ->map(fn($t) => Type::from($t->getName())->nullable($t->allowsNull())),
+                    ->map(fn ($t) => Type::from($t->getName())->nullable($t->allowsNull())),
             );
         }
 
         if ($returnType instanceof ReflectionIntersectionType) {
             return Type::intersection(
                 ...collect($returnType->getTypes())
-                    ->map(fn($t) => $this->returnType($t)?->nullable($t->allowsNull())),
+                    ->map(fn ($t) => $this->returnType($t)?->nullable($t->allowsNull())),
             );
         }
 

@@ -9,6 +9,6 @@ class ConstFetchNode extends AbstractResolver
 {
     public function resolve(Ast\ConstExpr\ConstFetchNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

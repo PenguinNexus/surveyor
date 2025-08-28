@@ -37,13 +37,13 @@ class ConditionalTypeForParameterNode extends AbstractResolver
 
         $paramName = ltrim($node->parameterName, '$');
 
-        $arg = collect($this->referenceNode->getArgs())->first(fn($arg) => $arg->name?->name === $paramName);
+        $arg = collect($this->referenceNode->getArgs())->first(fn ($arg) => $arg->name?->name === $paramName);
 
         if ($arg) {
             return $arg;
         }
 
-        $index = collect($this->parsed->getParamTagValues())->search(fn($param) => $param->parameterName === $node->parameterName);
+        $index = collect($this->parsed->getParamTagValues())->search(fn ($param) => $param->parameterName === $node->parameterName);
 
         if ($index === false) {
             return null;

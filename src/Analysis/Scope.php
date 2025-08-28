@@ -27,7 +27,7 @@ class Scope
 
     public function newChildScope(): self
     {
-        $instance = new self();
+        $instance = new self;
 
         if ($this->className) {
             $instance->setClassName($this->className);

@@ -9,6 +9,6 @@ class Concat extends AbstractResolver
 {
     public function resolve(Node\Expr\AssignOp\Concat $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

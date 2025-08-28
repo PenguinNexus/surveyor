@@ -9,6 +9,6 @@ class Float_ extends AbstractResolver
 {
     public function resolve(Node\Scalar\Float_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

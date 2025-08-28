@@ -9,6 +9,6 @@ class PropertyTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\PropertyTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

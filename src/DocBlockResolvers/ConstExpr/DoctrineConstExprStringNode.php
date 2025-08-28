@@ -9,6 +9,6 @@ class DoctrineConstExprStringNode extends AbstractResolver
 {
     public function resolve(Ast\ConstExpr\DoctrineConstExprStringNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

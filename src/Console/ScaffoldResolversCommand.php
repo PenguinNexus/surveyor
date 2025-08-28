@@ -14,14 +14,15 @@ class ScaffoldResolversCommand extends Command
 
     public function handle()
     {
-        collect(Discover::in(__DIR__ . '/../../vendor/nikic/php-parser')->classes()->get())->filter(fn(string $c) => str_contains($c, '\\Node\\'))->each(function ($class) {
+        collect(Discover::in(__DIR__.'/../../vendor/nikic/php-parser')->classes()->get())->filter(fn (string $c) => str_contains($c, '\\Node\\'))->each(function ($class) {
             $resolverClassFqn = str($class)->after('Node\\');
             $resolverClassNamespace = str($class)->after('Node\\')->beforeLast('\\');
             $resolverClass = $resolverClassFqn->afterLast('\\');
-            $path = __DIR__ . '/../Resolvers/' . $resolverClassFqn->replace('\\', '/')->append('.php')->toString();
+            $path = __DIR__.'/../Resolvers/'.$resolverClassFqn->replace('\\', '/')->append('.php')->toString();
 
             if (file_exists($path)) {
                 $this->warn("File already exists: {$path}");
+
                 return;
             }
 

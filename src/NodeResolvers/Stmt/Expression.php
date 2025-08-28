@@ -9,6 +9,6 @@ class Expression extends AbstractResolver
 {
     public function resolve(Node\Stmt\Expression $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

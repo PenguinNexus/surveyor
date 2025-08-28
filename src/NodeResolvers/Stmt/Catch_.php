@@ -9,6 +9,6 @@ class Catch_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Catch_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

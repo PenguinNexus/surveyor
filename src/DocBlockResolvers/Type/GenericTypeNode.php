@@ -9,6 +9,6 @@ class GenericTypeNode extends AbstractResolver
 {
     public function resolve(Ast\Type\GenericTypeNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

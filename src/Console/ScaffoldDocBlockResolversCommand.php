@@ -14,11 +14,11 @@ class ScaffoldDocBlockResolversCommand extends Command
 
     public function handle()
     {
-        collect(Discover::in(__DIR__ . '/../../vendor/phpstan/phpdoc-parser')->classes()->get())->filter(fn(string $c) => str_contains($c, '\\Ast\\'))->each(function ($class) {
+        collect(Discover::in(__DIR__.'/../../vendor/phpstan/phpdoc-parser')->classes()->get())->filter(fn (string $c) => str_contains($c, '\\Ast\\'))->each(function ($class) {
             $resolverClassFqn = str($class)->after('Ast\\');
             $resolverClassNamespace = str($class)->after('Ast\\')->beforeLast('\\');
             $resolverClass = $resolverClassFqn->afterLast('\\');
-            $path = __DIR__ . '/../DocBlockResolvers/' . $resolverClassFqn->replace('\\', '/')->append('.php')->toString();
+            $path = __DIR__.'/../DocBlockResolvers/'.$resolverClassFqn->replace('\\', '/')->append('.php')->toString();
 
             if (file_exists($path)) {
                 $this->warn("File already exists: {$path}");

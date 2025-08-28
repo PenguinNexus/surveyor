@@ -9,6 +9,6 @@ class Closure extends AbstractResolver
 {
     public function resolve(Node\Expr\Closure $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

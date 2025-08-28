@@ -9,6 +9,6 @@ class ParamOutTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\ParamOutTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

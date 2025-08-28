@@ -9,6 +9,6 @@ class BooleanOr extends AbstractResolver
 {
     public function resolve(Node\Expr\BinaryOp\BooleanOr $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

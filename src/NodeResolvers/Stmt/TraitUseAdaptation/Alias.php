@@ -9,6 +9,6 @@ class Alias extends AbstractResolver
 {
     public function resolve(Node\Stmt\TraitUseAdaptation\Alias $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

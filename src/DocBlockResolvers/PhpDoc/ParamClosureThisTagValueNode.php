@@ -9,6 +9,6 @@ class ParamClosureThisTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\ParamClosureThisTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

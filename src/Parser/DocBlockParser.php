@@ -61,7 +61,7 @@ class DocBlockParser
         return collect($returnTypeValues)->map($this->resolve(...));
     }
 
-    public function parseVar(string $docBlock) //: ?TypeContract
+    public function parseVar(string $docBlock) // : ?TypeContract
     {
         $this->parse($docBlock);
 
@@ -72,7 +72,7 @@ class DocBlockParser
         }
 
         $result = collect($varTagValues)
-            ->map(fn($tag) => $this->resolve($tag->type))
+            ->map(fn ($tag) => $this->resolve($tag->type))
             ->unique();
 
         if ($result->count() === 1) {
@@ -84,14 +84,14 @@ class DocBlockParser
         // return RangerType::union(...$result);
     }
 
-    public function parseParam(string $docBlock, string $name) //: ?TypeContract
+    public function parseParam(string $docBlock, string $name) // : ?TypeContract
     {
         $this->parse($docBlock);
 
         $tagValues = $this->parsed->getParamTagValues();
 
         $value = collect($tagValues)
-            ->first(fn($tag) => ltrim($tag->parameterName, '$') === ltrim($name, '$'));
+            ->first(fn ($tag) => ltrim($tag->parameterName, '$') === ltrim($name, '$'));
 
         if ($value) {
             return $this->resolve($value->type);
@@ -110,7 +110,7 @@ class DocBlockParser
             $this->parsed->getPropertyWriteTagValues()
         );
 
-        return collect($propertyTagValues)->mapWithKeys(fn($node) => [
+        return collect($propertyTagValues)->mapWithKeys(fn ($node) => [
             ltrim($node->propertyName, '$') => $this->resolve($node->type),
         ])->toArray();
     }
@@ -120,7 +120,7 @@ class DocBlockParser
         $this->parse($docBlock);
 
         return collect($this->parsed->getMixinTagValues())
-            ->map(fn(MixinTagValueNode $node) => $this->resolve($node->type))
+            ->map(fn (MixinTagValueNode $node) => $this->resolve($node->type))
             ->all();
     }
 
@@ -132,7 +132,7 @@ class DocBlockParser
         return $this->parsed;
     }
 
-    protected function resolve($value) //: TypeContract|string
+    protected function resolve($value) // : TypeContract|string
     {
         return $this->typeResolver->setParsed($this->parsed)->setReferenceNode($this->node)->from($value, $this->scope);
     }

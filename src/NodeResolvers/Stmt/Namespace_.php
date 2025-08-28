@@ -9,6 +9,6 @@ class Namespace_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Namespace_ $node)
     {
-        return array_map(fn($node) => $this->from($node), $node->stmts);
+        return array_map(fn ($node) => $this->from($node), $node->stmts);
     }
 }

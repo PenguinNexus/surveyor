@@ -9,6 +9,6 @@ class BinaryOp extends AbstractResolver
 {
     public function resolve(Node\Expr\BinaryOp $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

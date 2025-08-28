@@ -9,6 +9,6 @@ class Double extends AbstractResolver
 {
     public function resolve(Node\Expr\Cast\Double $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

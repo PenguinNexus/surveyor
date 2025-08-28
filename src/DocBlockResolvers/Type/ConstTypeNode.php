@@ -9,6 +9,6 @@ class ConstTypeNode extends AbstractResolver
 {
     public function resolve(Ast\Type\ConstTypeNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

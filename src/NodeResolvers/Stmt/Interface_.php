@@ -9,6 +9,6 @@ class Interface_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Interface_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

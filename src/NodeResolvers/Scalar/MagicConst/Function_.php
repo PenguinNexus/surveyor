@@ -9,6 +9,6 @@ class Function_ extends AbstractResolver
 {
     public function resolve(Node\Scalar\MagicConst\Function_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

@@ -9,6 +9,6 @@ class Match_ extends AbstractResolver
 {
     public function resolve(Node\Expr\Match_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

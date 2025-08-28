@@ -23,11 +23,11 @@ class Analyzer
     {
         $parsed = $this->parser->parse(file_get_contents($path));
 
-        Debug::log('🧠 Analyzing: ' . $path);
+        Debug::log('🧠 Analyzing: '.$path);
 
         $this->analyzed = collect($parsed)
-            ->map(fn($node) => $this->resolver->from($node, new Scope))
-            ->map(fn($nodes) => array_values(array_filter($nodes)))
+            ->map(fn ($node) => $this->resolver->from($node, new Scope))
+            ->map(fn ($nodes) => array_values(array_filter($nodes)))
             ->all();
 
         return $this;
@@ -42,11 +42,11 @@ class Analyzer
     {
         $class = collect($this->analyzed)
             ->flatten(1)
-            ->first(fn($type) => $type instanceof ClassDeclaration && $type->name === $className);
+            ->first(fn ($type) => $type instanceof ClassDeclaration && $type->name === $className);
 
         assert($class !== null);
 
-        $method = collect($class->methods)->first(fn($method) => $method->name === $methodName);
+        $method = collect($class->methods)->first(fn ($method) => $method->name === $methodName);
 
         assert($method !== null);
 

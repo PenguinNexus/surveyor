@@ -9,6 +9,6 @@ class Encapsed extends AbstractResolver
 {
     public function resolve(Node\Scalar\Encapsed $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

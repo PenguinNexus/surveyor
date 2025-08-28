@@ -9,6 +9,6 @@ class Error extends AbstractResolver
 {
     public function resolve(Node\Expr\Error $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

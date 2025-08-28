@@ -14,8 +14,8 @@ class Analyze extends Command
 
     public function handle(Analyzer $analyzer)
     {
-        Debug::$dump = !!$this->option('dump');
-        Debug::$log = !!$this->option('log');
+        Debug::$dump = (bool) $this->option('dump');
+        Debug::$log = (bool) $this->option('log');
 
         if ($this->option('verbose')) {
             Debug::$currentlyInterested = true;
@@ -23,7 +23,7 @@ class Analyze extends Command
 
         $path = $this->option('path');
 
-        $analyzer->analyze(getcwd() . '/' . $path)->analyzed();
+        $analyzer->analyze(getcwd().'/'.$path)->analyzed();
         dd('done');
     }
 }

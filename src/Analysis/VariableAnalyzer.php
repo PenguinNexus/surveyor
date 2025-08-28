@@ -173,12 +173,12 @@ class VariableAnalyzer extends AbstractResolver
                 $changed = $this->tracker->endSnapshot($elseif->getStartLine());
                 $ifChanges[] = $changed;
             }
-            $currentElsePathId = $this->tracker->forkPath($conditionElseIfString . '-false', $currentElsePathId, $elseif->getStartLine(), $elseif->getEndLine());
+            $currentElsePathId = $this->tracker->forkPath($conditionElseIfString.'-false', $currentElsePathId, $elseif->getStartLine(), $elseif->getEndLine());
         }
 
         // Process else branch
         if ($ifStmt->else) {
-            $elsePathId = $conditionString . '-false';
+            $elsePathId = $conditionString.'-false';
             if ($ifStmt->else->stmts) {
                 $this->tracker->startSnapshot($ifStmt->else->getStartLine());
                 $this->processStatements($ifStmt->else->stmts, $elsePathId);
@@ -198,7 +198,7 @@ class VariableAnalyzer extends AbstractResolver
 
         foreach ($finalIfChanges as $name => $changes) {
             $elseVariable = $elseChanges[$name] ?? null;
-            $types = array_map(fn($change) => $change['type'], $changes);
+            $types = array_map(fn ($change) => $change['type'], $changes);
 
             if ($elseVariable) {
                 $types[] = $elseVariable[0]['type'];
@@ -222,7 +222,7 @@ class VariableAnalyzer extends AbstractResolver
         };
 
         // Fork path for loop body
-        $loopPathId = $this->tracker->forkPath($loopType . '-body', $pathId);
+        $loopPathId = $this->tracker->forkPath($loopType.'-body', $pathId);
 
         // Handle foreach variable assignments
         if ($loopStmt instanceof Node\Stmt\Foreach_) {

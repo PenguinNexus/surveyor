@@ -9,6 +9,6 @@ class Attribute extends AbstractResolver
 {
     public function resolve(Ast\Attribute $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

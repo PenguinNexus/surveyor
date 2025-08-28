@@ -2,7 +2,6 @@
 
 namespace Laravel\StaticAnalyzer\NodeResolvers;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
 use Laravel\StaticAnalyzer\Result\Param as ResultParam;
 use PhpParser\Node;
 

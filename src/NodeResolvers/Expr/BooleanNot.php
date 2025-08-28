@@ -9,6 +9,6 @@ class BooleanNot extends AbstractResolver
 {
     public function resolve(Node\Expr\BooleanNot $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

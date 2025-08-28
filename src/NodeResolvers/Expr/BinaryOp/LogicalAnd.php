@@ -9,6 +9,6 @@ class LogicalAnd extends AbstractResolver
 {
     public function resolve(Node\Expr\BinaryOp\LogicalAnd $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

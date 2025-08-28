@@ -9,6 +9,6 @@ class SelfOutTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\SelfOutTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

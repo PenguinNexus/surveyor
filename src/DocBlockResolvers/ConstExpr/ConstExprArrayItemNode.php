@@ -9,6 +9,6 @@ class ConstExprArrayItemNode extends AbstractResolver
 {
     public function resolve(Ast\ConstExpr\ConstExprArrayItemNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

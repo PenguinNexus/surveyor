@@ -9,6 +9,6 @@ class New_ extends AbstractResolver
 {
     public function resolve(Node\Expr\New_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

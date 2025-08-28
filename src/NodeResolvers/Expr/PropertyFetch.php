@@ -2,7 +2,6 @@
 
 namespace Laravel\StaticAnalyzer\NodeResolvers\Expr;
 
-use Laravel\StaticAnalyzer\Debug\Debug;
 use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
 use PhpParser\Node;
 

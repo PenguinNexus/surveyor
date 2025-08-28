@@ -9,6 +9,6 @@ class EnumCase extends AbstractResolver
 {
     public function resolve(Node\Stmt\EnumCase $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

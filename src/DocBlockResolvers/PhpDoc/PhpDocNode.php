@@ -9,6 +9,6 @@ class PhpDocNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\PhpDocNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

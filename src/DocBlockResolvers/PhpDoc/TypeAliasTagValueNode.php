@@ -9,6 +9,6 @@ class TypeAliasTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\TypeAliasTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

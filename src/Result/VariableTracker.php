@@ -70,7 +70,7 @@ class VariableTracker
         } elseif ($lastValue['type'] instanceof UnionType) {
             $existingTypes = $lastValue['type']->types;
             $newType = new UnionType(
-                array_map(fn($t) => new ArrayType(array_merge($t->value, [$key => $type])), $existingTypes)
+                array_map(fn ($t) => new ArrayType(array_merge($t->value, [$key => $type])), $existingTypes)
             );
         } else {
             dd('last value is not an array or union type??', $lastValue);
@@ -95,10 +95,9 @@ class VariableTracker
         return $this->variables;
     }
 
-
     public function getAtLine(string $name, int $lineNumber): array
     {
-        $lines = array_filter($this->variables[$name], fn($variable) => $variable['lineNumber'] <= $lineNumber);
+        $lines = array_filter($this->variables[$name], fn ($variable) => $variable['lineNumber'] <= $lineNumber);
 
         return end($lines);
     }
@@ -121,7 +120,7 @@ class VariableTracker
 
     public function forkPath(string $condition, string $parentPathId = 'main', ?int $startLine = null, ?int $endLine = null): string
     {
-        $newPathId = $parentPathId . '-' . (++$this->pathCounter);
+        $newPathId = $parentPathId.'-'.(++$this->pathCounter);
 
         if (isset($this->activePaths[$parentPathId])) {
             $this->activePaths[$newPathId] = $this->activePaths[$parentPathId]->fork($newPathId, [$condition], $startLine, $endLine);
@@ -208,7 +207,7 @@ class VariableTracker
     {
         $states = $this->getVariableAtLine($name, $lineNumber);
 
-        return array_map(fn($state) => $state->type, $states);
+        return array_map(fn ($state) => $state->type, $states);
     }
 
     public function getUnionTypeAtLine(string $name, int $lineNumber): ?Type
@@ -284,9 +283,9 @@ class VariableTracker
             return "Variable \${$name} at line {$lineNumber}: {$state->type} (from path {$state->pathId} at line {$state->lineNumber})";
         }
 
-        $types = array_map(fn($state) => (string) $state->type, $states);
+        $types = array_map(fn ($state) => (string) $state->type, $states);
         $uniqueTypes = array_unique($types);
 
-        return "Variable \${$name} at line {$lineNumber}: " . implode(' | ', $uniqueTypes) . ' (from ' . count($states) . ' possible paths)';
+        return "Variable \${$name} at line {$lineNumber}: ".implode(' | ', $uniqueTypes).' (from '.count($states).' possible paths)';
     }
 }

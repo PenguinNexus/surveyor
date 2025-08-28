@@ -27,7 +27,7 @@ class VariableTrackerOrig
     public function forkPath(string $condition, ?string $parentPathId = null, ?int $startLine = null, ?int $endLine = null): string
     {
         $parentPathId = $parentPathId ?? 'main';
-        $newPathId = $parentPathId . '-' . (++$this->pathCounter);
+        $newPathId = $parentPathId.'-'.(++$this->pathCounter);
 
         if (isset($this->activePaths[$parentPathId])) {
             $this->activePaths[$newPathId] = $this->activePaths[$parentPathId]->fork($newPathId, [$condition], $startLine, $endLine);
@@ -69,7 +69,7 @@ class VariableTrackerOrig
 
         // If we have specific paths active at this line, use them
         // Otherwise, fall back to general paths (main path)
-        $pathsToUse = !empty($specificPaths) ? $specificPaths : $generalPaths;
+        $pathsToUse = ! empty($specificPaths) ? $specificPaths : $generalPaths;
 
         foreach ($pathsToUse as $pathId => $path) {
             // Get the latest assignment on this path before or at the line
@@ -104,7 +104,8 @@ class VariableTrackerOrig
     public function getPossibleTypesAtLine(string $name, int $lineNumber): array
     {
         $states = $this->getVariableAtLine($name, $lineNumber);
-        return array_map(fn($state) => $state->type, $states);
+
+        return array_map(fn ($state) => $state->type, $states);
     }
 
     public function getUnionTypeAtLine(string $name, int $lineNumber): ?Type
@@ -131,7 +132,7 @@ class VariableTrackerOrig
 
         foreach ($this->activePaths as $path) {
             foreach ($path->getAllVariables() as $name => $variable) {
-                if (!in_array($name, $variableNames)) {
+                if (! in_array($name, $variableNames)) {
                     $variableNames[] = $name;
                 }
             }
@@ -143,7 +144,7 @@ class VariableTrackerOrig
             $firstState = null;
             foreach ($this->activePaths as $path) {
                 $variable = $path->getVariable($name);
-                if ($variable && (!$firstState || $variable->lineNumber < $firstState->lineNumber)) {
+                if ($variable && (! $firstState || $variable->lineNumber < $firstState->lineNumber)) {
                     $firstState = $variable;
                 }
             }
@@ -176,12 +177,13 @@ class VariableTrackerOrig
 
         if (count($states) === 1) {
             $state = $states[0];
+
             return "Variable \${$name} at line {$lineNumber}: {$state->type} (from path {$state->pathId} at line {$state->lineNumber})";
         }
 
-        $types = array_map(fn($state) => (string)$state->type, $states);
+        $types = array_map(fn ($state) => (string) $state->type, $states);
         $uniqueTypes = array_unique($types);
 
-        return "Variable \${$name} at line {$lineNumber}: " . implode(' | ', $uniqueTypes) . " (from " . count($states) . " possible paths)";
+        return "Variable \${$name} at line {$lineNumber}: ".implode(' | ', $uniqueTypes).' (from '.count($states).' possible paths)';
     }
 }

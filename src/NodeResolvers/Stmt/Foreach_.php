@@ -9,6 +9,6 @@ class Foreach_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Foreach_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

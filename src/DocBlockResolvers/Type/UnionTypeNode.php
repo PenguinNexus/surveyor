@@ -9,6 +9,6 @@ class UnionTypeNode extends AbstractResolver
 {
     public function resolve(Ast\Type\UnionTypeNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

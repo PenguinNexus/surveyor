@@ -9,6 +9,6 @@ class Coalesce extends AbstractResolver
 {
     public function resolve(Node\Expr\BinaryOp\Coalesce $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

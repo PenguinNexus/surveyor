@@ -9,6 +9,6 @@ class InterpolatedString extends AbstractResolver
 {
     public function resolve(Node\Scalar\InterpolatedString $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

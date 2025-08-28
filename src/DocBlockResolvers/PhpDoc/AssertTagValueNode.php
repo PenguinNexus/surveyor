@@ -9,6 +9,6 @@ class AssertTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\AssertTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

@@ -9,6 +9,6 @@ class GroupUse extends AbstractResolver
 {
     public function resolve(Node\Stmt\GroupUse $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

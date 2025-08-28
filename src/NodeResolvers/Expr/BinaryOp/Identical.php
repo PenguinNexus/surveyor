@@ -9,6 +9,6 @@ class Identical extends AbstractResolver
 {
     public function resolve(Node\Expr\BinaryOp\Identical $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

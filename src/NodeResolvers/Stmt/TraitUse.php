@@ -9,6 +9,6 @@ class TraitUse extends AbstractResolver
 {
     public function resolve(Node\Stmt\TraitUse $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

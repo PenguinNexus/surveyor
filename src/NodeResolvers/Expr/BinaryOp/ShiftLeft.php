@@ -9,6 +9,6 @@ class ShiftLeft extends AbstractResolver
 {
     public function resolve(Node\Expr\BinaryOp\ShiftLeft $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

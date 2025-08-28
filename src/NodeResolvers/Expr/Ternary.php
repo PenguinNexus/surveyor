@@ -9,6 +9,6 @@ class Ternary extends AbstractResolver
 {
     public function resolve(Node\Expr\Ternary $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

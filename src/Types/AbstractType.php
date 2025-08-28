@@ -43,6 +43,6 @@ abstract class AbstractType
 
     public function __toString()
     {
-        return static::class . ':' . $this->id();
+        return static::class.':'.$this->id();
     }
 }

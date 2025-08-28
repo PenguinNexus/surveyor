@@ -9,6 +9,6 @@ class Mod extends AbstractResolver
 {
     public function resolve(Node\Expr\BinaryOp\Mod $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

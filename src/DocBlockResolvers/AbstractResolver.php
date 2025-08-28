@@ -16,7 +16,7 @@ abstract class AbstractResolver
         public DocBlockResolver $typeResolver,
         protected DocBlockParser $docBlockParser,
         protected PhpDocNode $parsed,
-        protected ?CallLike $referenceNode = null,
+        protected ?CallLike $referenceNode,
         protected Scope $scope,
     ) {
         //
@@ -24,7 +24,7 @@ abstract class AbstractResolver
 
     protected function from(Node $node)
     {
-        Debug::log('📄 Resolving DocBlock: ' . get_class($node));
+        Debug::log('📄 Resolving DocBlock: '.get_class($node));
 
         return $this->typeResolver
             ->setParsed($this->parsed)

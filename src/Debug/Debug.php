@@ -30,12 +30,12 @@ class Debug
         $formattedMessage = is_string($message) ? $message : json_encode($message);
 
         if ($data) {
-            $formattedMessage .= PHP_EOL . $data;
+            $formattedMessage .= PHP_EOL.$data;
         }
 
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
 
-        info('[DEBUG] ' . $backtrace[1]['class'] . ':' . ($backtrace[1]['line'] ?? 0) . PHP_EOL . $formattedMessage);
+        info('[DEBUG] '.$backtrace[1]['class'].':'.($backtrace[1]['line'] ?? 0).PHP_EOL.$formattedMessage);
     }
 
     public static function throw(Throwable $e)
@@ -55,7 +55,7 @@ class Debug
         if (self::$dump && self::$currentlyInterested) {
             $trace = debug_backtrace(limit: 1);
 
-            dump($trace[0]['file'] . ':' . $trace[0]['line'], ...array_map(function ($a) {
+            dump($trace[0]['file'].':'.$trace[0]['line'], ...array_map(function ($a) {
                 if ($a instanceof NodeAbstract) {
                     $a->setAttribute('parent', null);
                 }
@@ -63,7 +63,7 @@ class Debug
                 return $a;
             }, $args));
 
-            echo PHP_EOL . str_repeat('-', 80) . PHP_EOL . PHP_EOL;
+            echo PHP_EOL.str_repeat('-', 80).PHP_EOL.PHP_EOL;
         }
     }
 
@@ -72,7 +72,7 @@ class Debug
         if (self::$dump && self::$currentlyInterested) {
             $trace = debug_backtrace(limit: 1);
 
-            dd($trace[0]['file'] . ':' . $trace[0]['line'], ...array_map(function ($a) {
+            dd($trace[0]['file'].':'.$trace[0]['line'], ...array_map(function ($a) {
                 if ($a instanceof NodeAbstract) {
                     $a->setAttribute('parent', null);
                 }

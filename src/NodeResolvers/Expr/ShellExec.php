@@ -9,6 +9,6 @@ class ShellExec extends AbstractResolver
 {
     public function resolve(Node\Expr\ShellExec $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

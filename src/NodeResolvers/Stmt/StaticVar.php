@@ -9,6 +9,6 @@ class StaticVar extends AbstractResolver
 {
     public function resolve(Node\Stmt\StaticVar $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

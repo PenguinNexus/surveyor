@@ -9,6 +9,6 @@ class ConstExprNullNode extends AbstractResolver
 {
     public function resolve(Ast\ConstExpr\ConstExprNullNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

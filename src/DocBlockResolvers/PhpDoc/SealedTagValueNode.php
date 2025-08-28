@@ -9,6 +9,6 @@ class SealedTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\SealedTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

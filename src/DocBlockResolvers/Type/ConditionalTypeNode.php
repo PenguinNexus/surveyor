@@ -9,6 +9,6 @@ class ConditionalTypeNode extends AbstractResolver
 {
     public function resolve(Ast\Type\ConditionalTypeNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

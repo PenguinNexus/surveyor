@@ -9,6 +9,6 @@ class DoctrineTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\Doctrine\DoctrineTagValueNode $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }

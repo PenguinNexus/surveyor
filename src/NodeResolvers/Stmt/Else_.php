@@ -9,6 +9,6 @@ class Else_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Else_ $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        dd($node, $node::class.' not implemented yet');
     }
 }
