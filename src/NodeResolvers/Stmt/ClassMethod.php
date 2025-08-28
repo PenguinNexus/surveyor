@@ -2,6 +2,7 @@
 
 namespace Laravel\StaticAnalyzer\NodeResolvers\Stmt;
 
+use Laravel\StaticAnalyzer\Debug\Debug;
 use Laravel\StaticAnalyzer\Analysis\ReturnTypeAnalyzer;
 use Laravel\StaticAnalyzer\Analysis\VariableAnalyzer;
 use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
@@ -10,11 +11,21 @@ use PhpParser\Node;
 
 class ClassMethod extends AbstractResolver
 {
-    protected $variableTracker;
-
     public function resolve(Node\Stmt\ClassMethod $node)
     {
-        $this->getVariableTracker($node);
+        Debug::log('Resolving Method: ' . $node->name->toString());
+
+        $this->scope = $this->scope->newChildScope();
+        $this->scope->setMethodName($node->name->toString());
+
+        $analyzer = new VariableAnalyzer(
+            $this->resolver,
+            $this->docBlockParser,
+            $this->reflector,
+            $this->scope,
+        );
+
+        $analyzer->analyze($node, $this->scope);
 
         return (new ClassMethodDeclaration(
             name: $node->name->toString(),
@@ -25,32 +36,18 @@ class ClassMethod extends AbstractResolver
 
     protected function getAllParameters(Node\Stmt\ClassMethod $node)
     {
-        if (count($node->params) === 0) {
-            return [];
-        }
-
-        return array_map(fn ($n) => $this->from($n), $node->params);
-    }
-
-    protected function getVariableTracker(Node\Stmt\ClassMethod $node)
-    {
-        $this->variableTracker ??= $this->getAllVariables($node);
-        $this->variableTracker->setCurrent();
-
-        return $this->variableTracker;
-    }
-
-    protected function getAllVariables(Node\Stmt\ClassMethod $node)
-    {
-        $analyzer = app(VariableAnalyzer::class);
-
-        return $analyzer->analyze($node);
+        return array_map(fn($n) => $this->from($n), $node->params);
     }
 
     protected function getAllReturnTypes(Node\Stmt\ClassMethod $node)
     {
-        $analyzer = app(ReturnTypeAnalyzer::class);
+        $analyzer = new ReturnTypeAnalyzer(
+            $this->resolver,
+            $this->docBlockParser,
+            $this->reflector,
+            $this->scope,
+        );
 
-        return $analyzer->analyze($node);
+        return $analyzer->analyze($node, $this->scope);
     }
 }

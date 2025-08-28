@@ -14,7 +14,7 @@ class ConditionalTypeForParameterNode extends AbstractResolver
         $arg = $this->getArgForConditional($node);
 
         // TODO: Is this correct and if so should we use Container?
-        $argType = $arg ? app(NodeResolver::class)->from($arg->value) : Type::null();
+        $argType = $arg ? app(NodeResolver::class)->from($arg->value, $this->scope) : Type::null();
 
         $targetType = $this->from($node->targetType);
 
@@ -37,13 +37,13 @@ class ConditionalTypeForParameterNode extends AbstractResolver
 
         $paramName = ltrim($node->parameterName, '$');
 
-        $arg = collect($this->referenceNode->getArgs())->first(fn ($arg) => $arg->name?->name === $paramName);
+        $arg = collect($this->referenceNode->getArgs())->first(fn($arg) => $arg->name?->name === $paramName);
 
         if ($arg) {
             return $arg;
         }
 
-        $index = collect($this->parsed->getParamTagValues())->search(fn ($param) => $param->parameterName === $node->parameterName);
+        $index = collect($this->parsed->getParamTagValues())->search(fn($param) => $param->parameterName === $node->parameterName);
 
         if ($index === false) {
             return null;

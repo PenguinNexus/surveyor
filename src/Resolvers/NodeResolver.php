@@ -6,6 +6,7 @@ namespace Laravel\StaticAnalyzer\Resolvers;
 // use Laravel\StaticAnalyzer\Types\Contracts\Type;
 
 use Illuminate\Container\Container;
+use Laravel\StaticAnalyzer\Analysis\Scope;
 use PhpParser\NodeAbstract;
 
 class NodeResolver
@@ -23,20 +24,19 @@ class NodeResolver
     //     return $this;
     // }
 
-    public function from(NodeAbstract $node, array $context = [])
+    public function from(NodeAbstract $node, Scope $scope)
     {
         $className = str(get_class($node))->after('Node\\')->prepend('Laravel\\StaticAnalyzer\\NodeResolvers\\')->toString();
 
         if (! class_exists($className)) {
-            dd("Class {$className} does not exist");
+            dd("NodeResolver: Class {$className} does not exist");
         }
-
-        // Debug::log("Resolving {$className}");
 
         return $this->container->make($className, [
             // 'typeResolver' => $this,
             // 'context' => $context,
             // 'parsed' => $this->parsed,
+            'scope' => $scope,
         ])->resolve($node);
     }
 }

@@ -4,19 +4,26 @@ namespace Laravel\StaticAnalyzer\Console;
 
 use Illuminate\Console\Command;
 use Laravel\StaticAnalyzer\Analyzer\Analyzer;
+use Laravel\StaticAnalyzer\Debug\Debug;
 
 class Analyze extends Command
 {
-    protected $signature = 'analyze {--path=}';
+    protected $signature = 'analyze {--path=} {--dump} {--log}';
 
     protected $description = '';
 
     public function handle(Analyzer $analyzer)
     {
+        Debug::$dump = !!$this->option('dump');
+        Debug::$log = !!$this->option('log');
+
+        if ($this->option('verbose')) {
+            Debug::$currentlyInterested = true;
+        }
+
         $path = $this->option('path');
 
-        $path = dirname(__DIR__, 2).'/workbench/app/Http/Controllers/UserController.php';
-
-        dd($analyzer->analyze($path)->analyzed());
+        $analyzer->analyze(getcwd() . '/' . $path)->analyzed();
+        dd('done');
     }
 }

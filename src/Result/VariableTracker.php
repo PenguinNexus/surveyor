@@ -3,6 +3,7 @@
 namespace Laravel\StaticAnalyzer\Result;
 
 use Laravel\StaticAnalyzer\Types\ArrayType;
+use Laravel\StaticAnalyzer\Types\ClassType;
 use Laravel\StaticAnalyzer\Types\Contracts\Type;
 use Laravel\StaticAnalyzer\Types\Type as TypeFactory;
 use Laravel\StaticAnalyzer\Types\UnionType;
@@ -69,7 +70,7 @@ class VariableTracker
         } elseif ($lastValue['type'] instanceof UnionType) {
             $existingTypes = $lastValue['type']->types;
             $newType = new UnionType(
-                array_map(fn ($t) => new ArrayType(array_merge($t->value, [$key => $type])), $existingTypes)
+                array_map(fn($t) => new ArrayType(array_merge($t->value, [$key => $type])), $existingTypes)
             );
         } else {
             dd('last value is not an array or union type??', $lastValue);
@@ -94,9 +95,10 @@ class VariableTracker
         return $this->variables;
     }
 
+
     public function getAtLine(string $name, int $lineNumber): array
     {
-        $lines = array_filter($this->variables[$name], fn ($variable) => $variable['lineNumber'] <= $lineNumber);
+        $lines = array_filter($this->variables[$name], fn($variable) => $variable['lineNumber'] <= $lineNumber);
 
         return end($lines);
     }
@@ -117,16 +119,9 @@ class VariableTracker
         return $changed;
     }
 
-    public function addVariable(string $name, Type $type, int $lineNumber, string $pathId = 'main'): void
-    {
-        if (isset($this->activePaths[$pathId])) {
-            $this->activePaths[$pathId]->setVariable($name, $type, $lineNumber);
-        }
-    }
-
     public function forkPath(string $condition, string $parentPathId = 'main', ?int $startLine = null, ?int $endLine = null): string
     {
-        $newPathId = $parentPathId.'-'.(++$this->pathCounter);
+        $newPathId = $parentPathId . '-' . (++$this->pathCounter);
 
         if (isset($this->activePaths[$parentPathId])) {
             $this->activePaths[$newPathId] = $this->activePaths[$parentPathId]->fork($newPathId, [$condition], $startLine, $endLine);
@@ -204,11 +199,16 @@ class VariableTracker
         return $states;
     }
 
+    public function setThis(string $className): void
+    {
+        $this->add('this', new ClassType($className), 0);
+    }
+
     public function getPossibleTypesAtLine(string $name, int $lineNumber): array
     {
         $states = $this->getVariableAtLine($name, $lineNumber);
 
-        return array_map(fn ($state) => $state->type, $states);
+        return array_map(fn($state) => $state->type, $states);
     }
 
     public function getUnionTypeAtLine(string $name, int $lineNumber): ?Type
@@ -284,9 +284,9 @@ class VariableTracker
             return "Variable \${$name} at line {$lineNumber}: {$state->type} (from path {$state->pathId} at line {$state->lineNumber})";
         }
 
-        $types = array_map(fn ($state) => (string) $state->type, $states);
+        $types = array_map(fn($state) => (string) $state->type, $states);
         $uniqueTypes = array_unique($types);
 
-        return "Variable \${$name} at line {$lineNumber}: ".implode(' | ', $uniqueTypes).' (from '.count($states).' possible paths)';
+        return "Variable \${$name} at line {$lineNumber}: " . implode(' | ', $uniqueTypes) . ' (from ' . count($states) . ' possible paths)';
     }
 }

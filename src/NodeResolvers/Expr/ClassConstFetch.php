@@ -9,6 +9,10 @@ class ClassConstFetch extends AbstractResolver
 {
     public function resolve(Node\Expr\ClassConstFetch $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        if ($node->name instanceof Node\Identifier && $node->name->name === 'class') {
+            return $this->from($node->class);
+        }
+
+        dd($node, 'class const fetch not implemented yet');
     }
 }

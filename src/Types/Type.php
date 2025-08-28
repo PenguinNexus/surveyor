@@ -95,6 +95,10 @@ class Type
                 return self::arrayShape(self::mixed(), self::mixed());
             }
 
+            if ($value === 'void') {
+                return self::void();
+            }
+
             if (method_exists(self::class, $value)) {
                 return self::$value();
             }
@@ -108,7 +112,7 @@ class Type
     protected static function flattenUnion(array $args): Collection
     {
         return collect($args)->flatMap(
-            fn ($type) => ($type instanceof UnionType)
+            fn($type) => ($type instanceof UnionType)
                 ? self::flattenUnion($type->types)
                 : [$type]
         );
@@ -117,7 +121,7 @@ class Type
     public static function union(...$args): Contracts\Type
     {
         $args = self::flattenUnion($args)
-            ->unique(fn ($type) => (string) $type)
+            ->unique(fn($type) => (string) $type)
             ->values()
             ->all();
 

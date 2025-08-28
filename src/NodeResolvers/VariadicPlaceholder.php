@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\VariadicPlaceholder;
+namespace Laravel\StaticAnalyzer\NodeResolvers;
 
 use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
 use PhpParser\Node;

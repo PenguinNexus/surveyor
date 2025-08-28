@@ -2,6 +2,8 @@
 
 namespace Laravel\StaticAnalyzer\DocBlockResolvers;
 
+use Laravel\StaticAnalyzer\Analysis\Scope;
+use Laravel\StaticAnalyzer\Debug\Debug;
 use Laravel\StaticAnalyzer\Parser\DocBlockParser;
 use Laravel\StaticAnalyzer\Resolvers\DocBlockResolver;
 use PhpParser\Node\Expr\CallLike;
@@ -14,17 +16,19 @@ abstract class AbstractResolver
         public DocBlockResolver $typeResolver,
         protected DocBlockParser $docBlockParser,
         protected PhpDocNode $parsed,
-        public array $context = [],
         protected ?CallLike $referenceNode = null,
+        protected Scope $scope,
     ) {
         //
     }
 
     protected function from(Node $node)
     {
+        Debug::log('📄 Resolving DocBlock: ' . get_class($node));
+
         return $this->typeResolver
             ->setParsed($this->parsed)
             ->setReferenceNode($this->referenceNode)
-            ->from($node, $this->context);
+            ->from($node, $this->scope);
     }
 }

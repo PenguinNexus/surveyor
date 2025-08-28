@@ -19,8 +19,9 @@ class ReturnTypeAnalyzer extends AbstractResolver
 {
     protected array $returnTypes = [];
 
-    public function analyze(Node\Stmt\ClassMethod $methodNode): array
+    public function analyze(Node\Stmt\ClassMethod $methodNode, Scope $scope): array
     {
+        $this->scope = $scope;
         $this->returnTypes = [];
 
         $this->processStatements($methodNode->stmts ?? []);
@@ -30,8 +31,8 @@ class ReturnTypeAnalyzer extends AbstractResolver
         }
 
         return collect($this->returnTypes)
-            ->groupBy(fn ($type) => $type::class)
-            ->map(fn ($group, $class) => $this->collapseReturnTypes($group, $class))
+            ->groupBy(fn($type) => $type::class)
+            ->map(fn($group, $class) => $this->collapseReturnTypes($group, $class))
             ->values()
             ->flatten()
             ->all();
@@ -50,7 +51,7 @@ class ReturnTypeAnalyzer extends AbstractResolver
             return;
         }
 
-        $hasView = collect($this->returnTypes)->first(fn ($type) => $type instanceof View);
+        $hasView = collect($this->returnTypes)->first(fn($type) => $type instanceof View);
 
         if ($type->value === ViewView::class && $hasView) {
             return;
@@ -71,12 +72,12 @@ class ReturnTypeAnalyzer extends AbstractResolver
 
     protected function collapseViewReturnTypes(Collection $returnTypes)
     {
-        return $returnTypes->groupBy(fn ($type) => $type->name)->map(function ($group) {
+        return $returnTypes->groupBy(fn($type) => $type->name)->map(function ($group) {
             if ($group->count() === 1) {
                 return $group->first();
             }
 
-            $dataKeys = $group->map(fn ($type) => array_keys($type->data));
+            $dataKeys = $group->map(fn($type) => array_keys($type->data));
             $requiredKeys = array_values(array_intersect(...$dataKeys->all()));
 
             $newData = [];
@@ -172,7 +173,7 @@ class ReturnTypeAnalyzer extends AbstractResolver
 
         if ($returnStmt->expr instanceof CallLike) {
             $args = $returnStmt->expr->getArgs();
-            $args = collect($args)->map(fn (Arg $arg) => $this->from($arg->value))->toArray();
+            $args = collect($args)->map(fn(Arg $arg) => $this->from($arg->value))->toArray();
         } else {
             dd('not call like', $returnStmt->expr);
         }
@@ -180,8 +181,8 @@ class ReturnTypeAnalyzer extends AbstractResolver
         $viewName = $args[0]->value;
         $possibleData = $args[1] ?? null;
 
-        if ($possibleData instanceof UnionType && collect($possibleData->types)->every(fn ($t) => $t instanceof ArrayType)) {
-            $allKeys = collect($possibleData->types)->map(fn ($t) => array_keys($t->value));
+        if ($possibleData instanceof UnionType && collect($possibleData->types)->every(fn($t) => $t instanceof ArrayType)) {
+            $allKeys = collect($possibleData->types)->map(fn($t) => array_keys($t->value));
             $requiredKeys = array_values(array_intersect(...$allKeys->all()));
 
             $data = [];

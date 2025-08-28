@@ -4,6 +4,7 @@ namespace Laravel\StaticAnalyzer\Resolvers;
 
 // use Laravel\StaticAnalyzer\Debug;
 use Illuminate\Container\Container;
+use Laravel\StaticAnalyzer\Analysis\Scope;
 use PhpParser\Node\Expr\CallLike;
 use PHPStan\PhpDocParser\Ast\Node;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
@@ -34,7 +35,7 @@ class DocBlockResolver
         return $this;
     }
 
-    public function from(Node $node, array $context = [])
+    public function from(Node $node, Scope $scope)
     {
         $className = str(get_class($node))->after('Ast\\')->prepend('Laravel\\StaticAnalyzer\\DocBlockResolvers\\')->toString();
 
@@ -49,6 +50,7 @@ class DocBlockResolver
             // 'context' => $context,
             'parsed' => $this->parsed,
             'referenceNode' => $this->referenceNode,
+            'scope' => $scope,
         ])->resolve($node);
     }
 }

@@ -4,7 +4,11 @@ namespace Laravel\StaticAnalyzer\Reflector;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\StaticAnalyzer\Analysis\Scope;
+use Laravel\StaticAnalyzer\Analyzer\Analyzer;
 use Laravel\StaticAnalyzer\Parser\DocBlockParser;
+use Laravel\StaticAnalyzer\Parser\Parser;
+use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
 use Laravel\StaticAnalyzer\Result\VariableTracker;
 use Laravel\StaticAnalyzer\Types\ClassType;
 use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
@@ -19,10 +23,18 @@ use ReflectionUnionType;
 
 class Reflector
 {
+    protected Scope $scope;
+
     public function __construct(
         protected DocBlockParser $docBlockParser,
     ) {
         //
+    }
+
+    public function setScope(Scope $scope)
+    {
+        $this->scope = $scope;
+        $this->docBlockParser->setScope($scope);
     }
 
     public function functionReturnType(string $name, ?Node $node = null): array
@@ -56,7 +68,7 @@ class Reflector
             $arr = collect($node->getArgs())->flatMap(function ($arg) use ($node) {
                 if ($arg->value instanceof Node\Scalar\String_) {
                     return [
-                        $arg->value->value => VariableTracker::current()->getAtLine($arg->value->value, $node->getStartLine())['type'],
+                        $arg->value->value => $this->scope->variableTracker()->getAtLine($arg->value->value, $node->getStartLine())['type'],
                     ];
                 }
 
@@ -69,8 +81,37 @@ class Reflector
         return null;
     }
 
+    public function propertyType(string $name, ClassType|string $class, ?Node $node = null): ?TypeContract
+    {
+        $reflection = $this->reflectClass($class);
+
+        if (! $reflection->hasProperty($name)) {
+            if ($reflection->getDocComment()) {
+                dd($reflection->getDocComment(), $class, $name, 'not a property but has a docblock??');
+            }
+
+            dd($reflection, $name, 'doesnt have property??');
+        }
+
+        $propertyReflection = $reflection->getProperty($name);
+
+        if ($propertyReflection->getDocComment()) {
+            $result = $this->docBlockParser->parseVar($propertyReflection->getDocComment());
+
+            if ($result) {
+                return $result;
+            }
+        }
+
+        dd($propertyReflection);
+
+        if ($propertyReflection->hasType()) {
+        }
+    }
+
     public function methodReturnType(ClassType|string $class, string $method, ?Node $node = null): array
     {
+        $className = $class instanceof ClassType ? $class->value : $class;
         $reflection = $this->reflectClass($class);
         $returnTypes = [];
 
@@ -101,6 +142,43 @@ class Reflector
             );
         }
 
+
+
+        // if (method_exists($classType->value, $node->name->name)) {
+        //     // We couldn't figure it out...
+        //     return RangerType::mixed();
+        // }
+
+        // if (! method_exists($classType->value, 'hasMacro') || ! $classType->value::hasMacro($node->name->name)) {
+        //     // If the method doesn't exist and the class doesn't have macros, we can't do anything
+        //     return RangerType::mixed();
+        // }
+
+        if (count($returnTypes) === 0 && (method_exists($className, 'hasMacro') || $className::hasMacro($node->name->name))) {
+            $reflectionProperty = $reflection->getProperty('macros');
+            $reflectionProperty->setAccessible(true);
+            $macros = $reflectionProperty->getValue($reflection);
+
+            $funcReflection = new ReflectionFunction($macros[$node->name->name]);
+            $parser = app(Parser::class);
+
+            $parsed = $parser->parse($funcReflection);
+
+            app(Analyzer::class)->analyze($funcReflection->getFilename());
+
+            $funcNode = $parser->nodeFinder()->findFirst(
+                $parsed,
+                fn($n) => ($n instanceof Node\Expr\Closure || $n instanceof Node\Expr\ArrowFunction)
+                    && $n->getStartLine() === $funcReflection->getStartLine(),
+            );
+
+            $result = app(NodeResolver::class)->from($funcNode);
+
+            if ($result) {
+                $returnTypes[] = $result;
+            }
+        }
+
         return $returnTypes;
     }
 
@@ -113,14 +191,14 @@ class Reflector
         if ($returnType instanceof ReflectionUnionType) {
             return Type::union(
                 ...collect($returnType->getTypes())
-                    ->map(fn ($t) => Type::from($t->getName())->nullable($t->allowsNull())),
+                    ->map(fn($t) => Type::from($t->getName())->nullable($t->allowsNull())),
             );
         }
 
         if ($returnType instanceof ReflectionIntersectionType) {
             return Type::intersection(
                 ...collect($returnType->getTypes())
-                    ->map(fn ($t) => $this->returnType($t)?->nullable($t->allowsNull())),
+                    ->map(fn($t) => $this->returnType($t)?->nullable($t->allowsNull())),
             );
         }
 

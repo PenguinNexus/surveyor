@@ -3,6 +3,7 @@
 namespace Laravel\StaticAnalyzer\Parser;
 
 use Illuminate\Support\Collection;
+use Laravel\StaticAnalyzer\Analysis\Scope;
 use Laravel\StaticAnalyzer\Resolvers\DocBlockResolver;
 // use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
 // use Laravel\StaticAnalyzer\Types\Type as RangerType;
@@ -26,6 +27,8 @@ class DocBlockParser
 
     protected PhpDocParser $phpDocParser;
 
+    protected Scope $scope;
+
     public function __construct(
         protected DocBlockResolver $typeResolver,
     ) {
@@ -35,6 +38,11 @@ class DocBlockParser
 
         $this->lexer = new Lexer($config);
         $this->phpDocParser = new PhpDocParser($config, $typeParser, $constExprParser);
+    }
+
+    public function setScope(Scope $scope)
+    {
+        $this->scope = $scope;
     }
 
     public function parseReturn(string $docBlock, ?CallLike $node = null): ?Collection
@@ -126,6 +134,6 @@ class DocBlockParser
 
     protected function resolve($value) //: TypeContract|string
     {
-        return $this->typeResolver->setParsed($this->parsed)->setReferenceNode($this->node)->from($value);
+        return $this->typeResolver->setParsed($this->parsed)->setReferenceNode($this->node)->from($value, $this->scope);
     }
 }

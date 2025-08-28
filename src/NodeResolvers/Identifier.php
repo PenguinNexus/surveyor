@@ -1,14 +1,15 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Identifier;
+namespace Laravel\StaticAnalyzer\NodeResolvers;
 
 use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
+use Laravel\StaticAnalyzer\Types\Type;
 use PhpParser\Node;
 
 class Identifier extends AbstractResolver
 {
     public function resolve(Node\Identifier $node)
     {
-        dd($node, $node::class . ' not implemented yet');
+        return Type::from($node->name);
     }
 }
