@@ -9,6 +9,7 @@ class ElseIf_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\ElseIf_ $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        $this->scope->stateTracker()->startVariableSnapshot($node->getStartLine());
+        // $changed = $this->tracker->endVariableSnapshot($elseif->getStartLine());
     }
 }

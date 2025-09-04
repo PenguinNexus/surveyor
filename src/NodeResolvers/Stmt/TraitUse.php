@@ -9,6 +9,10 @@ class TraitUse extends AbstractResolver
 {
     public function resolve(Node\Stmt\TraitUse $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        foreach ($node->traits as $trait) {
+            $this->scope->addTrait($trait->toString());
+        }
+
+        return null;
     }
 }

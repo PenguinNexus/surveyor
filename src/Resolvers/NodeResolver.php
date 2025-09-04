@@ -24,7 +24,7 @@ class NodeResolver
     //     return $this;
     // }
 
-    public function from(NodeAbstract $node, Scope $scope)
+    public function fromWithScope(NodeAbstract $node, Scope $scope)
     {
         $className = str(get_class($node))->after('Node\\')->prepend('Laravel\\StaticAnalyzer\\NodeResolvers\\')->toString();
 
@@ -32,11 +32,28 @@ class NodeResolver
             dd("NodeResolver: Class {$className} does not exist");
         }
 
-        return $this->container->make($className, [
+        $resolver = $this->container->make($className, [
             // 'typeResolver' => $this,
             // 'context' => $context,
             // 'parsed' => $this->parsed,
             'scope' => $scope,
-        ])->resolve($node);
+        ]);
+
+        $resolver->setScope($scope);
+        $newScope = $resolver->scope() ?? $scope;
+        $resolver->setScope($newScope);
+
+        $resolved = $resolver->resolve($node);
+
+        if (is_array($resolved)) {
+            dd($resolved, $className);
+        }
+
+        return [$resolved, $newScope];
+    }
+
+    public function from(NodeAbstract $node, Scope $scope)
+    {
+        return $this->fromWithScope($node, $scope)[0];
     }
 }

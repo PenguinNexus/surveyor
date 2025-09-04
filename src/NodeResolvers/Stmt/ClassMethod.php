@@ -3,6 +3,7 @@
 namespace Laravel\StaticAnalyzer\NodeResolvers\Stmt;
 
 use Laravel\StaticAnalyzer\Analysis\ReturnTypeAnalyzer;
+use Laravel\StaticAnalyzer\Analysis\Scope;
 use Laravel\StaticAnalyzer\Analysis\VariableAnalyzer;
 use Laravel\StaticAnalyzer\Debug\Debug;
 use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
@@ -13,25 +14,32 @@ class ClassMethod extends AbstractResolver
 {
     public function resolve(Node\Stmt\ClassMethod $node)
     {
-        Debug::log('Resolving Method: '.$node->name->toString());
+        return null;
 
-        $this->scope = $this->scope->newChildScope();
-        $this->scope->setMethodName($node->name->toString());
+        // Debug::log('Resolving Method: ' . $node->name->toString());
 
-        $analyzer = new VariableAnalyzer(
-            $this->resolver,
-            $this->docBlockParser,
-            $this->reflector,
-            $this->scope,
-        );
+        // $this->scope = $this->scope->newChildScope();
+        // $this->scope->setMethodName($node->name->toString());
 
-        $analyzer->analyze($node, $this->scope);
+        // $analyzer = new VariableAnalyzer(
+        //     $this->resolver,
+        //     $this->docBlockParser,
+        //     $this->reflector,
+        //     $this->scope,
+        // );
 
-        return (new ClassMethodDeclaration(
-            name: $node->name->toString(),
-            parameters: $this->getAllParameters($node),
-            returnTypes: $this->getAllReturnTypes($node),
-        ))->fromNode($node);
+        // $analyzer->analyze($node, $this->scope);
+
+        // return (new ClassMethodDeclaration(
+        //     name: $node->name->toString(),
+        //     parameters: $this->getAllParameters($node),
+        //     returnTypes: $this->getAllReturnTypes($node),
+        // ))->fromNode($node);
+    }
+
+    public function scope(): Scope
+    {
+        return $this->scope->newChildScope();
     }
 
     protected function getAllParameters(Node\Stmt\ClassMethod $node)

@@ -8,6 +8,6 @@ class Const_ extends AbstractResolver
 {
     public function resolve(Node\Const_ $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

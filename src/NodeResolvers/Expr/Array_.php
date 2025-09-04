@@ -16,7 +16,7 @@ class Array_ extends AbstractResolver
 
         if ($isList) {
             return Type::array(
-                $items->map(fn ($item) => $this->from($item->value))->unique()->values(),
+                $items->map(fn ($item) => $this->from($item->value))->unique()->values()->toArray(),
             );
         }
 

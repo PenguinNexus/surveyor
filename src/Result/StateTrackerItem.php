@@ -38,10 +38,8 @@ class StateTrackerItem
         $lastValue = $this->variables[$name][count($this->variables[$name]) - 1] ?? null;
 
         if ($lastValue === null) {
-            dd('last value is null??', $name, $key, $type, $lineNumber);
-        }
-
-        if ($lastValue['type'] instanceof ArrayType) {
+            $newType = new ArrayType([$key => $type]);
+        } elseif ($lastValue['type'] instanceof ArrayType) {
             $newType = new ArrayType(array_merge($lastValue['type']->value, [$key => $type]));
         } elseif ($lastValue['type'] instanceof UnionType) {
             $existingTypes = $lastValue['type']->types;
@@ -68,6 +66,10 @@ class StateTrackerItem
 
     public function getAtLine(string $name, int $lineNumber): array
     {
+        if (! array_key_exists($name, $this->variables)) {
+            return [];
+        }
+
         $lines = array_filter($this->variables[$name], fn ($variable) => $variable['lineNumber'] <= $lineNumber);
 
         return end($lines);

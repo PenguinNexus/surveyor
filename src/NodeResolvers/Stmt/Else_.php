@@ -9,6 +9,7 @@ class Else_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Else_ $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        $this->scope->stateTracker()->startVariableSnapshot($node->getStartLine());
+        // $changed = $this->scope->stateTracker()->endVariableSnapshot($node->getStartLine());
     }
 }

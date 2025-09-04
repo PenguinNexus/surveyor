@@ -18,6 +18,10 @@ class ArrayDimFetch extends AbstractResolver
             dd('ArrayDimFetch on non-array?', $var);
         }
 
-        return $var->value[$dim->value] ?? Type::mixed();
+        if (property_exists($dim, 'value')) {
+            return $var->value[$dim->value] ?? Type::mixed();
+        }
+
+        return Type::mixed();
     }
 }

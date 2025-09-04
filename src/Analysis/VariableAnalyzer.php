@@ -3,7 +3,6 @@
 namespace Laravel\StaticAnalyzer\Analysis;
 
 use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Parser\Parser;
 use Laravel\StaticAnalyzer\Result\StateTracker;
 use Laravel\StaticAnalyzer\Types\StringType;
 use Laravel\StaticAnalyzer\Types\Type;
@@ -152,10 +151,6 @@ class VariableAnalyzer extends AbstractResolver
 
     protected function processIfStatement(Node\Stmt\If_ $ifStmt, string $pathId): void
     {
-        $printer = app(Parser::class)->printer();
-
-        $conditionString = $printer->prettyPrintExpr($ifStmt->cond);
-
         $ifChanges = [];
         $elseChanges = [];
 

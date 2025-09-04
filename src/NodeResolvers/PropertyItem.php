@@ -2,12 +2,19 @@
 
 namespace Laravel\StaticAnalyzer\NodeResolvers;
 
+use Laravel\StaticAnalyzer\Types\Type;
 use PhpParser\Node;
 
 class PropertyItem extends AbstractResolver
 {
     public function resolve(Node\PropertyItem $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        $this->scope->stateTracker()->addProperty(
+            $node->name->name,
+            $node->default ? $this->from($node->default) : Type::null(),
+            $node->getStartLine()
+        );
+
+        return null;
     }
 }

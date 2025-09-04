@@ -13,6 +13,6 @@ class ClassConstFetch extends AbstractResolver
             return $this->from($node->class);
         }
 
-        dd($node, 'class const fetch not implemented yet');
+        return $this->scope->getConstant($node->name->name);
     }
 }

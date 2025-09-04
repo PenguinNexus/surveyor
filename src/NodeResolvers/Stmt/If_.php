@@ -9,6 +9,7 @@ class If_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\If_ $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        $this->scope->stateTracker()->startVariableSnapshot($node->getStartLine());
+        // $changed = $this->tracker->endVariableSnapshot($ifStmt->getStartLine());
     }
 }

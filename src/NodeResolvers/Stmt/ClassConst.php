@@ -9,6 +9,8 @@ class ClassConst extends AbstractResolver
 {
     public function resolve(Node\Stmt\ClassConst $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        $this->scope->addConstant($node->consts[0]->name, $this->from($node->consts[0]->value));
+
+        return null;
     }
 }

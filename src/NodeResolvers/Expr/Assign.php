@@ -3,12 +3,66 @@
 namespace Laravel\StaticAnalyzer\NodeResolvers\Expr;
 
 use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
+use Laravel\StaticAnalyzer\Types\IntType;
+use Laravel\StaticAnalyzer\Types\StringType;
 use PhpParser\Node;
 
 class Assign extends AbstractResolver
 {
     public function resolve(Node\Expr\Assign $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        switch (true) {
+            case $node->var instanceof Node\Expr\Variable:
+                $this->scope->stateTracker()->addVariable(
+                    $node->var->name,
+                    $this->from($node->expr),
+                    $node->getStartLine()
+                );
+                break;
+
+            case $node->var instanceof Node\Expr\PropertyFetch:
+                $this->scope->stateTracker()->addProperty(
+                    $node->var->name->name,
+                    $this->from($node->expr),
+                    $node->getStartLine()
+                );
+                break;
+
+            case $node->var instanceof Node\Expr\ArrayDimFetch:
+                $dim = $this->from($node->var->dim);
+                $validDim = ($dim instanceof StringType || $dim instanceof IntType) && $dim->value !== null;
+
+                if (! $validDim) {
+                    break;
+                }
+
+                if ($node->var->var instanceof Node\Expr\Variable) {
+                    $this->scope->stateTracker()->updateVariableArrayKey(
+                        $node->var->var->name,
+                        $dim->value,
+                        $this->from($node->expr),
+                        $node->getStartLine(),
+                    );
+
+                    break;
+                }
+
+                if ($node->var->var instanceof Node\Expr\PropertyFetch) {
+                    $this->scope->stateTracker()->updatePropertyArrayKey(
+                        $node->var->var->name,
+                        $dim->value,
+                        $this->from($node->expr),
+                        $node->getStartLine(),
+                    );
+
+                    break;
+                }
+
+                dd('assign: array dim fetch but not a variable or property fetch??', $node, $dim);
+
+                break;
+        }
+
+        return null;
     }
 }

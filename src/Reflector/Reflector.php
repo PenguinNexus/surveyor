@@ -125,8 +125,6 @@ class Reflector
 
         if ($this->scope->className() !== $reflection->getName()) {
             $analyzed = app(Analyzer::class)->analyze($reflection->getFileName());
-
-            dd($analyzed->analyzed());
         }
 
         $returnTypes = [];
@@ -215,6 +213,10 @@ class Reflector
     public function returnType(ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType $returnType): ?TypeContract
     {
         if ($returnType instanceof ReflectionNamedType) {
+            if (in_array($returnType->getName(), ['static', 'self'])) {
+                return Type::from($this->scope->className());
+            }
+
             return Type::from($returnType->getName())->nullable($returnType->allowsNull());
         }
 

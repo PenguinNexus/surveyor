@@ -76,6 +76,10 @@ class Type
             return $value;
         }
 
+        if ($value === null) {
+            return self::null();
+        }
+
         if (is_string($value)) {
             // TODO: Handle more types
             // - `array`
@@ -89,6 +93,14 @@ class Type
             // - `mixed`
             if ($value === 'array') {
                 return self::array([]);
+            }
+
+            if ($value === 'true') {
+                return self::bool(true);
+            }
+
+            if ($value === 'false') {
+                return self::bool(false);
             }
 
             if ($value === 'object') {

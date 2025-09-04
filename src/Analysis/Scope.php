@@ -2,7 +2,9 @@
 
 namespace Laravel\StaticAnalyzer\Analysis;
 
+use Exception;
 use Laravel\StaticAnalyzer\Result\StateTracker;
+use Laravel\StaticAnalyzer\Types\Contracts\Type;
 
 class Scope
 {
@@ -18,9 +20,23 @@ class Scope
 
     protected ?string $namespace = null;
 
+    protected array $traits = [];
+
+    protected array $constants = [];
+
     public function __construct(protected ?Scope $parent = null)
     {
         $this->stateTracker = new StateTracker;
+    }
+
+    public function addConstant(string $constant, Type $type): void
+    {
+        $this->constants[$constant] = $type;
+    }
+
+    public function getConstant(string $constant): ?Type
+    {
+        return $this->constants[$constant] ?? throw new Exception('Constant '.$constant.' not found');
     }
 
     public function setClassName(string $className): void
@@ -51,6 +67,11 @@ class Scope
         return $instance;
     }
 
+    public function addTrait(string $trait): void
+    {
+        $this->traits[] = $trait;
+    }
+
     public function addUse(string $use): void
     {
         $this->uses[] = $use;
@@ -70,6 +91,10 @@ class Scope
 
         if ($this->namespace && class_exists($this->namespace.'\\'.$candidate)) {
             return $this->namespace.'\\'.$candidate;
+        }
+
+        if ($this->parent) {
+            return $this->parent->getUse($candidate);
         }
 
         return null;

@@ -11,12 +11,19 @@ use PhpParser\NodeAbstract;
 
 abstract class AbstractResolver
 {
+    protected Scope $scope;
+
     public function __construct(
         protected NodeResolver $resolver,
         protected DocBlockParser $docBlockParser,
         protected Reflector $reflector,
-        protected Scope $scope,
     ) {
+        //
+    }
+
+    public function setScope(Scope $scope)
+    {
+        $this->scope = $scope;
         $this->reflector->setScope($scope);
     }
 
@@ -33,5 +40,10 @@ abstract class AbstractResolver
         }
 
         return $this->resolver->from($node, $this->scope);
+    }
+
+    public function scope(): Scope
+    {
+        return $this->scope;
     }
 }

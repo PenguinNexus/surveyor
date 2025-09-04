@@ -3,6 +3,9 @@
 namespace Laravel\StaticAnalyzer\Parser;
 
 // use Laravel\StaticAnalyzer\Debug;
+
+use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
+use Laravel\StaticAnalyzer\Visitors\TypeResolver;
 use PhpParser\Node;
 use PhpParser\NodeFinder;
 use PhpParser\NodeTraverser;
@@ -30,12 +33,14 @@ class Parser
 
     public function __construct(
         protected Standard $prettyPrinter,
+        protected NodeResolver $resolver,
     ) {
         $this->parser = (new ParserFactory)->createForHostVersion();
         $this->nodeFinder = new NodeFinder;
         $this->nodeTraverser = new NodeTraverser;
         // $this->nodeTraverser = new NodeTraverser(new ParentConnectingVisitor);
         $this->nodeTraverser->addVisitor(new NameResolver);
+        $this->nodeTraverser->addVisitor(new TypeResolver($this->resolver));
     }
 
     public function parse(string|ReflectionClass|ReflectionFunction|ReflectionMethod|SplFileInfo $code): array

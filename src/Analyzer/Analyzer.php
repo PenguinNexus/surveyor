@@ -39,18 +39,18 @@ class Analyzer
 
         $parsed = $this->parser->parse(file_get_contents($path));
 
-        Debug::log('🧠 Analyzing: '.$path);
+        // Debug::log('🧠 Analyzing: '.$path);
 
-        $this->scope = new Scope;
+        // $this->scope = new Scope;
 
-        echo $path.PHP_EOL;
+        // echo $path.PHP_EOL;
 
-        $this->analyzed = collect($parsed)
-            ->map(fn ($node) => $this->resolver->from($node, $this->scope))
-            ->map(fn ($nodes) => array_values(array_filter($nodes)))
-            ->all();
+        // $this->analyzed = collect($parsed)
+        //     ->map(fn ($node) => $this->resolver->from($node, $this->scope))
+        //     ->map(fn ($nodes) => array_values(array_filter($nodes)))
+        //     ->all();
 
-        AnalyzedCache::add($path, $this->analyzed);
+        // AnalyzedCache::add($path, $this->analyzed);
 
         return $this;
     }

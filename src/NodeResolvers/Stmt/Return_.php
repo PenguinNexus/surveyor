@@ -9,6 +9,7 @@ class Return_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Return_ $node)
     {
+        return null;
         dd($node, $node::class.' not implemented yet');
     }
 }
