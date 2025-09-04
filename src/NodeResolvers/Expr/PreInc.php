@@ -9,6 +9,6 @@ class PreInc extends AbstractResolver
 {
     public function resolve(Node\Expr\PreInc $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

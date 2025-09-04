@@ -9,6 +9,6 @@ class Continue_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Continue_ $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

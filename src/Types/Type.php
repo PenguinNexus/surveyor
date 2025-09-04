@@ -3,6 +3,7 @@
 namespace Laravel\StaticAnalyzer\Types;
 
 use Illuminate\Support\Collection;
+use Throwable;
 
 class Type
 {
@@ -29,8 +30,12 @@ class Type
 
     public static function string(?string $value = null): Contracts\Type
     {
-        if ($value !== null && (class_exists($value) || interface_exists($value))) {
-            return new ClassType($value);
+        try {
+            if ($value !== null && (class_exists($value) || interface_exists($value))) {
+                return new ClassType($value);
+            }
+        } catch (Throwable $e) {
+            return new StringType($value);
         }
 
         return new StringType($value);

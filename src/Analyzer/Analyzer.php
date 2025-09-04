@@ -37,13 +37,17 @@ class Analyzer
 
         AnalyzedCache::inProgress($path);
 
+        if ($path === '') {
+            Debug::log('⚠️  No path provided to analyze.');
+
+            return $this;
+        }
+
+        Debug::log('🧠 Analyzing: '.$path);
+
         $parsed = $this->parser->parse(file_get_contents($path));
 
-        // Debug::log('🧠 Analyzing: '.$path);
-
         // $this->scope = new Scope;
-
-        // echo $path.PHP_EOL;
 
         // $this->analyzed = collect($parsed)
         //     ->map(fn ($node) => $this->resolver->from($node, $this->scope))

@@ -13,6 +13,6 @@ class Name extends AbstractResolver
             return Type::from($this->scope->className());
         }
 
-        return null;
+        return Type::from($this->scope->getUse($node->name));
     }
 }

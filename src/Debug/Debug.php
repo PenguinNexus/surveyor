@@ -50,6 +50,15 @@ class Debug
         self::$currentlyInterested = $interested;
     }
 
+    public static function ddFromClass(...$args)
+    {
+        if (self::$dump) {
+            $trace = debug_backtrace(limit: 1);
+            array_push($args, $trace[0]['file'].':'.$trace[0]['line']);
+            dd(...$args);
+        }
+    }
+
     public static function dumpIfInterested(...$args)
     {
         if (self::$dump && self::$currentlyInterested) {

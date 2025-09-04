@@ -257,6 +257,6 @@ class Reflector
 
     protected function hasMacro(string $className, Node $node): bool
     {
-        return method_exists($className, 'hasMacro') || $className::hasMacro($node->name->name);
+        return method_exists($className, 'hasMacro') && $className::hasMacro($node->name->name);
     }
 }
