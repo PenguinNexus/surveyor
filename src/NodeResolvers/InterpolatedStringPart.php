@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers;
+namespace Laravel\Surveyor\NodeResolvers;
 
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class InterpolatedStringPart extends AbstractResolver

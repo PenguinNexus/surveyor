@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\DocBlockResolvers\NodeTraverser;
+namespace Laravel\Surveyor\DocBlockResolvers\NodeTraverser;
 
-use Laravel\StaticAnalyzer\DocBlockResolvers\AbstractResolver;
+use Laravel\Surveyor\DocBlockResolvers\AbstractResolver;
 use PHPStan\PhpDocParser\Ast;
 
 class NodeTraverser extends AbstractResolver

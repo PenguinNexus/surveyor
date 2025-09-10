@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Result;
+namespace Laravel\Surveyor\Result;
 
 use PhpParser\NodeAbstract;
 

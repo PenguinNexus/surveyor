@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Types;
+namespace Laravel\Surveyor\Types;
 
 class NumberType extends AbstractType implements Contracts\Type
 {

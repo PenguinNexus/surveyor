@@ -1,16 +1,16 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Analysis;
+namespace Laravel\Surveyor\Analysis;
 
 use Illuminate\Support\Collection;
 use Illuminate\View\View as ViewView;
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types\ArrayType;
-use Laravel\StaticAnalyzer\Types\ClassType;
-use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
-use Laravel\StaticAnalyzer\Types\Entities\View;
-use Laravel\StaticAnalyzer\Types\Type;
-use Laravel\StaticAnalyzer\Types\UnionType;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\ArrayType;
+use Laravel\Surveyor\Types\ClassType;
+use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
+use Laravel\Surveyor\Types\Entities\View;
+use Laravel\Surveyor\Types\Type;
+use Laravel\Surveyor\Types\UnionType;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\CallLike;

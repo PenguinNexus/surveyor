@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Types;
+namespace Laravel\Surveyor\Types;
 
-use Laravel\StaticAnalyzer\Debug\Debug;
+use Laravel\Surveyor\Debug\Debug;
 
 class StringType extends AbstractType implements Contracts\Type
 {

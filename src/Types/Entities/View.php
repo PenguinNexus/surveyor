@@ -1,9 +1,9 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Types\Entities;
+namespace Laravel\Surveyor\Types\Entities;
 
-use Laravel\StaticAnalyzer\Types\ClassType;
-use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
+use Laravel\Surveyor\Types\ClassType;
+use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
 
 class View extends ClassType implements TypeContract
 {

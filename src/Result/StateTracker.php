@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Result;
+namespace Laravel\Surveyor\Result;
 
-use Laravel\StaticAnalyzer\Types\ClassType;
+use Laravel\Surveyor\Types\ClassType;
 
 class StateTracker
 {

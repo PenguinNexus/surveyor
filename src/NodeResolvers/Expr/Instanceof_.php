@@ -1,17 +1,17 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Expr;
+namespace Laravel\Surveyor\NodeResolvers\Expr;
 
-use Laravel\StaticAnalyzer\Debug\Debug;
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types\ClassType;
+use Laravel\Surveyor\Debug\Debug;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\ClassType;
 use PhpParser\Node;
 
 class Instanceof_ extends AbstractResolver
 {
     public function resolve(Node\Expr\Instanceof_ $node)
     {
-        return \Laravel\StaticAnalyzer\Types\Type::bool();
+        return \Laravel\Surveyor\Types\Type::bool();
     }
 
     public function resolveForCondition(Node\Expr\Instanceof_ $node)

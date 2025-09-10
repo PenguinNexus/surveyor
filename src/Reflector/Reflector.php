@@ -1,17 +1,17 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Reflector;
+namespace Laravel\Surveyor\Reflector;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\StaticAnalyzer\Analysis\Scope;
-use Laravel\StaticAnalyzer\Analyzer\Analyzer;
-use Laravel\StaticAnalyzer\Parser\DocBlockParser;
-use Laravel\StaticAnalyzer\Parser\Parser;
-use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
-use Laravel\StaticAnalyzer\Types\ClassType;
-use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\Analysis\Scope;
+use Laravel\Surveyor\Analyzer\Analyzer;
+use Laravel\Surveyor\Parser\DocBlockParser;
+use Laravel\Surveyor\Parser\Parser;
+use Laravel\Surveyor\Resolvers\NodeResolver;
+use Laravel\Surveyor\Types\ClassType;
+use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 use PhpParser\Node\Expr\CallLike;
 use PhpParser\Node\Stmt\ClassMethod;

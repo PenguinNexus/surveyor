@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\DocBlockResolvers\Attribute;
+namespace Laravel\Surveyor\DocBlockResolvers\Attribute;
 
-use Laravel\StaticAnalyzer\DocBlockResolvers\AbstractResolver;
+use Laravel\Surveyor\DocBlockResolvers\AbstractResolver;
 use PHPStan\PhpDocParser\Ast;
 
 class Attribute extends AbstractResolver

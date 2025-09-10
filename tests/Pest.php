@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Laravel\StaticAnalyzer\Analyzer\Analyzer;
-use Laravel\StaticAnalyzer\StaticAnalyzerServiceProvider;
+use Laravel\Surveyor\Analyzer\Analyzer;
+use Laravel\Surveyor\SurveyorServiceProvider;
 use Orchestra\Testbench\TestCase;
 
 /*
@@ -48,7 +48,7 @@ uses(TestCase::class)->in('Feature', 'Unit');
 // function getPackageProviders($app)
 // {
 //     return [
-//         StaticAnalyzerServiceProvider::class,
+//         SurveyorServiceProvider::class,
 //     ];
 // }
 
@@ -90,9 +90,9 @@ class {$className}
 /**
  * Get the parser instance for testing
  */
-function getParser(): Laravel\StaticAnalyzer\Parser\Parser
+function getParser(): Laravel\Surveyor\Parser\Parser
 {
-    return app(Laravel\StaticAnalyzer\Parser\Parser::class);
+    return app(Laravel\Surveyor\Parser\Parser::class);
 }
 
 /**

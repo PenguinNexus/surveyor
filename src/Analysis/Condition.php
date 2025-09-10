@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Analysis;
+namespace Laravel\Surveyor\Analysis;
 
-use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
-use Laravel\StaticAnalyzer\Types\Type;
-use Laravel\StaticAnalyzer\Types\UnionType;
+use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
+use Laravel\Surveyor\Types\Type;
+use Laravel\Surveyor\Types\UnionType;
 
 class Condition
 {

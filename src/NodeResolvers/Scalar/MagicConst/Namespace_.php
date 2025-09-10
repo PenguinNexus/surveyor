@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Scalar\MagicConst;
+namespace Laravel\Surveyor\NodeResolvers\Scalar\MagicConst;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use PhpParser\Node;
 
 class Namespace_ extends AbstractResolver

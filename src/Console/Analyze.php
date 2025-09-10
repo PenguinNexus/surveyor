@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Console;
+namespace Laravel\Surveyor\Console;
 
 use Illuminate\Console\Command;
-use Laravel\StaticAnalyzer\Analyzer\Analyzer;
-use Laravel\StaticAnalyzer\Debug\Debug;
+use Laravel\Surveyor\Analyzer\Analyzer;
+use Laravel\Surveyor\Debug\Debug;
 
 class Analyze extends Command
 {

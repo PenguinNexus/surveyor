@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Visitors;
+namespace Laravel\Surveyor\Visitors;
 
-use Laravel\StaticAnalyzer\Analysis\Scope;
-use Laravel\StaticAnalyzer\Debug\Debug;
-use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
+use Laravel\Surveyor\Analysis\Scope;
+use Laravel\Surveyor\Debug\Debug;
+use Laravel\Surveyor\Resolvers\NodeResolver;
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
 

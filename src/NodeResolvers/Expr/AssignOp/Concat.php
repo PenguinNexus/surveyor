@@ -1,9 +1,9 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Expr\AssignOp;
+namespace Laravel\Surveyor\NodeResolvers\Expr\AssignOp;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class Concat extends AbstractResolver

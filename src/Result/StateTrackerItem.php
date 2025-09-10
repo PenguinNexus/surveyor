@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Result;
+namespace Laravel\Surveyor\Result;
 
-use Laravel\StaticAnalyzer\Types\ArrayType;
-use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
-use Laravel\StaticAnalyzer\Types\Type;
-use Laravel\StaticAnalyzer\Types\UnionType;
+use Laravel\Surveyor\Types\ArrayType;
+use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
+use Laravel\Surveyor\Types\Type;
+use Laravel\Surveyor\Types\UnionType;
 
 class StateTrackerItem
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Result;
+namespace Laravel\Surveyor\Result;
 
-use Laravel\StaticAnalyzer\Types\Contracts\Type;
+use Laravel\Surveyor\Types\Contracts\Type;
 
 class Variable extends AbstractResult
 {

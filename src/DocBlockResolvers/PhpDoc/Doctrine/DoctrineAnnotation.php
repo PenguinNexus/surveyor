@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\DocBlockResolvers\PhpDoc\Doctrine;
+namespace Laravel\Surveyor\DocBlockResolvers\PhpDoc\Doctrine;
 
-use Laravel\StaticAnalyzer\DocBlockResolvers\AbstractResolver;
+use Laravel\Surveyor\DocBlockResolvers\AbstractResolver;
 use PHPStan\PhpDocParser\Ast;
 
 class DoctrineAnnotation extends AbstractResolver

@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Stmt\TraitUseAdaptation;
+namespace Laravel\Surveyor\NodeResolvers\Stmt\TraitUseAdaptation;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use PhpParser\Node;
 
 class Alias extends AbstractResolver

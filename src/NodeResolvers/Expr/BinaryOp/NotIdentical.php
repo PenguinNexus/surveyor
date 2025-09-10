@@ -1,9 +1,9 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Expr\BinaryOp;
+namespace Laravel\Surveyor\NodeResolvers\Expr\BinaryOp;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class NotIdentical extends AbstractResolver

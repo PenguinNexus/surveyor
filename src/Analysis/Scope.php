@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Analysis;
+namespace Laravel\Surveyor\Analysis;
 
 use Exception;
-use Laravel\StaticAnalyzer\Result\StateTracker;
-use Laravel\StaticAnalyzer\Types\Contracts\Type;
+use Laravel\Surveyor\Result\StateTracker;
+use Laravel\Surveyor\Types\Contracts\Type;
 
 class Scope
 {

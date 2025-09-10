@@ -1,12 +1,12 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers;
+namespace Laravel\Surveyor\NodeResolvers;
 
-use Laravel\StaticAnalyzer\Analysis\Scope;
-use Laravel\StaticAnalyzer\Debug\Debug;
-use Laravel\StaticAnalyzer\Parser\DocBlockParser;
-use Laravel\StaticAnalyzer\Reflector\Reflector;
-use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
+use Laravel\Surveyor\Analysis\Scope;
+use Laravel\Surveyor\Debug\Debug;
+use Laravel\Surveyor\Parser\DocBlockParser;
+use Laravel\Surveyor\Reflector\Reflector;
+use Laravel\Surveyor\Resolvers\NodeResolver;
 use PhpParser\NodeAbstract;
 
 abstract class AbstractResolver

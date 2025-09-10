@@ -1,12 +1,12 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Parser;
+namespace Laravel\Surveyor\Parser;
 
 use Illuminate\Support\Collection;
-use Laravel\StaticAnalyzer\Analysis\Scope;
-use Laravel\StaticAnalyzer\Resolvers\DocBlockResolver;
-// use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
-// use Laravel\StaticAnalyzer\Types\Type as RangerType;
+use Laravel\Surveyor\Analysis\Scope;
+use Laravel\Surveyor\Resolvers\DocBlockResolver;
+// use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
+// use Laravel\Surveyor\Types\Type as RangerType;
 use PhpParser\Node\Expr\CallLike;
 use PHPStan\PhpDocParser\Ast\PhpDoc\MixinTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Expr;
+namespace Laravel\Surveyor\NodeResolvers\Expr;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class New_ extends AbstractResolver

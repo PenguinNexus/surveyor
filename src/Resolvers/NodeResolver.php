@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Resolvers;
+namespace Laravel\Surveyor\Resolvers;
 
 use Illuminate\Container\Container;
 use InvalidArgumentException;
-use Laravel\StaticAnalyzer\Analysis\Scope;
+use Laravel\Surveyor\Analysis\Scope;
 use PhpParser\NodeAbstract;
 
 class NodeResolver
@@ -57,7 +57,7 @@ class NodeResolver
 
     protected function getClassName(NodeAbstract $node)
     {
-        $className = str(get_class($node))->after('Node\\')->prepend('Laravel\\StaticAnalyzer\\NodeResolvers\\')->toString();
+        $className = str(get_class($node))->after('Node\\')->prepend('Laravel\\Surveyor\\NodeResolvers\\')->toString();
 
         if (! class_exists($className)) {
             throw new InvalidArgumentException("NodeResolver: Class {$className} does not exist");

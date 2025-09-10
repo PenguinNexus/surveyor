@@ -1,14 +1,14 @@
 {
-    "name": "laravel/static-analyzer",
-    "description": "Laravel Package ...",
+    "name": "laravel/surveyor",
+    "description": "Static analysis tool for Laravel applications.",
     "keywords": [
         "laravel"
     ],
-    "homepage": "https://github.com/laravel/static-analyzer",
+    "homepage": "https://github.com/laravel/surveyor",
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/laravel/static-analyzer/issues",
-        "source": "https://github.com/laravel/static-analyzer"
+        "issues": "https://github.com/laravel/surveyor/issues",
+        "source": "https://github.com/laravel/surveyor"
     },
     "authors": [
         {
@@ -35,7 +35,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Laravel\\StaticAnalyzer\\": "src/"
+            "Laravel\\Surveyor\\": "src/"
         }
     },
     "autoload-dev": {
@@ -51,7 +51,7 @@
         },
         "laravel": {
             "providers": [
-                "Laravel\\StaticAnalyzer\\StaticAnalyzerServiceProvider"
+                "Laravel\\Surveyor\\SurveyorServiceProvider"
             ]
         }
     },

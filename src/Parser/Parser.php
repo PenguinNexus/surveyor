@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Parser;
+namespace Laravel\Surveyor\Parser;
 
-// use Laravel\StaticAnalyzer\Debug;
+// use Laravel\Surveyor\Debug;
 
-use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
-use Laravel\StaticAnalyzer\Visitors\TypeResolver;
+use Laravel\Surveyor\Resolvers\NodeResolver;
+use Laravel\Surveyor\Visitors\TypeResolver;
 use PhpParser\NodeFinder;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;

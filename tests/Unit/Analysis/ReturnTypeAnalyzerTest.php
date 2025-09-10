@@ -5,11 +5,11 @@ declare(strict_types=1);
 use App\Http\Controllers\UserController;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Stringable;
-use Laravel\StaticAnalyzer\Types\ClassType;
-use Laravel\StaticAnalyzer\Types\Entities\View;
-use Laravel\StaticAnalyzer\Types\MixedType;
-use Laravel\StaticAnalyzer\Types\StringType;
-use Laravel\StaticAnalyzer\Types\UnionType;
+use Laravel\Surveyor\Types\ClassType;
+use Laravel\Surveyor\Types\Entities\View;
+use Laravel\Surveyor\Types\MixedType;
+use Laravel\Surveyor\Types\StringType;
+use Laravel\Surveyor\Types\UnionType;
 
 describe('ReturnTypeAnalyzer', function () {
     it('analyzes method with declared return type', function () {

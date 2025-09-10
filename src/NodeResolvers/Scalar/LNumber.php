@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Scalar;
+namespace Laravel\Surveyor\NodeResolvers\Scalar;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use PhpParser\Node;
 
 class LNumber extends AbstractResolver

@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Resolvers;
+namespace Laravel\Surveyor\Resolvers;
 
-// use Laravel\StaticAnalyzer\Debug;
+// use Laravel\Surveyor\Debug;
 use Illuminate\Container\Container;
-use Laravel\StaticAnalyzer\Analysis\Scope;
+use Laravel\Surveyor\Analysis\Scope;
 use PhpParser\Node\Expr\CallLike;
 use PHPStan\PhpDocParser\Ast\Node;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
@@ -37,7 +37,7 @@ class DocBlockResolver
 
     public function from(Node $node, Scope $scope)
     {
-        $className = str(get_class($node))->after('Ast\\')->prepend('Laravel\\StaticAnalyzer\\DocBlockResolvers\\')->toString();
+        $className = str(get_class($node))->after('Ast\\')->prepend('Laravel\\Surveyor\\DocBlockResolvers\\')->toString();
 
         if (! class_exists($className)) {
             dd("Class {$className} does not exist");

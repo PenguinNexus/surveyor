@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Console;
+namespace Laravel\Surveyor\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -29,9 +29,9 @@ class ScaffoldDocBlockResolversCommand extends Command
             $contents = <<<PHP
 <?php
 
-namespace Laravel\StaticAnalyzer\DocBlockResolvers\\$resolverClassNamespace;
+namespace Laravel\Surveyor\DocBlockResolvers\\$resolverClassNamespace;
 
-use Laravel\StaticAnalyzer\Resolvers\AbstractResolver;
+use Laravel\Surveyor\Resolvers\AbstractResolver;
 use PHPStan\PhpDocParser\Ast;
 
 class {$resolverClass} extends AbstractResolver

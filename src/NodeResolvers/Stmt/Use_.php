@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Stmt;
+namespace Laravel\Surveyor\NodeResolvers\Stmt;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use PhpParser\Node;
 
 class Use_ extends AbstractResolver

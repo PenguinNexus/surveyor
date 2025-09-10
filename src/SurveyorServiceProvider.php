@@ -1,20 +1,20 @@
 <?php
 
-namespace Laravel\StaticAnalyzer;
+namespace Laravel\Surveyor;
 
 // TODO: Temp fix, gotta figure this out...
 // ini_set('memory_limit', '1G');
 
 use Illuminate\Support\ServiceProvider;
-use Laravel\StaticAnalyzer\Console\Analyze;
-use Laravel\StaticAnalyzer\Console\ScaffoldDocBlockResolversCommand;
-use Laravel\StaticAnalyzer\Console\ScaffoldResolversCommand;
-use Laravel\StaticAnalyzer\Parser\DocBlockParser;
-use Laravel\StaticAnalyzer\Parser\Parser;
-use Laravel\StaticAnalyzer\Resolvers\DocBlockResolver;
-use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
+use Laravel\Surveyor\Console\Analyze;
+use Laravel\Surveyor\Console\ScaffoldDocBlockResolversCommand;
+use Laravel\Surveyor\Console\ScaffoldResolversCommand;
+use Laravel\Surveyor\Parser\DocBlockParser;
+use Laravel\Surveyor\Parser\Parser;
+use Laravel\Surveyor\Resolvers\DocBlockResolver;
+use Laravel\Surveyor\Resolvers\NodeResolver;
 
-class StaticAnalyzerServiceProvider extends ServiceProvider
+class SurveyorServiceProvider extends ServiceProvider
 {
     /**
      * Register any package services.

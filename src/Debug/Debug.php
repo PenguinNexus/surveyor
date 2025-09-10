@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Debug;
+namespace Laravel\Surveyor\Debug;
 
 use PhpParser\NodeAbstract;
 use Throwable;

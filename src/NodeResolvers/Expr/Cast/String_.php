@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Expr\Cast;
+namespace Laravel\Surveyor\NodeResolvers\Expr\Cast;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types\StringType;
-use Laravel\StaticAnalyzer\Types\UnionType;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\StringType;
+use Laravel\Surveyor\Types\UnionType;
 use PhpParser\Node;
 
 class String_ extends AbstractResolver

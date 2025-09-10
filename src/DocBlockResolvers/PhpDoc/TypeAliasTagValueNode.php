@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\DocBlockResolvers\PhpDoc;
+namespace Laravel\Surveyor\DocBlockResolvers\PhpDoc;
 
-use Laravel\StaticAnalyzer\DocBlockResolvers\AbstractResolver;
+use Laravel\Surveyor\DocBlockResolvers\AbstractResolver;
 use PHPStan\PhpDocParser\Ast;
 
 class TypeAliasTagValueNode extends AbstractResolver

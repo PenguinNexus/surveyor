@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Analyzer;
+namespace Laravel\Surveyor\Analyzer;
 
 class AnalyzedCache
 {

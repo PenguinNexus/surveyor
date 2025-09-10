@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\DocBlockResolvers\Type;
+namespace Laravel\Surveyor\DocBlockResolvers\Type;
 
-use Laravel\StaticAnalyzer\DocBlockResolvers\AbstractResolver;
+use Laravel\Surveyor\DocBlockResolvers\AbstractResolver;
 use PHPStan\PhpDocParser\Ast;
 
 class NullableTypeNode extends AbstractResolver

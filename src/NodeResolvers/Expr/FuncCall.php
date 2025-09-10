@@ -1,12 +1,12 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Expr;
+namespace Laravel\Surveyor\NodeResolvers\Expr;
 
-use Laravel\StaticAnalyzer\Analysis\Condition;
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types;
-use Laravel\StaticAnalyzer\Types\Contracts\Type as TypeContract;
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\Analysis\Condition;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types;
+use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class FuncCall extends AbstractResolver
@@ -69,8 +69,8 @@ class FuncCall extends AbstractResolver
         );
 
         return $condition
-            ->whenTrue(fn(TypeContract $t) => $condition->setType($type))
-            ->whenFalse(fn(TypeContract $t) => $condition->removeType($type))
+            ->whenTrue(fn (TypeContract $t) => $condition->setType($type))
+            ->whenFalse(fn (TypeContract $t) => $condition->removeType($type))
             ->makeTrue();
     }
 }

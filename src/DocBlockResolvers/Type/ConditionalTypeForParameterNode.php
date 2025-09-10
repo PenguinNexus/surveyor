@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\DocBlockResolvers\Type;
+namespace Laravel\Surveyor\DocBlockResolvers\Type;
 
-use Laravel\StaticAnalyzer\DocBlockResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types\GenericObjectType;
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\DocBlockResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\GenericObjectType;
+use Laravel\Surveyor\Types\Type;
 use PHPStan\PhpDocParser\Ast;
 
 class ConditionalTypeForParameterNode extends AbstractResolver

@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Expr;
+namespace Laravel\Surveyor\NodeResolvers\Expr;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use PhpParser\Node;
 
 class ClosureUse extends AbstractResolver

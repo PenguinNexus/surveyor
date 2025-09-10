@@ -1,9 +1,9 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers;
+namespace Laravel\Surveyor\NodeResolvers;
 
-use Laravel\StaticAnalyzer\Result\Param as ResultParam;
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\Result\Param as ResultParam;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class Param extends AbstractResolver

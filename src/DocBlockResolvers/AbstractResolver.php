@@ -1,12 +1,12 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\DocBlockResolvers;
+namespace Laravel\Surveyor\DocBlockResolvers;
 
-use Laravel\StaticAnalyzer\Analysis\Scope;
-use Laravel\StaticAnalyzer\Debug\Debug;
-use Laravel\StaticAnalyzer\Parser\DocBlockParser;
-use Laravel\StaticAnalyzer\Resolvers\DocBlockResolver;
-use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
+use Laravel\Surveyor\Analysis\Scope;
+use Laravel\Surveyor\Debug\Debug;
+use Laravel\Surveyor\Parser\DocBlockParser;
+use Laravel\Surveyor\Resolvers\DocBlockResolver;
+use Laravel\Surveyor\Resolvers\NodeResolver;
 use PhpParser\Node\Expr\CallLike;
 use PHPStan\PhpDocParser\Ast\Node;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;

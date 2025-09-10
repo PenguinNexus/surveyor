@@ -1,12 +1,12 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\DocBlockResolvers\Type;
+namespace Laravel\Surveyor\DocBlockResolvers\Type;
 
-use Laravel\StaticAnalyzer\Debug\Debug;
-use Laravel\StaticAnalyzer\DocBlockResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types\ArrayShapeType;
-use Laravel\StaticAnalyzer\Types\ClassType;
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\Debug\Debug;
+use Laravel\Surveyor\DocBlockResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\ArrayShapeType;
+use Laravel\Surveyor\Types\ClassType;
+use Laravel\Surveyor\Types\Type;
 use PHPStan\PhpDocParser\Ast;
 
 class GenericTypeNode extends AbstractResolver

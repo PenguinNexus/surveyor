@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Stmt;
+namespace Laravel\Surveyor\NodeResolvers\Stmt;
 
-use Laravel\StaticAnalyzer\Analysis\Scope;
-use Laravel\StaticAnalyzer\Debug\Debug;
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Result\ClassDeclaration;
+use Laravel\Surveyor\Analysis\Scope;
+use Laravel\Surveyor\Debug\Debug;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Result\ClassDeclaration;
 use PhpParser\Node;
 use ReflectionClass;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Expr\BinaryOp;
+namespace Laravel\Surveyor\NodeResolvers\Expr\BinaryOp;
 
-use Laravel\StaticAnalyzer\Analysis\Condition;
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\Analysis\Condition;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class BooleanAnd extends AbstractResolver

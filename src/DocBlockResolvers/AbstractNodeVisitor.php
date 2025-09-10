@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\DocBlockResolvers\AbstractNodeVisitor;
+namespace Laravel\Surveyor\DocBlockResolvers\AbstractNodeVisitor;
 
-use Laravel\StaticAnalyzer\DocBlockResolvers\AbstractResolver;
+use Laravel\Surveyor\DocBlockResolvers\AbstractResolver;
 use PHPStan\PhpDocParser\Ast;
 
 class AbstractNodeVisitor extends AbstractResolver

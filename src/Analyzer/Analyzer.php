@@ -1,12 +1,12 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Analyzer;
+namespace Laravel\Surveyor\Analyzer;
 
-use Laravel\StaticAnalyzer\Analysis\Scope;
-use Laravel\StaticAnalyzer\Debug\Debug;
-use Laravel\StaticAnalyzer\Parser\Parser;
-use Laravel\StaticAnalyzer\Resolvers\NodeResolver;
-use Laravel\StaticAnalyzer\Result\ClassDeclaration;
+use Laravel\Surveyor\Analysis\Scope;
+use Laravel\Surveyor\Debug\Debug;
+use Laravel\Surveyor\Parser\Parser;
+use Laravel\Surveyor\Resolvers\NodeResolver;
+use Laravel\Surveyor\Result\ClassDeclaration;
 
 class Analyzer
 {

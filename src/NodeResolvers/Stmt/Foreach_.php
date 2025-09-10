@@ -1,12 +1,12 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Stmt;
+namespace Laravel\Surveyor\NodeResolvers\Stmt;
 
-use Laravel\StaticAnalyzer\Debug\Debug;
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
-use Laravel\StaticAnalyzer\Types\ArrayShapeType;
-use Laravel\StaticAnalyzer\Types\ArrayType;
-use Laravel\StaticAnalyzer\Types\Type;
+use Laravel\Surveyor\Debug\Debug;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\ArrayShapeType;
+use Laravel\Surveyor\Types\ArrayType;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class Foreach_ extends AbstractResolver

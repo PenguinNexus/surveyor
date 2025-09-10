@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Expr\AssignOp;
+namespace Laravel\Surveyor\NodeResolvers\Expr\AssignOp;
 
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use PhpParser\Node;
 
 class BitwiseXor extends AbstractResolver

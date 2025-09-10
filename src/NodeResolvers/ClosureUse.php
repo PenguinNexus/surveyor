@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers;
+namespace Laravel\Surveyor\NodeResolvers;
 
 use PhpParser\Node;
 

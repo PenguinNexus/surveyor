@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Types\Contracts;
+namespace Laravel\Surveyor\Types\Contracts;
 
 interface Type
 {

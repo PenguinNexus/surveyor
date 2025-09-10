@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Analysis;
+namespace Laravel\Surveyor\Analysis;
 
 class Assignment
 {

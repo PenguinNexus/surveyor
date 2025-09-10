@@ -1,10 +1,10 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\NodeResolvers\Stmt;
+namespace Laravel\Surveyor\NodeResolvers\Stmt;
 
-use Laravel\StaticAnalyzer\Analysis\ReturnTypeAnalyzer;
-use Laravel\StaticAnalyzer\Analysis\Scope;
-use Laravel\StaticAnalyzer\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Analysis\ReturnTypeAnalyzer;
+use Laravel\Surveyor\Analysis\Scope;
+use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use PhpParser\Node;
 
 class ClassMethod extends AbstractResolver

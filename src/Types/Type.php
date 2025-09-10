@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Types;
+namespace Laravel\Surveyor\Types;
 
 use Illuminate\Support\Collection;
 use Throwable;

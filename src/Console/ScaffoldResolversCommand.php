@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\StaticAnalyzer\Console;
+namespace Laravel\Surveyor\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -29,9 +29,9 @@ class ScaffoldResolversCommand extends Command
             $contents = <<<PHP
 <?php
 
-namespace Laravel\StaticAnalyzer\Resolvers\\$resolverClassNamespace;
+namespace Laravel\Surveyor\Resolvers\\$resolverClassNamespace;
 
-use Laravel\StaticAnalyzer\Resolvers\AbstractResolver;
+use Laravel\Surveyor\Resolvers\AbstractResolver;
 use PhpParser\Node;
 
 class {$resolverClass} extends AbstractResolver
