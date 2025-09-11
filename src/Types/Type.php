@@ -173,7 +173,7 @@ class Type
             return $args->first();
         }
 
-        return new UnionType($args->all());
+        return new UnionType($args->filter(fn ($type) => ! $type instanceof MixedType)->all());
     }
 
     public static function intersection(...$args): Contracts\Type

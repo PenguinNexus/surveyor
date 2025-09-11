@@ -16,6 +16,8 @@ class StateTrackerItem
 
     protected array $activeSnapshots = [];
 
+    protected array $pendingTypes = [];
+
     public function add(string $name, TypeContract $type, NodeAbstract $node): void
     {
         $changed = $this->getChanged($type, $node);
@@ -28,6 +30,55 @@ class StateTrackerItem
             $this->snapshots[$activeSnapshot][$name] ??= [];
             $this->snapshots[$activeSnapshot][$name][] = $changed;
         }
+    }
+
+    public function addManually(string $name, TypeContract $type, int $line, int $tokenPos, int $endLine, int $endTokenPos): void
+    {
+        $this->add(
+            $name,
+            $type,
+            new class($line, $tokenPos, $endLine, $endTokenPos) extends NodeAbstract
+            {
+                public function __construct(
+                    protected int $line,
+                    protected int $tokenPos,
+                    protected int $endLine,
+                    protected int $endTokenPos,
+                ) {
+                    //
+                }
+
+                public function getStartLine(): int
+                {
+                    return $this->line;
+                }
+
+                public function getStartTokenPos(): int
+                {
+                    return $this->tokenPos;
+                }
+
+                public function getEndLine(): int
+                {
+                    return $this->endLine;
+                }
+
+                public function getEndTokenPos(): int
+                {
+                    return $this->endTokenPos;
+                }
+
+                public function getType(): string
+                {
+                    return 'NodeAbstract';
+                }
+
+                public function getSubNodeNames(): array
+                {
+                    return [];
+                }
+            }
+        );
     }
 
     protected function getChanged(TypeContract $type, NodeAbstract $node): array
@@ -130,7 +181,11 @@ class StateTrackerItem
             return [];
         }
 
-        $lines = array_filter($this->variables[$name], fn ($variable) => $variable['startLine'] <= $node->getStartLine() && $variable['startTokenPos'] <= $node->getStartTokenPos());
+        $lines = array_filter(
+            $this->variables[$name],
+            fn ($variable) => $variable['startLine'] <= $node->getStartLine()
+                && $variable['startTokenPos'] <= $node->getStartTokenPos(),
+        );
 
         $result = end($lines);
 
@@ -170,6 +225,39 @@ class StateTrackerItem
 
         array_pop($this->activeSnapshots);
         unset($this->snapshots[$key]);
+
+        return $changed;
+    }
+
+    public function endSnapshotAndAddToPending(NodeAbstract $node): void
+    {
+        $this->addPendingType($node, $this->endSnapshot($node));
+    }
+
+    public function addPendingType(NodeAbstract $node, array $types): void
+    {
+        $key = $this->getSnapshotKey($node);
+
+        $this->pendingTypes[$key] = $types;
+    }
+
+    public function getPendingTypes(NodeAbstract $node): array
+    {
+        $changed = [];
+
+        foreach ($this->pendingTypes as $key => $types) {
+            [$line, $tokenPos] = explode(':', $key);
+
+            if (
+                $line >= $node->getStartLine()
+                && $line <= $node->getEndLine()
+                && $tokenPos >= $node->getStartTokenPos()
+                && $tokenPos <= $node->getEndTokenPos()
+            ) {
+                $changed[] = $types;
+                unset($this->pendingTypes[$key]);
+            }
+        }
 
         return $changed;
     }

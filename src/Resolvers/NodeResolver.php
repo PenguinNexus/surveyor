@@ -50,6 +50,8 @@ class NodeResolver
         $resolver = $this->app->make($className);
         $resolver->setScope($scope);
 
+        $resolver->onExit($node);
+
         return $resolver->exitScope();
     }
 

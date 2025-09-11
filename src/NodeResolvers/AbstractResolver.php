@@ -27,6 +27,11 @@ abstract class AbstractResolver
         $this->reflector->setScope($scope);
     }
 
+    public function onExit(NodeAbstract $node)
+    {
+        //
+    }
+
     public function exitScope(): Scope
     {
         return $this->scope;
