@@ -56,7 +56,7 @@ class Debug
 
     public static function decreaseDepth()
     {
-        self::$depth--;
+        self::$depth = max(0, self::$depth - 1);
     }
 
     public static function throw(Throwable $e)
