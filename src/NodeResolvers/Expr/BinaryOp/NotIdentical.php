@@ -2,6 +2,8 @@
 
 namespace Laravel\Surveyor\NodeResolvers\Expr\BinaryOp;
 
+use Laravel\Surveyor\Analysis\Condition;
+use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
@@ -19,30 +21,36 @@ class NotIdentical extends AbstractResolver
         $right = $node->right;
 
         if ($left instanceof Node\Expr\Variable && $right instanceof Node\Expr\Variable) {
-            dd('left and right are variables??', $left, $right);
+            return;
         }
 
         $variable = null;
-        $other = null;
+        $other = [];
 
         if ($left instanceof Node\Expr\Variable) {
             $variable = $left;
-            $other = $right;
+            $other = [$right];
         } elseif ($right instanceof Node\Expr\Variable) {
             $variable = $right;
-            $other = $left;
+            $other = [$left];
+        } else {
+            $other = [$left, $right];
         }
 
-        if ($other instanceof Node\Expr\ConstFetch) {
-            if ($other->name->toString() === 'null') {
-                $this->scope->variables()->removeType($variable->name, $node, Type::null());
+        if ($variable === null) {
+            return;
+        }
 
-                return;
-            } else {
-                dd('other is a const fetch but not null??', $other);
+        foreach ($other as $o) {
+            if ($o instanceof Node\Expr\ConstFetch) {
+                $type = $this->fromOutsideOfCondition($o);
+
+                if ($type === null) {
+                    Debug::ddFromClass($o, $node, 'type is null?');
+                }
+
+                return new Condition($variable->name, $type);
             }
         }
-
-        dd('not identical: not a variable or const fetch??', $left, $right);
     }
 }

@@ -25,10 +25,6 @@ class MethodCall extends AbstractResolver
 
     public function resolveForCondition(Node\Expr\MethodCall $node)
     {
-        $this->scope->endConditionAnalysis();
-        $result = $this->resolve($node);
-        $this->scope->startConditionAnalysis();
-
-        return $result;
+        return $this->fromOutsideOfCondition($node);
     }
 }

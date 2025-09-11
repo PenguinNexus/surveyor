@@ -25,8 +25,6 @@ class Analyzer
         Debug::depth(0);
 
         if ($cached = AnalyzedCache::get($path)) {
-            dd('hit it');
-
             $this->analyzed = $cached;
 
             return $this;

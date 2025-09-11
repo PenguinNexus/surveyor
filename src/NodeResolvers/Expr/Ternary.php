@@ -3,7 +3,6 @@
 namespace Laravel\Surveyor\NodeResolvers\Expr;
 
 use Laravel\Surveyor\Analysis\Condition;
-use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
 use Laravel\Surveyor\Types\Type;
@@ -31,8 +30,6 @@ class Ternary extends AbstractResolver
 
             $this->scope->variables()->add($result->variable, $result->apply(), $node->if);
             $this->scope->variables()->add($result->variable, $result->toggle()->apply(), $node->else);
-        } else {
-            Debug::ddFromClass($result, $node, 'ternary condition is not a condition');
         }
 
         return Type::union($this->from($node->if), $this->from($node->else));

@@ -12,4 +12,9 @@ class SmallerOrEqual extends AbstractResolver
     {
         return Type::bool();
     }
+
+    public function resolveForCondition(Node\Expr\BinaryOp\SmallerOrEqual $node)
+    {
+        return null;
+    }
 }
