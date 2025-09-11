@@ -21,7 +21,6 @@ class AnalyzedCache
 
     public static function add(string $path, array $analyzed): void
     {
-        dd('add!', $path);
         static::$cached[$path] = $analyzed;
         unset(static::$inProgress[$path]);
     }

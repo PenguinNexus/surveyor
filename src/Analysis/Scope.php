@@ -71,19 +71,19 @@ class Scope
         return $this->parent;
     }
 
-    public function newChildScope($omit = []): self
+    public function newChildScope(): self
     {
         $instance = new self($this);
 
-        if ($this->className && ! in_array('class', $omit)) {
+        if ($this->className) {
             $instance->setClassName($this->className);
         }
 
-        if ($this->methodName && ! in_array('method', $omit)) {
+        if ($this->methodName) {
             $instance->setMethodName($this->methodName);
         }
 
-        if ($this->namespace && ! in_array('namespace', $omit)) {
+        if ($this->namespace) {
             $instance->setNamespace($this->namespace);
         }
 

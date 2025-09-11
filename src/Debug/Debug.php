@@ -13,15 +13,15 @@ class Debug
 
     public static $throw = false;
 
-    public static $log = false;
+    public static $logLevel = 0;
 
     public static $currentlyInterested = false;
 
     protected static $dumpTimes = null;
 
-    public static function log($message, $data = null)
+    public static function log($message, $data = null, $level = 1)
     {
-        if (! self::$log) {
+        if (self::$logLevel < $level) {
             return;
         }
 

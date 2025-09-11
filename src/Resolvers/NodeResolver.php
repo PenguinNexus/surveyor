@@ -20,7 +20,7 @@ class NodeResolver
     {
         $className = $this->getClassName($node);
 
-        Debug::log('🧐 Resolving Node: '.$className.' '.$node->getStartLine());
+        Debug::log('🧐 Resolving Node: '.$className.' '.$node->getStartLine(), level: 3);
 
         $resolver = $this->app->make($className);
 

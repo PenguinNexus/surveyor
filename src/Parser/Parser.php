@@ -4,6 +4,7 @@ namespace Laravel\Surveyor\Parser;
 
 // use Laravel\Surveyor\Debug;
 
+use Laravel\Surveyor\Analysis\Scope;
 use Laravel\Surveyor\Resolvers\NodeResolver;
 use Laravel\Surveyor\Visitors\TypeResolver;
 use PhpParser\NodeFinder;
@@ -52,7 +53,18 @@ class Parser
 
     public function parse(string|ReflectionClass|ReflectionFunction|ReflectionMethod|SplFileInfo $code): array
     {
-        return $this->parseCode($code);
+        $this->parseCode($code);
+
+        return array_map(fn ($scope) => $this->flipScope($scope), $this->typeResolver->scopes());
+    }
+
+    protected function flipScope(Scope $scope)
+    {
+        while ($scope->parent()) {
+            $scope = $scope->parent();
+        }
+
+        return $scope;
     }
 
     protected function parseCode(string|ReflectionClass|ReflectionFunction|ReflectionMethod|SplFileInfo $code): array
@@ -63,6 +75,8 @@ class Parser
             $code instanceof SplFileInfo => file_get_contents($code->getPathname()),
             default => file_get_contents($code->getFileName()),
         };
+
+        $this->typeResolver->newScope();
 
         return $this->nodeTraverser->traverse($this->parser->parse($code));
         // } catch (Throwable $e) {

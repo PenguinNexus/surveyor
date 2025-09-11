@@ -30,40 +30,52 @@ class Assign extends AbstractResolver
                 break;
 
             case $node->var instanceof Node\Expr\ArrayDimFetch:
-                $dim = $node->var->dim === null ? Type::int() : $this->from($node->var->dim);
-                $validDim = Type::is($dim, StringType::class, IntType::class) && $dim->value !== null;
-
-                if (! $validDim) {
-                    break;
-                }
-
-                if ($node->var->var instanceof Node\Expr\Variable) {
-                    $this->scope->variables()->updateArrayKey(
-                        $node->var->var->name,
-                        $dim->value,
-                        $this->from($node->expr),
-                        $node,
-                    );
-
-                    break;
-                }
-
-                if ($node->var->var instanceof Node\Expr\PropertyFetch) {
-                    $this->scope->properties()->updateArrayKey(
-                        $node->var->var->name,
-                        $dim->value,
-                        $this->from($node->expr),
-                        $node,
-                    );
-
-                    break;
-                }
-
-                dd('assign: array dim fetch but not a variable or property fetch??', $node, $dim);
-
+                $this->resolveForDimFetch($node);
                 break;
         }
 
         return null;
+    }
+
+    public function resolveForCondition(Node\Expr\Assign $node)
+    {
+        dd($node);
+    }
+
+    protected function resolveForDimFetch(Node\Expr\Assign $node)
+    {
+        /** @var Node\Expr\ArrayDimFetch $dimFetch */
+        $dimFetch = $node->var;
+
+        $dim = $dimFetch->dim === null ? Type::int() : $this->from($dimFetch->dim);
+        $validDim = Type::is($dim, StringType::class, IntType::class) && $dim->value !== null;
+
+        if (! $validDim) {
+            return;
+        }
+
+        if ($dimFetch->var instanceof Node\Expr\Variable) {
+            $this->scope->variables()->updateArrayKey(
+                $dimFetch->var->name,
+                $dim->value,
+                $this->from($node->expr),
+                $node,
+            );
+
+            return;
+        }
+
+        if ($dimFetch->var instanceof Node\Expr\PropertyFetch) {
+            $this->scope->properties()->updateArrayKey(
+                $dimFetch->var->name,
+                $dim->value,
+                $this->from($node->expr),
+                $node,
+            );
+
+            return;
+        }
+
+        dd('assign: array dim fetch but not a variable or property fetch??', $node, $dim);
     }
 }

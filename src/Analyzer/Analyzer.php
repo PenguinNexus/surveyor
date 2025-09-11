@@ -6,7 +6,6 @@ use Laravel\Surveyor\Analysis\Scope;
 use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Parser\Parser;
 use Laravel\Surveyor\Resolvers\NodeResolver;
-use Laravel\Surveyor\Result\ClassDeclaration;
 
 class Analyzer
 {
@@ -23,12 +22,12 @@ class Analyzer
 
     public function analyze(string $path)
     {
-        $cached = AnalyzedCache::get($path);
-
-        if ($cached) {
+        if ($cached = AnalyzedCache::get($path)) {
             dd('hit it');
 
-            return $cached;
+            $this->analyzed = $cached;
+
+            return $this;
         }
 
         if (AnalyzedCache::isInProgress($path)) {
@@ -43,20 +42,11 @@ class Analyzer
             return $this;
         }
 
-        Debug::log('🧠 Analyzing: '.$path);
+        Debug::log("🧠 🧠 🧠 Analyzing: {$path} 🧠 🧠 🧠");
 
-        $parsed = $this->parser->parse(file_get_contents($path));
+        $this->analyzed = $this->parser->parse(file_get_contents($path));
 
-        dd($this->parser->typeResolver()->scope());
-
-        // $this->scope = new Scope;
-
-        // $this->analyzed = collect($parsed)
-        //     ->map(fn ($node) => $this->resolver->from($node, $this->scope))
-        //     ->map(fn ($nodes) => array_values(array_filter($nodes)))
-        //     ->all();
-
-        // AnalyzedCache::add($path, $this->analyzed);
+        AnalyzedCache::add($path, $this->analyzed);
 
         return $this;
     }
@@ -69,20 +59,5 @@ class Analyzer
     public function analyzed()
     {
         return $this->analyzed;
-    }
-
-    public function methodReturnType(string $className, string $methodName)
-    {
-        $class = collect($this->analyzed)
-            ->flatten(1)
-            ->first(fn ($type) => $type instanceof ClassDeclaration && $type->name === $className);
-
-        assert($class !== null);
-
-        $method = collect($class->methods)->first(fn ($method) => $method->name === $methodName);
-
-        assert($method !== null);
-
-        return $method->returnTypes;
     }
 }

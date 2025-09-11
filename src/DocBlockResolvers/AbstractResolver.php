@@ -26,7 +26,7 @@ abstract class AbstractResolver
 
     protected function from(Node $node)
     {
-        Debug::log('📄 Resolving DocBlock: '.get_class($node));
+        Debug::log('📄 Resolving DocBlock: '.get_class($node), level: 3);
 
         return $this->typeResolver
             ->setParsed($this->parsed)

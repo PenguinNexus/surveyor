@@ -8,14 +8,19 @@ use Laravel\Surveyor\Debug\Debug;
 
 class Analyze extends Command
 {
-    protected $signature = 'analyze {--path=} {--dump} {--log}';
+    protected $signature = 'analyze {--path=} {--dump} {--v} {--vv} {--vvv}';
 
     protected $description = '';
 
     public function handle(Analyzer $analyzer)
     {
         Debug::$dump = (bool) $this->option('dump');
-        Debug::$log = (bool) $this->option('log');
+        Debug::$logLevel = match (true) {
+            $this->option('v') => 1,
+            $this->option('vv') => 2,
+            $this->option('vvv') => 3,
+            default => 0,
+        };
 
         $path = $this->option('path');
 
