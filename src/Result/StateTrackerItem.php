@@ -14,17 +14,21 @@ use Throwable;
 
 class StateTrackerItem
 {
+    /** @var array<string, VariableState[]> */
     protected array $variables = [];
 
+    /** @var array<string, VariableState[]> */
     protected array $snapshots = [];
 
+    /** @var string[] */
     protected array $activeSnapshots = [];
 
+    /** @var array<string, VariableState[]> */
     protected array $pendingTypes = [];
 
     public function add(string $name, TypeContract $type, NodeAbstract $node): void
     {
-        $this->updateSnapshotOrVariable($name, $this->getAttributes($type, $node));
+        $this->updateSnapshotOrVariable($name, VariableState::fromNode($type, $node));
     }
 
     public function getActiveSnapshotKey(): ?string
@@ -44,21 +48,20 @@ class StateTrackerItem
         $this->add($name, $type, new ShimmedNode($line, $tokenPos, $endLine, $endTokenPos, $terminatedAt));
     }
 
-    protected function getAttributes(TypeContract $type, NodeAbstract $node): array
+    protected function getAttributes(TypeContract $type, NodeAbstract $node): VariableState
     {
-        return [
-            'type' => $type,
-            'startLine' => $node->getStartLine(),
-            'endLine' => $node->getEndLine(),
-            'startTokenPos' => $node->getStartTokenPos(),
-            'endTokenPos' => $node->getEndTokenPos(),
-            'terminatedAt' => $node instanceof ShimmedNode ? $node->terminatedAt() : null,
-        ];
+        $state = VariableState::fromNode($type, $node);
+
+        if ($node instanceof ShimmedNode && $node->terminatedAt() !== null) {
+            $state->terminate($node->terminatedAt());
+        }
+
+        return $state;
     }
 
     public function narrow(string $name, TypeContract $type, NodeAbstract $node): void
     {
-        $currentType = $this->getAtLine($name, $node)['type'];
+        $currentType = $this->getAtLine($name, $node)->type();
 
         if (Type::is($currentType, $type)) {
             return;
@@ -88,7 +91,7 @@ class StateTrackerItem
 
     public function removeType(string $name, NodeAbstract $node, TypeContract $type): void
     {
-        $currentType = $this->getAtLine($name, $node)['type'];
+        $currentType = $this->getAtLine($name, $node)->type();
 
         if ($currentType instanceof UnionType) {
             $newType = new UnionType(array_filter($currentType->types, fn ($t) => ! Type::isSame($t, $type)));
@@ -118,31 +121,31 @@ class StateTrackerItem
         $this->updateSnapshotOrVariable($name, $changed);
     }
 
-    protected function updateSnapshotOrVariable(string $name, array $changed): void
+    protected function updateSnapshotOrVariable(string $name, VariableState $variableState): void
     {
         $activeSnapshot = $this->getActiveSnapshotKey();
 
         if ($activeSnapshot) {
             Debug::log('🆕 Updating snapshot', [
                 'name' => $name,
-                'changes' => $changed,
+                'changes' => $variableState->toArray(),
                 'snapshot' => $activeSnapshot,
             ], level: 2);
 
             $this->snapshots[$activeSnapshot][$name] ??= [];
-            $this->snapshots[$activeSnapshot][$name][] = $changed;
+            $this->snapshots[$activeSnapshot][$name][] = $variableState;
         } else {
             Debug::log('🆕 Updating variable', [
                 'name' => $name,
-                'changes' => $changed,
+                'changes' => $variableState,
             ], level: 2);
 
             $this->variables[$name] ??= [];
-            $this->variables[$name][] = $changed;
+            $this->variables[$name][] = $variableState;
         }
     }
 
-    public function getLastSnapshotValue(string $name): ?array
+    public function getLastSnapshotValue(string $name): ?VariableState
     {
         $activeSnapshot = $this->getActiveSnapshotKey();
 
@@ -155,28 +158,28 @@ class StateTrackerItem
         return $values[count($values) - 1] ?? null;
     }
 
-    public function getLastValue(string $name): ?array
+    public function getLastValue(string $name): ?VariableState
     {
         return $this->variables[$name][count($this->variables[$name]) - 1] ?? null;
     }
 
     public function get(string $name): ?TypeContract
     {
-        return $this->getLastValue($name)['type'] ?? null;
+        return $this->getLastValue($name)?->type();
     }
 
-    protected function resolveArrayKeyType(?array $lastValue, string $key, TypeContract $type): TypeContract
+    protected function resolveArrayKeyType(?VariableState $lastValue, string $key, TypeContract $type): TypeContract
     {
         if ($lastValue === null) {
             return new ArrayType([$key => $type]);
         }
 
-        if ($lastValue['type'] instanceof ArrayType) {
-            return new ArrayType(array_merge($lastValue['type']->value, [$key => $type]));
+        if ($lastValue->type() instanceof ArrayType) {
+            return new ArrayType(array_merge($lastValue->type()->value, [$key => $type]));
         }
 
-        if ($lastValue['type'] instanceof UnionType) {
-            $existingTypes = $lastValue['type']->types;
+        if ($lastValue->type() instanceof UnionType) {
+            $existingTypes = $lastValue->type()->types;
 
             try {
                 return new UnionType(
@@ -190,19 +193,19 @@ class StateTrackerItem
         dd('last value is not an array or union type??', $lastValue);
     }
 
-    public function getAtLine(string $name, NodeAbstract $node): array
+    public function getAtLine(string $name, NodeAbstract $node): ?VariableState
     {
         if (! array_key_exists($name, $this->variables)) {
-            return [];
+            return null;
         }
 
         Debug::interested($node->getStartLine() === 52);
 
         $lines = array_filter(
             $this->variables[$name],
-            fn ($variable) => $variable['startLine'] <= $node->getStartLine()
-                && $variable['startTokenPos'] <= $node->getStartTokenPos()
-                && ($variable['terminatedAt'] === null || $variable['terminatedAt'] >= $node->getStartLine()),
+            fn ($variable) => $variable->startLine() <= $node->getStartLine()
+                && $variable->startTokenPos() <= $node->getStartTokenPos()
+                && $variable->isTerminatedAfter($node->getStartLine()),
         );
 
         Debug::dumpIfInterested($lines);
@@ -215,7 +218,7 @@ class StateTrackerItem
             );
         }
 
-        if ($result['startLine'] !== $node->getStartLine()) {
+        if ($result->startLine() !== $node->getStartLine()) {
             return $result;
         }
 
@@ -277,8 +280,8 @@ class StateTrackerItem
         [$line, $tokenPos] = explode(':', $activeSnapshot);
 
         foreach ($this->snapshots[$activeSnapshot] as $name => $changes) {
-            foreach ($changes as $index => $_) {
-                $this->snapshots[$activeSnapshot][$name][$index]['terminatedAt'] = $node->getStartLine();
+            foreach ($changes as $state) {
+                $state->terminate($node->getStartLine());
             }
         }
 
@@ -305,7 +308,7 @@ class StateTrackerItem
                 // if (($change['terminatedAt'] ?? -1) > 0) {
                 //     $this->addTypes($name, $node, [...$types, $change['type']]);
                 // } else {
-                $types[] = $change['type'];
+                $types[] = $change->type();
                 // }
             }
 
@@ -317,7 +320,7 @@ class StateTrackerItem
     {
         try {
             dump($this->getAtLine($name, $node));
-            array_unshift($types, $this->getAtLine($name, $node)['type']);
+            array_unshift($types, $this->getAtLine($name, $node)->type());
         } catch (InvalidArgumentException $e) {
             // No previous type found, probably a variable that was defined within the if statement
         }

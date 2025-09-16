@@ -11,7 +11,7 @@ class Variable extends AbstractResolver
 {
     public function resolve(Node\Expr\Variable $node)
     {
-        return $this->scope->variables()->getAtLine($node->name, $node)['type'] ?? Type::mixed();
+        return $this->scope->variables()->getAtLine($node->name, $node)?->type() ?? Type::mixed();
     }
 
     public function resolveForCondition(Node\Expr\Variable $node)
