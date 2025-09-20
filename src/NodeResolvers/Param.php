@@ -2,7 +2,6 @@
 
 namespace Laravel\Surveyor\NodeResolvers;
 
-use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
@@ -29,7 +28,6 @@ class Param extends AbstractResolver
         $results = [];
 
         if ($this->scope->entityName() && $this->scope->methodName()) {
-            Debug::interested($node->var->name === 'callback');
             $result = $this->reflector->paramType($node, $this->scope->entityName(), $this->scope->methodName());
 
             if ($result) {

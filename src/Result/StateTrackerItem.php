@@ -228,6 +228,7 @@ class StateTrackerItem
         $result = end($lines);
 
         if ($result === false) {
+            dump($this);
             throw new InvalidArgumentException(
                 'No result found for '.$name.' at line '.$node->getStartLine().' and position '.$node->getStartTokenPos(),
             );

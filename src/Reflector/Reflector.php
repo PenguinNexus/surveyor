@@ -181,19 +181,19 @@ class Reflector
         $funcReflection = new ReflectionFunction($macros[$node->name->name]);
         $parser = app(Parser::class);
 
-        $parsed = $parser->parse($funcReflection);
+        $parsed = $parser->parse($funcReflection, $funcReflection->getFilename());
 
         $analyzed = app(Analyzer::class)->analyze($funcReflection->getFilename());
 
         $funcNode = $parser->nodeFinder()->findFirst(
             $parsed,
-            fn($n) => ($n instanceof Node\Expr\Closure || $n instanceof Node\Expr\ArrowFunction)
+            fn ($n) => ($n instanceof Node\Expr\Closure || $n instanceof Node\Expr\ArrowFunction)
                 && $n->getStartLine() === $funcReflection->getStartLine(),
         );
 
         $methodNodes = $parser->nodeFinder()->find(
             $parsed,
-            fn($n) => $n instanceof ClassMethod && $n->getStartLine() < $funcReflection->getStartLine(),
+            fn ($n) => $n instanceof ClassMethod && $n->getStartLine() < $funcReflection->getStartLine(),
         );
 
         $methodName = end($methodNodes)->name->name;
@@ -223,14 +223,14 @@ class Reflector
         if ($returnType instanceof ReflectionUnionType) {
             return Type::union(
                 ...collect($returnType->getTypes())
-                    ->map(fn($t) => Type::from($t->getName())->nullable($t->allowsNull())),
+                    ->map(fn ($t) => Type::from($t->getName())->nullable($t->allowsNull())),
             );
         }
 
         if ($returnType instanceof ReflectionIntersectionType) {
             return Type::intersection(
                 ...collect($returnType->getTypes())
-                    ->map(fn($t) => $this->returnType($t)?->nullable($t->allowsNull())),
+                    ->map(fn ($t) => $this->returnType($t)?->nullable($t->allowsNull())),
             );
         }
 

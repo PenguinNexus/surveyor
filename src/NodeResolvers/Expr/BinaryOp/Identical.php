@@ -5,6 +5,7 @@ namespace Laravel\Surveyor\NodeResolvers\Expr\BinaryOp;
 use Laravel\Surveyor\Analysis\Condition;
 use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Result\VariableState;
 use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
@@ -19,6 +20,8 @@ class Identical extends AbstractResolver
     {
         $left = $node->left;
         $right = $node->right;
+
+        Debug::interested($node->getStartLine() === 196);
 
         if ($left instanceof Node\Expr\Variable && $right instanceof Node\Expr\Variable) {
             return;
@@ -38,23 +41,25 @@ class Identical extends AbstractResolver
         }
 
         if ($variable === null) {
-            return;
-        }
+            $results = array_map(fn ($o) => $this->fromOutsideOfCondition($o), $other);
+            // Debug::ddIfInterested($this->scope->state()->variables());
 
-        $conditions = [];
-
-        foreach ($other as $o) {
-            if ($o instanceof Node\Expr\ConstFetch) {
-                $type = $this->fromOutsideOfCondition($o);
-
-                if ($type === null) {
-                    Debug::ddAndOpen($o, $node, 'type is null?');
+            // TODO: We're not catching ArrayDimFetch here yet, gotta return it from the updateArrayKey method I think
+            foreach ($results as $index => $result) {
+                if ($result instanceof VariableState) {
+                    return new Condition($other[$index], $result->type());
                 }
-
-                $conditions[] = new Condition($variable, $type);
             }
+
+            return null;
         }
 
-        return $conditions;
+        $type = $this->fromOutsideOfCondition($other[0]);
+
+        if ($type === null) {
+            Debug::ddAndOpen($other[0], $node, 'type is null?');
+        }
+
+        return new Condition($variable, $type);
     }
 }

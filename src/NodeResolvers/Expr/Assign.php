@@ -17,11 +17,14 @@ class Assign extends AbstractResolver
 {
     public function resolve(Node\Expr\Assign $node)
     {
-        Debug::interested($node->getStartLine() === 44);
-
         $result = $this->getResult($node);
 
         if ($this->scope->analyzingConditionPaused()) {
+            if ($result instanceof VariableState) {
+                // If it's assigned in the condition, it should not be terminated
+                $result->markNonTerminable();
+            }
+
             return $result;
         }
 
@@ -30,12 +33,7 @@ class Assign extends AbstractResolver
 
     public function resolveForCondition(Node\Expr\Assign $node)
     {
-        $result = $this->fromOutsideOfCondition($node);
-
-        if ($result && $result instanceof VariableState) {
-            // If it's assigned in the condition, it should not be terminated
-            $result->markNonTerminable();
-        }
+        $this->fromOutsideOfCondition($node);
 
         if ($node->var instanceof Node\Expr\Variable) {
             return new Condition($node->var, $this->from($node->expr));

@@ -19,6 +19,12 @@ class Analyzer
 
     public function analyze(string $path)
     {
+        if ($path === '') {
+            Debug::log('⚠️  No path provided to analyze.');
+
+            return $this;
+        }
+
         Debug::depth(0);
 
         if ($cached = AnalyzedCache::get($path)) {
@@ -32,12 +38,6 @@ class Analyzer
         }
 
         AnalyzedCache::inProgress($path);
-
-        if ($path === '') {
-            Debug::log('⚠️  No path provided to analyze.');
-
-            return $this;
-        }
 
         Debug::log("🧠 Analyzing: {$path}");
 
