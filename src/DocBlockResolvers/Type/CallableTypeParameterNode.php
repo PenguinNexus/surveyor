@@ -3,7 +3,6 @@
 namespace Laravel\Surveyor\DocBlockResolvers\Type;
 
 use Laravel\Surveyor\DocBlockResolvers\AbstractResolver;
-use Laravel\Surveyor\Types\Type;
 use PHPStan\PhpDocParser\Ast;
 
 class CallableTypeParameterNode extends AbstractResolver
@@ -13,7 +12,7 @@ class CallableTypeParameterNode extends AbstractResolver
         $templateTag = $this->scope->getTemplateTag($node->type->name);
 
         if ($templateTag) {
-            return Type::templateTag($templateTag);
+            return $templateTag;
         }
 
         dd($node, $node::class.' not implemented yet');

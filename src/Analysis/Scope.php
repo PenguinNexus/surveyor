@@ -6,7 +6,7 @@ use Exception;
 use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Result\StateTracker;
 use Laravel\Surveyor\Types\Contracts\Type;
-use PHPStan\PhpDocParser\Ast\PhpDoc\TemplateTagValueNode;
+use Laravel\Surveyor\Types\TemplateTagType;
 
 class Scope
 {
@@ -145,19 +145,19 @@ class Scope
         $this->traits[] = $trait;
     }
 
-    public function addUse(string $use): void
+    public function addUse(string $use, ?string $alias = null): void
     {
-        $this->uses[] = $use;
+        $this->uses[$alias ?? $use] = $use;
     }
 
     public function getUse(string $candidate): string
     {
-        if ($candidate === 'static' || $candidate === 'self') {
+        if (in_array($candidate, ['static', 'self'])) {
             return $this->entityName;
         }
 
-        foreach ($this->uses as $use) {
-            if ($candidate === $use || str_ends_with($use, '\\'.$candidate)) {
+        foreach ($this->uses as $alias => $use) {
+            if ($candidate === $alias || str_ends_with($alias, '\\'.$candidate)) {
                 return $use;
             }
         }
@@ -264,7 +264,7 @@ class Scope
         return $this->templateTags;
     }
 
-    public function getTemplateTag(string $name): ?TemplateTagValueNode
+    public function getTemplateTag(string $name): ?TemplateTagType
     {
         return collect($this->templateTags)->first(fn ($tag) => $tag->name === $name);
     }

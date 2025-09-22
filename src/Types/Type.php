@@ -4,7 +4,6 @@ namespace Laravel\Surveyor\Types;
 
 use Illuminate\Support\Collection;
 use Laravel\Surveyor\Types\Contracts\CollapsibleType;
-use PHPStan\PhpDocParser\Ast\PhpDoc\TemplateTagValueNode;
 use Throwable;
 
 class Type
@@ -41,11 +40,6 @@ class Type
         }
 
         return false;
-    }
-
-    public static function templateTag(TemplateTagValueNode $tag): Contracts\Type
-    {
-        return new TemplateTagType($tag);
     }
 
     public static function string(?string $value = null): Contracts\Type
@@ -186,11 +180,11 @@ class Type
 
         $args = $args->filter(fn ($type) => ! $type instanceof MixedType)->values();
 
-        if ($args->count() === 1) {
-            return $args->first();
-        }
-
-        return new UnionType($args->all());
+        return match ($args->count()) {
+            0 => Type::mixed(),
+            1 => $args->first(),
+            default => new UnionType($args->all()),
+        };
     }
 
     public static function intersection(...$args): Contracts\Type

@@ -12,11 +12,10 @@ class GroupUse extends AbstractResolver
         $prefix = $node->prefix->toString();
 
         foreach ($node->uses as $use) {
-            if ($use->alias) {
-                $this->scope->addUse($prefix.'\\'.$use->alias->name);
-            } else {
-                $this->scope->addUse($prefix.'\\'.$use->name->toString());
-            }
+            $this->scope->addUse(
+                $prefix.'\\'.$use->name->toString(),
+                $use->alias ? $prefix.'\\'.$use->alias?->name : null,
+            );
         }
 
         return null;

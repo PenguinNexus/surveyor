@@ -106,7 +106,9 @@ class DocBlockParser
     {
         $this->parse($docBlock);
 
-        $this->scope->setTemplateTags($this->parsed->getTemplateTagValues());
+        $templateTags = array_map(fn ($tag) => $this->resolve($tag), $this->parsed->getTemplateTagValues());
+
+        $this->scope->setTemplateTags($templateTags);
 
         return $this->parsed->getTemplateTagValues();
     }

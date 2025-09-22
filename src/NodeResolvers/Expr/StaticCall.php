@@ -3,7 +3,10 @@
 namespace Laravel\Surveyor\NodeResolvers\Expr;
 
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\ClassType;
+use Laravel\Surveyor\Types\StringType;
 use Laravel\Surveyor\Types\Type;
+use Laravel\Surveyor\Types\UnionType;
 use PhpParser\Node;
 
 class StaticCall extends AbstractResolver
@@ -13,6 +16,14 @@ class StaticCall extends AbstractResolver
         $class = $this->from($node->class);
         $method = $node->name->toString();
 
+        if ($class instanceof UnionType) {
+            $class = $this->resolveUnion($class);
+        }
+
+        if ($class instanceof StringType && $class->value === null) {
+            return null;
+        }
+
         $returnTypes = $this->reflector->methodReturnType($class, $method, $node);
 
         return Type::union(...$returnTypes);
@@ -21,5 +32,28 @@ class StaticCall extends AbstractResolver
     public function resolveForCondition(Node\Expr\StaticCall $node)
     {
         return $this->fromOutsideOfCondition($node);
+    }
+
+    protected function resolveUnion(UnionType $union)
+    {
+        foreach ($union->types as $type) {
+            if ($type instanceof ClassType) {
+                return $type;
+            }
+
+            if ($type instanceof StringType) {
+                if (class_exists($type->value)) {
+                    return new ClassType($type->value);
+                }
+
+                $templateTag = $this->scope->getTemplateTag($type->value);
+
+                if ($templateTag) {
+                    return $templateTag->bound;
+                }
+            }
+        }
+
+        return null;
     }
 }

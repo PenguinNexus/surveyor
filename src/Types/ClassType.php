@@ -11,9 +11,18 @@ class ClassType extends AbstractType implements Contracts\Type
 
     protected array $genericTypes = [];
 
+    protected array $constructorArguments = [];
+
     public function __construct(string $value)
     {
         $this->value = ltrim($value, '\\');
+    }
+
+    public function setConstructorArguments(array $constructorArguments): self
+    {
+        $this->constructorArguments = $constructorArguments;
+
+        return $this;
     }
 
     public function setGenericTypes(array $genericTypes): self

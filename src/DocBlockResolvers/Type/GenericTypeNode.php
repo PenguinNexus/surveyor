@@ -43,10 +43,8 @@ class GenericTypeNode extends AbstractResolver
         $tags = [];
 
         foreach ($node->genericTypes as $index => $tag) {
-            $templateTag = $this->scope->getTemplateTag($tag->name);
-
-            if ($templateTag) {
-                $tags[] = Type::templateTag($templateTag);
+            if ($templateTag = $this->scope->getTemplateTag($tag->name)) {
+                $tags[] = $templateTag;
             } else {
                 $tags[] = $genericTypes[$index];
             }
@@ -61,7 +59,7 @@ class GenericTypeNode extends AbstractResolver
             $type = $this->from($node->type);
 
             if ($type instanceof ClassType) {
-                return $type->setGenericTypes(array_map(fn ($type) => $type->name, $node->genericTypes));
+                return $type->setGenericTypes(array_map(fn ($t) => $this->from($t), $node->genericTypes));
             }
 
             if ($type instanceof ArrayShapeType) {

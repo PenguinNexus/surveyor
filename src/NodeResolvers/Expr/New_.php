@@ -3,6 +3,7 @@
 namespace Laravel\Surveyor\NodeResolvers\Expr;
 
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
@@ -10,7 +11,20 @@ class New_ extends AbstractResolver
 {
     public function resolve(Node\Expr\New_ $node)
     {
-        // TODO: Nab arguments?
-        return Type::string($this->scope->getUse($node->class));
+        $type = $this->from($node->class);
+
+        if ($type->value === null) {
+            // We couldn't figure it out
+            return Type::mixed();
+        }
+
+        $classType = new ClassType($this->scope->getUse($type->value));
+
+        $classType->setConstructorArguments(array_map(
+            fn ($arg) => $this->from($arg->value),
+            $node->args,
+        ));
+
+        return $classType;
     }
 }

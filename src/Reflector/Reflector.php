@@ -118,6 +118,19 @@ class Reflector
         return null;
     }
 
+    public function constantType(string $constant, ClassType|string $class, ?Node $node = null): ?TypeContract
+    {
+        $reflection = $this->reflectClass($class);
+
+        if (! $reflection->hasConstant($constant)) {
+            return null;
+        }
+
+        $constantValue = $reflection->getConstant($constant);
+
+        return Type::from($constantValue);
+    }
+
     public function methodReturnType(ClassType|string $class, string $method, ?Node $node = null): array
     {
         $className = $class instanceof ClassType ? $class->value : $class;
@@ -268,6 +281,14 @@ class Reflector
     protected function reflectClass(ClassType|string $class): ReflectionClass
     {
         $className = $class instanceof ClassType ? $class->value : $class;
+
+        if (! class_exists($className)) {
+            $className = $this->scope->getUse($className);
+        }
+
+        if (! interface_exists($className) && ! class_exists($className)) {
+            dd('class does not exist', $className);
+        }
 
         return new ReflectionClass($className);
     }

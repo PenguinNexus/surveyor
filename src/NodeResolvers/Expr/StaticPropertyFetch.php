@@ -3,19 +3,20 @@
 namespace Laravel\Surveyor\NodeResolvers\Expr;
 
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
-use Laravel\Surveyor\Types\ClassType;
+use Laravel\Surveyor\NodeResolvers\Shared\ResolvesPropertyFetches;
 use PhpParser\Node;
 
 class StaticPropertyFetch extends AbstractResolver
 {
+    use ResolvesPropertyFetches;
+
     public function resolve(Node\Expr\StaticPropertyFetch $node)
     {
-        $class = $this->from($node->class);
+        return $this->resolvePropertyFetch($node);
+    }
 
-        if (! $class instanceof ClassType) {
-            dd('property fetch but not a class type??', $node->name, $node->class, $class, $this->scope);
-        }
-
-        return $this->reflector->propertyType($node->name, $class, $node);
+    public function resolveForCondition(Node\Expr\StaticPropertyFetch $node)
+    {
+        return $this->fromOutsideOfCondition($node);
     }
 }

@@ -10,7 +10,7 @@ class Use_ extends AbstractResolver
     public function resolve(Node\Stmt\Use_ $node)
     {
         foreach ($node->uses as $use) {
-            $this->scope->addUse($use->alias?->name ?? $use->name->name);
+            $this->scope->addUse($use->name->name, $use->alias?->name);
         }
 
         return null;

@@ -13,6 +13,12 @@ class ClassConstFetch extends AbstractResolver
             return $this->from($node->class);
         }
 
-        return $this->scope->getConstant($node->name->name);
+        if ($node->class->name === 'self') {
+            return $this->scope->getConstant($node->name->name);
+        }
+
+        $fqn = $this->scope->getUse($node->class->name);
+
+        return $this->reflector->constantType($node->name->name, $fqn, $node);
     }
 }
