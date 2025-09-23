@@ -9,6 +9,13 @@ class Expression extends AbstractResolver
 {
     public function resolve(Node\Stmt\Expression $node)
     {
+        // I think this is a bug in the parser, but doing this for now
+        if ($node->expr instanceof Node\Expr\Assign) {
+            if ($comment = $node->getDocComment()) {
+                $this->scope->setPendingDocBlock($comment);
+            }
+        }
+
         return null;
     }
 }

@@ -7,6 +7,7 @@ use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Result\StateTracker;
 use Laravel\Surveyor\Types\Contracts\Type;
 use Laravel\Surveyor\Types\TemplateTagType;
+use PhpParser\Comment\Doc;
 
 class Scope
 {
@@ -37,6 +38,8 @@ class Scope
     protected EntityType $entityType;
 
     protected array $cases = [];
+
+    protected $pendingDocBlock = null;
 
     /**
      * @var PHPStan\PhpDocParser\Ast\PhpDoc\TemplateTagValueNode[]
@@ -79,6 +82,19 @@ class Scope
         }
 
         return $this->constants[$constant] ?? throw new Exception('Constant '.$constant.' not found');
+    }
+
+    public function setPendingDocBlock(Doc $docBlock): void
+    {
+        $this->pendingDocBlock = $docBlock;
+    }
+
+    public function getPendingDocBlock(): ?string
+    {
+        $block = $this->pendingDocBlock;
+        $this->pendingDocBlock = null;
+
+        return $block;
     }
 
     public function addReturnType(Type $returnType, int $lineNumber): void

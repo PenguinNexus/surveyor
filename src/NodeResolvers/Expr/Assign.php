@@ -44,6 +44,13 @@ class Assign extends AbstractResolver
 
     protected function getResult(Node\Expr\Assign $node)
     {
+        // Bug in the parser, assign doc blocks are set in Expression, not Assign
+        $pendingDocBlock = $this->scope->getPendingDocBlock();
+
+        if ($pendingDocBlock && $result = $this->docBlockParser->parseVar($pendingDocBlock)) {
+            return $result;
+        }
+
         if ($node->var instanceof Node\Expr\ArrayDimFetch) {
             return $this->resolveForDimFetch($node);
         }
