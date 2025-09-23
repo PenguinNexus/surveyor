@@ -9,6 +9,6 @@ class ImplementsTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\ImplementsTagValueNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return $this->from($node->type);
     }
 }

@@ -9,6 +9,6 @@ class InvalidTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\InvalidTagValueNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

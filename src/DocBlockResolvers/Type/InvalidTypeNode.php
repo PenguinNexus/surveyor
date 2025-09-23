@@ -9,6 +9,6 @@ class InvalidTypeNode extends AbstractResolver
 {
     public function resolve(Ast\Type\InvalidTypeNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

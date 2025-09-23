@@ -9,6 +9,6 @@ class ParamTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\ParamTagValueNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return $this->from($node->type);
     }
 }

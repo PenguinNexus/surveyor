@@ -9,6 +9,6 @@ class OffsetAccessTypeNode extends AbstractResolver
 {
     public function resolve(Ast\Type\OffsetAccessTypeNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

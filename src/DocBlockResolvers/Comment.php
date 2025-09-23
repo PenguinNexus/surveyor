@@ -9,6 +9,6 @@ class Comment extends AbstractResolver
 {
     public function resolve(Ast\Comment $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

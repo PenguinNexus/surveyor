@@ -9,6 +9,6 @@ class DoctrineArgument extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\Doctrine\DoctrineArgument $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

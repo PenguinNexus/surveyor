@@ -96,7 +96,7 @@ class DocBlockParser
         );
 
         if ($value) {
-            return $this->resolve($value->type);
+            return $this->resolve($value);
         }
 
         return null;
@@ -124,7 +124,7 @@ class DocBlockParser
         );
 
         return collect($propertyTagValues)->mapWithKeys(fn ($node) => [
-            ltrim($node->propertyName, '$') => $this->resolve($node->type),
+            ltrim($node->propertyName, '$') => $this->resolve($node),
         ])->toArray();
     }
 

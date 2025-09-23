@@ -9,6 +9,6 @@ class PureUnlessCallableIsImpureTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\PureUnlessCallableIsImpureTagValueNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

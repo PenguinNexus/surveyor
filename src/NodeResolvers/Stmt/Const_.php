@@ -9,6 +9,10 @@ class Const_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Const_ $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        foreach ($node->consts as $const) {
+            $this->scope->addConstant($const->name, $this->from($const->value));
+        }
+
+        return null;
     }
 }

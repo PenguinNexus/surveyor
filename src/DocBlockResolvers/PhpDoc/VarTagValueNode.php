@@ -9,6 +9,6 @@ class VarTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\VarTagValueNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return $this->from($node->type);
     }
 }

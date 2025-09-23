@@ -9,6 +9,6 @@ class GenericTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\GenericTagValueNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

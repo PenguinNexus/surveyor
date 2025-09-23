@@ -9,6 +9,6 @@ class ThrowsTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\ThrowsTagValueNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }
