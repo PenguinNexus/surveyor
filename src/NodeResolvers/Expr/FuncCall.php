@@ -15,7 +15,7 @@ class FuncCall extends AbstractResolver
     {
         $returnTypes = [];
 
-        if ($node->name instanceof Node\Expr\Variable || $node->name instanceof Node\Expr\PropertyFetch) {
+        if ($this->scope->state()->canHandle($node->name)) {
             $type = $this->scope->state()->getAtLine($node)->type();
 
             if (! $type instanceof Types\CallableType) {
@@ -23,6 +23,10 @@ class FuncCall extends AbstractResolver
             }
 
             return $type->returnType;
+        }
+
+        if ($node->name instanceof Node\Expr\ArrayDimFetch) {
+            return $this->from($node->name);
         }
 
         $name = $node->name->toString();
@@ -34,7 +38,7 @@ class FuncCall extends AbstractResolver
 
     public function resolveForCondition(Node\Expr\FuncCall $node)
     {
-        if ($node->name instanceof Node\Expr\Variable) {
+        if (! $node->name instanceof Node\Name) {
             return null;
         }
 
@@ -61,7 +65,7 @@ class FuncCall extends AbstractResolver
 
         $arg = $node->args[0]->value;
 
-        if ($arg instanceof Node\Expr\Variable || $arg instanceof Node\Expr\PropertyFetch) {
+        if ($this->scope->state()->canHandle($arg)) {
             return Condition::from(
                 $arg,
                 $this->scope->state()->getAtLine($arg)->type(),
@@ -75,18 +79,6 @@ class FuncCall extends AbstractResolver
             return $this->from($arg);
         }
 
-        $value = $node->args[0]->value;
-
-        if (! $this->scope->state()->canHandle($value)) {
-            return null;
-        }
-
-        return Condition::from(
-            $value,
-            $this->scope->state()->getAtLine($value)->type(),
-        )
-            ->whenTrue(fn (Condition $c) => $c->setType($type))
-            ->whenFalse(fn (Condition $c) => $c->removeType($type))
-            ->makeTrue();
+        return null;
     }
 }
