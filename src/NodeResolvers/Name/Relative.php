@@ -9,6 +9,6 @@ class Relative extends AbstractResolver
 {
     public function resolve(Node\Name\Relative $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return $this->scope->getUse($node->name);
     }
 }

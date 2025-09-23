@@ -9,6 +9,7 @@ class Include_ extends AbstractResolver
 {
     public function resolve(Node\Expr\Include_ $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        // TODO: Should handle this...
+        return null;
     }
 }
