@@ -12,11 +12,9 @@ class Return_ extends AbstractResolver
     {
         $this->scope->state()->markSnapShotAsTerminated($node);
 
-        $type = $this->from($node->expr);
+        $type = ($node->expr) ? $this->from($node->expr) : Type::void();
 
-        $result = $type === null ? Type::mixed() : Type::collapse($type);
-
-        $this->scope->addReturnType($result, $node->getStartLine());
+        $this->scope->addReturnType(Type::collapse($type ?? Type::mixed()), $node->getStartLine());
 
         return null;
     }

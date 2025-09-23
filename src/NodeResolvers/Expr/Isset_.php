@@ -6,6 +6,7 @@ use Laravel\Surveyor\Analysis\Condition;
 use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
+use Laravel\Surveyor\Types\MixedType;
 use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
@@ -41,8 +42,12 @@ class Isset_ extends AbstractResolver
 
         $key = $this->fromOutsideOfCondition($var->dim);
 
+        if ($key instanceof MixedType) {
+            return null;
+        }
+
         if (! property_exists($key, 'value')) {
-            Debug::ddAndOpen($key, $node, 'unknown key');
+            Debug::ddAndOpen($key, $node, $var, 'unknown key');
         }
 
         if ($key->value === null) {

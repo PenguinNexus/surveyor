@@ -12,4 +12,9 @@ class NotEqual extends AbstractResolver
     {
         return Type::bool();
     }
+
+    public function resolveForCondition(Node\Expr\BinaryOp\NotEqual $node)
+    {
+        return null;
+    }
 }

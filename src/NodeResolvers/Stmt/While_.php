@@ -9,6 +9,8 @@ class While_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\While_ $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        $this->from($node->cond);
+
+        return null;
     }
 }
