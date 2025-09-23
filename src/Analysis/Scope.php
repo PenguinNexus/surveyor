@@ -149,6 +149,20 @@ class Scope
             }
         }
 
+        foreach ($this->state()->variables()->variables() as $name => $properties) {
+            foreach ($properties as $property) {
+                $instance->state()->variables()->addManually(
+                    $name,
+                    $property->type(),
+                    $property->startLine(),
+                    $property->startTokenPos(),
+                    $property->endLine(),
+                    $property->endTokenPos(),
+                    $property->terminatedAt(),
+                );
+            }
+        }
+
         $this->children[] = $instance;
 
         return $instance;

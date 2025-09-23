@@ -16,7 +16,11 @@ class FuncCall extends AbstractResolver
         $returnTypes = [];
 
         if ($this->scope->state()->canHandle($node->name)) {
-            $type = $this->scope->state()->getAtLine($node)->type();
+            $type = $this->scope->state()->getAtLine($node->name)?->type();
+
+            if ($type === null) {
+                Debug::ddAndOpen($node, $this->scope->state(), 'no type for func call');
+            }
 
             if (! $type instanceof Types\CallableType) {
                 Debug::ddAndOpen($type, $node, $this->scope->state(), 'non-callable variable for func call');
@@ -39,7 +43,7 @@ class FuncCall extends AbstractResolver
     public function resolveForCondition(Node\Expr\FuncCall $node)
     {
         if (! $node->name instanceof Node\Name) {
-            return null;
+            return Type::mixed();
         }
 
         $type = match ($node->name->toString()) {
