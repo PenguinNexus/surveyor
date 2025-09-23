@@ -21,8 +21,6 @@ class Identical extends AbstractResolver
         $left = $node->left;
         $right = $node->right;
 
-        Debug::interested($node->getStartLine() === 196);
-
         if ($left instanceof Node\Expr\Variable && $right instanceof Node\Expr\Variable) {
             return;
         }

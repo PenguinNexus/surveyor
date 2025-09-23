@@ -162,7 +162,7 @@ class Scope
             }
         }
 
-        if ($this->namespace && class_exists($this->namespace.'\\'.$candidate)) {
+        if ($this->namespace && (class_exists($this->namespace.'\\'.$candidate) || interface_exists($this->namespace.'\\'.$candidate))) {
             return $this->namespace.'\\'.$candidate;
         }
 

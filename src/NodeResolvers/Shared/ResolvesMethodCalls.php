@@ -2,7 +2,6 @@
 
 namespace Laravel\Surveyor\NodeResolvers\Shared;
 
-use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\MixedType;
 use Laravel\Surveyor\Types\Type;
@@ -14,12 +13,8 @@ trait ResolvesMethodCalls
     {
         $var = $this->from($node->var);
 
-        if ($var instanceof MixedType) {
+        if ($var instanceof MixedType || ! $var instanceof ClassType) {
             return Type::mixed();
-        }
-
-        if (! $var instanceof ClassType) {
-            Debug::ddAndOpen($var, $node, 'non-class for method call?');
         }
 
         return Type::union(

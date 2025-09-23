@@ -19,6 +19,7 @@ class GenericTypeNode extends AbstractResolver
 
         switch ($node->type->name) {
             case 'array':
+            case 'non-empty-array':
                 // TODO: Deal with template tags
                 $baseType = array_shift($genericTypes);
 
@@ -26,7 +27,7 @@ class GenericTypeNode extends AbstractResolver
             case 'list':
                 return Type::arrayShape(Type::int(), Type::union(...$genericTypes));
             case 'class-string':
-                return Type::union(...$genericTypes);
+                return Type::union(...array_map(fn ($t) => Type::from($this->scope->getUse($t->value)), $genericTypes));
             case 'array-key':
                 return Type::union(...$genericTypes);
             case 'object':

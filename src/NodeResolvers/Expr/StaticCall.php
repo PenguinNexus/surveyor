@@ -20,8 +20,12 @@ class StaticCall extends AbstractResolver
             $class = $this->resolveUnion($class);
         }
 
-        if ($class instanceof StringType && $class->value === null) {
-            return null;
+        if ($class instanceof StringType) {
+            if ($class->value === null) {
+                return null;
+            }
+
+            return Type::mixed();
         }
 
         $returnTypes = $this->reflector->methodReturnType($class, $method, $node);

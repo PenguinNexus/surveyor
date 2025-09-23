@@ -2,8 +2,8 @@
 
 namespace Laravel\Surveyor\NodeResolvers\Shared;
 
-use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Types\ClassType;
+use Laravel\Surveyor\Types\Type;
 use Laravel\Surveyor\Types\UnionType;
 use PhpParser\Node;
 
@@ -23,7 +23,7 @@ trait ResolvesPropertyFetches
         }
 
         if (! $type instanceof ClassType) {
-            Debug::ddAndOpen($node, $this->from($node->var), 'property fetch but not a class type??');
+            return Type::mixed();
         }
 
         return $this->reflector->propertyType($node->name, $type, $node);
