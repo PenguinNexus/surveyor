@@ -13,7 +13,7 @@ class ClassConstFetch extends AbstractResolver
             return $this->from($node->class);
         }
 
-        if ($node->class->name === 'self') {
+        if ($node->class instanceof Node\Name && in_array($node->class->name, ['self', 'static'])) {
             return $this->scope->getConstant($node->name->name);
         }
 

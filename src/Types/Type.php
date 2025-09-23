@@ -3,6 +3,7 @@
 namespace Laravel\Surveyor\Types;
 
 use Illuminate\Support\Collection;
+use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Types\Contracts\CollapsibleType;
 use Throwable;
 
@@ -136,6 +137,10 @@ class Type
             return self::callable([]);
         }
 
+        if (is_array($value)) {
+            return self::array($value);
+        }
+
         if (is_string($value)) {
             $result = match ($value) {
                 'array' => self::array([]),
@@ -164,7 +169,7 @@ class Type
             return self::string($value);
         }
 
-        dd(debug_backtrace(limit: 2), 'something else from', $value);
+        Debug::ddAndOpen(Debug::trace(), $value, 'something else from');
     }
 
     protected static function flattenUnion(array $args): Collection
