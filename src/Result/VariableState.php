@@ -9,6 +9,8 @@ class VariableState
 {
     protected bool $nonTerminable = false;
 
+    protected ?string $references = null;
+
     public function __construct(
         protected Type $type,
         protected int $startLine,
@@ -37,6 +39,16 @@ class VariableState
             $node->getEndLine(),
             $node->getEndTokenPos(),
         );
+    }
+
+    public function addReference(string $referenceVar): void
+    {
+        $this->references = $referenceVar;
+    }
+
+    public function references(string $toCheck): bool
+    {
+        return $this->references === $toCheck;
     }
 
     public function markNonTerminable(): self

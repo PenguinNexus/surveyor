@@ -2,6 +2,7 @@
 
 namespace Laravel\Surveyor\NodeResolvers\Expr;
 
+use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use PhpParser\Node;
 
@@ -16,6 +17,9 @@ class ClassConstFetch extends AbstractResolver
         if ($node->class instanceof Node\Name && in_array($node->class->name, ['self', 'static'])) {
             return $this->scope->getConstant($node->name->name);
         }
+
+        // Debug::interested(str_contains($node->class->name, 'LazyUuidFromString'));
+        // Debug::ddIfInterested($node);
 
         $fqn = $this->scope->getUse($node->class->name);
 

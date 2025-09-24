@@ -141,8 +141,8 @@ class Debug
     public static function trace($limit = 10)
     {
         return array_map(fn ($t) => [
-            'file' => $t['file'],
-            'line' => $t['line'],
+            'file' => $t['file'] ?? null,
+            'line' => $t['line'] ?? null,
         ], debug_backtrace(limit: $limit));
     }
 }

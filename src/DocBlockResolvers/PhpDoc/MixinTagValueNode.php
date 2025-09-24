@@ -9,6 +9,8 @@ class MixinTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\MixinTagValueNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        // Todo: implement
+        // Analyze mixin
+        // Add to scope
     }
 }

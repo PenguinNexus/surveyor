@@ -8,6 +8,10 @@ class AttributeGroup extends AbstractResolver
 {
     public function resolve(Node\AttributeGroup $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        foreach ($node->attrs as $attribute) {
+            $this->from($attribute);
+        }
+
+        return null;
     }
 }

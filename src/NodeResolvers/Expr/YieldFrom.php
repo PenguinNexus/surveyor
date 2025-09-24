@@ -9,6 +9,6 @@ class YieldFrom extends AbstractResolver
 {
     public function resolve(Node\Expr\YieldFrom $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

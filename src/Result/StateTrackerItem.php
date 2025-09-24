@@ -149,6 +149,18 @@ class StateTrackerItem
                 }
             }
 
+            foreach ($this->snapshots[$activeSnapshot] as $varName => $states) {
+                if ($varName === $name) {
+                    continue;
+                }
+
+                foreach ($states as $state) {
+                    if ($state->references($name)) {
+                        $this->updateSnapshotOrVariable($varName, $variableState);
+                    }
+                }
+            }
+
             $this->snapshots[$activeSnapshot][$name][] = $variableState;
         } else {
             Debug::log('🆕 Updating variable', [

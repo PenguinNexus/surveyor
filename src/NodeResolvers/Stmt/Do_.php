@@ -9,6 +9,6 @@ class Do_ extends AbstractResolver
 {
     public function resolve(Node\Stmt\Do_ $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        return null;
     }
 }

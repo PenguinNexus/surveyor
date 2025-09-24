@@ -2,7 +2,6 @@
 
 namespace Laravel\Surveyor\Resolvers;
 
-// use Laravel\Surveyor\Debug;
 use Illuminate\Container\Container;
 use Laravel\Surveyor\Analysis\Scope;
 use PhpParser\Node\Expr\CallLike;

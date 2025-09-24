@@ -34,4 +34,9 @@ class Ternary extends AbstractResolver
 
         return Type::union($this->from($node->if), $this->from($node->else));
     }
+
+    public function resolveForCondition(Node\Expr\Ternary $node)
+    {
+        return $this->fromOutsideOfCondition($node);
+    }
 }

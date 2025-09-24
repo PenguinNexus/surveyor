@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Surveyor\Analysis\Scope;
 use Laravel\Surveyor\Analyzer\Analyzer;
+use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Parser\DocBlockParser;
 use Laravel\Surveyor\Parser\Parser;
 use Laravel\Surveyor\Resolvers\NodeResolver;
@@ -282,12 +283,22 @@ class Reflector
     {
         $className = $class instanceof ClassType ? $class->value : $class;
 
-        if (! class_exists($className)) {
+        // Debug::interested(str_contains($className, 'LazyUuidFromString'));
+        // Debug::ddIfInterested($className, Debug::trace());
+
+        if (! class_exists($className) && ! interface_exists($className)) {
             $className = $this->scope->getUse($className);
         }
 
-        if (! interface_exists($className) && ! class_exists($className)) {
-            dd('class does not exist', $className);
+        if (! class_exists($className) && ! interface_exists($className) && str_contains($className, '\\')) {
+            // Try again from the base of the name, weird bug in the parser
+            $parts = explode('\\', $className);
+            $end = array_pop($parts);
+            $className = $this->scope->getUse($end);
+        }
+
+        if (! class_exists($className) && ! interface_exists($className)) {
+            Debug::ddAndOpen($className, Debug::trace(), 'class does not exist');
         }
 
         return new ReflectionClass($className);

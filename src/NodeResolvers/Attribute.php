@@ -8,6 +8,13 @@ class Attribute extends AbstractResolver
 {
     public function resolve(Node\Attribute $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        $attributeType = $this->from($node->name);
+
+        $resolvedArgs = array_map(
+            fn ($arg) => $this->from($arg->value),
+            $node->args
+        );
+
+        return $attributeType;
     }
 }

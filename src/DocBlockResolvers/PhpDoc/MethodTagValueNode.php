@@ -9,6 +9,16 @@ class MethodTagValueNode extends AbstractResolver
 {
     public function resolve(Ast\PhpDoc\MethodTagValueNode $node)
     {
-        dd($node, $node::class.' not implemented yet');
+        $scope = $this->scope->newChildScope();
+
+        $scope->setMethodName($node->methodName);
+
+        if ($node->returnType) {
+            $returnTypes = $this->from($node->returnType);
+
+            if ($returnTypes) {
+                $scope->addReturnType($returnTypes, -1);
+            }
+        }
     }
 }
