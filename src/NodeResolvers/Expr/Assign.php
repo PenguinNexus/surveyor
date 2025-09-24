@@ -25,6 +25,10 @@ class Assign extends AbstractResolver
             return new Condition($node->var, $this->from($node->expr));
         }
 
+        if ($node->var instanceof Node\Expr\ArrayDimFetch) {
+            return new Condition($node->var, $this->from($node->expr));
+        }
+
         Debug::ddAndOpen($node, 'assign: variable but not a variable??');
     }
 }
