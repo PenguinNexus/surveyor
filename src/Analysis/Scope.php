@@ -5,6 +5,7 @@ namespace Laravel\Surveyor\Analysis;
 use Exception;
 use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Result\StateTracker;
+use Laravel\Surveyor\Support\Util;
 use Laravel\Surveyor\Types\Contracts\Type;
 use Laravel\Surveyor\Types\TemplateTagType;
 use PhpParser\Comment\Doc;
@@ -214,7 +215,7 @@ class Scope
             }
         }
 
-        if ($this->namespace && (class_exists($this->namespace.'\\'.$candidate) || interface_exists($this->namespace.'\\'.$candidate))) {
+        if ($this->namespace && Util::isClassOrInterface($this->namespace.'\\'.$candidate)) {
             return $this->namespace.'\\'.$candidate;
         }
 

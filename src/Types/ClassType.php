@@ -3,6 +3,7 @@
 namespace Laravel\Surveyor\Types;
 
 use Illuminate\Support\Facades\Facade;
+use Laravel\Surveyor\Support\Util;
 use ReflectionClass;
 
 class ClassType extends AbstractType implements Contracts\Type
@@ -39,7 +40,7 @@ class ClassType extends AbstractType implements Contracts\Type
 
     public function resolved(): string
     {
-        if (! class_exists($this->value) && ! interface_exists($this->value)) {
+        if (! Util::isClassOrInterface($this->value)) {
             // TODO: This *shouldn't* happen, but it does. Need to figure out why.
             return $this->value;
         }

@@ -11,6 +11,7 @@ use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Parser\DocBlockParser;
 use Laravel\Surveyor\Parser\Parser;
 use Laravel\Surveyor\Resolvers\NodeResolver;
+use Laravel\Surveyor\Support\Util;
 use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
 use Laravel\Surveyor\Types\Type;
@@ -304,18 +305,18 @@ class Reflector
     {
         $className = $class instanceof ClassType ? $class->value : $class;
 
-        if (! class_exists($className) && ! interface_exists($className)) {
+        if (! Util::isClassOrInterface($className)) {
             $className = $this->scope->getUse($className);
         }
 
-        if (! class_exists($className) && ! interface_exists($className) && str_contains($className, '\\')) {
+        if (! Util::isClassOrInterface($className) && str_contains($className, '\\')) {
             // Try again from the base of the name, weird bug in the parser
             $parts = explode('\\', $className);
             $end = array_pop($parts);
             $className = $this->scope->getUse($end);
         }
 
-        if (! class_exists($className) && ! interface_exists($className)) {
+        if (! Util::isClassOrInterface($className)) {
             Debug::ddAndOpen($className, Debug::trace(), 'class does not exist');
         }
 

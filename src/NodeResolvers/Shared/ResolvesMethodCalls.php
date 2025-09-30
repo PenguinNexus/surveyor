@@ -4,6 +4,7 @@ namespace Laravel\Surveyor\NodeResolvers\Shared;
 
 use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\MixedType;
+use Laravel\Surveyor\Types\StringType;
 use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
@@ -17,8 +18,18 @@ trait ResolvesMethodCalls
             return Type::mixed();
         }
 
+        $methodName = $this->from($node->name);
+
+        if (! Type::is($methodName, StringType::class)) {
+            return Type::mixed();
+        }
+
         return Type::union(
-            ...$this->reflector->methodReturnType($this->scope->getUse($var->value), $node->name, $node)
+            ...$this->reflector->methodReturnType(
+                $this->scope->getUse($var->value),
+                $methodName->value,
+                $node,
+            ),
         );
     }
 }

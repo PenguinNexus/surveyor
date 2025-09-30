@@ -4,6 +4,7 @@ namespace Laravel\Surveyor\Types;
 
 use Illuminate\Support\Collection;
 use Laravel\Surveyor\Debug\Debug;
+use Laravel\Surveyor\Support\Util;
 use Laravel\Surveyor\Types\Contracts\CollapsibleType;
 use Throwable;
 
@@ -46,7 +47,7 @@ class Type
     public static function string(?string $value = null): Contracts\Type
     {
         try {
-            if ($value !== null && (class_exists($value) || interface_exists($value))) {
+            if ($value !== null && Util::isClassOrInterface($value)) {
                 return new ClassType($value);
             }
         } catch (Throwable $e) {
