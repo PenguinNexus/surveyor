@@ -2,7 +2,6 @@
 
 namespace Laravel\Surveyor\Result;
 
-use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
 use PhpParser\Node;
@@ -183,8 +182,6 @@ class StateTracker
                     return $onProperty($node->name);
                 }
             default:
-                Debug::ddAndOpen(Debug::trace(5), $node, $onVariable, $onProperty, 'state route, unknown node type');
-
                 return null;
         }
     }

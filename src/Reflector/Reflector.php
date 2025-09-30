@@ -22,6 +22,7 @@ use ReflectionClass;
 use ReflectionFunction;
 use ReflectionIntersectionType;
 use ReflectionNamedType;
+use ReflectionProperty;
 use ReflectionUnionType;
 
 class Reflector
@@ -96,19 +97,36 @@ class Reflector
                 }
             }
 
-            dump(
-                app(NodeResolver::class)->from(
-                    $firstArg->value,
-                    $this->scope,
-                ),
-            );
-
             return [
                 app(NodeResolver::class)->from(
                     $firstArg->value,
                     $this->scope,
                 ),
             ];
+        }
+
+        if ($name === 'get_class_vars') {
+
+            $result = app(NodeResolver::class)->from(
+                $node->getArgs()[0]->value,
+                $this->scope,
+            );
+
+            if (! Type::is($result, ClassType::class)) {
+                return null;
+            }
+
+            $reflection = $this->reflectClass($result->value);
+
+            $reflectedProperties = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
+
+            $properties = [];
+
+            foreach ($reflectedProperties as $property) {
+                $properties[$property->getName()] = $this->propertyType($property->getName(), $result->value);
+            }
+
+            return [Type::array($properties)];
         }
 
         return null;

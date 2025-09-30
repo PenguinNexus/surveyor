@@ -3,7 +3,6 @@
 namespace Laravel\Surveyor\NodeResolvers\Expr;
 
 use Laravel\Surveyor\Analysis\Condition;
-use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use Laravel\Surveyor\Types\ArrayShapeType;
 use Laravel\Surveyor\Types\ArrayType;
@@ -18,7 +17,6 @@ class ArrayDimFetch extends AbstractResolver
         $dim = $node->dim === null ? Type::int() : $this->from($node->dim);
 
         if (! Type::is($var, ArrayType::class, ArrayShapeType::class)) {
-            // Debug::ddFromClass($var, $node, 'non-array?');
             return Type::mixed();
         }
 
