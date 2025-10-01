@@ -57,7 +57,6 @@ class DocBlockParser
             return null;
         }
 
-        // TODO: Format this output
         return collect($returnTypeValues)->map($this->resolve(...));
     }
 
