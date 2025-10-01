@@ -73,13 +73,15 @@ class Reflector
         if ($name === 'compact') {
             $arr = collect($node->getArgs())->flatMap(function ($arg) {
                 if ($arg->value instanceof Node\Scalar\String_) {
+                    $arg->name = new Node\Identifier($arg->value->value);
+
                     return [
                         $arg->value->value => $this->scope->state()->getAtLine($arg)->type(),
                     ];
                 }
 
-                dd('not a string for compact', $arg);
-            });
+                return null;
+            })->filter()->values();
 
             return [Type::array($arr->all())];
         }
