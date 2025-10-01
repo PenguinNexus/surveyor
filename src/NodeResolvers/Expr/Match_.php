@@ -35,6 +35,6 @@ class Match_ extends AbstractResolver
             }
         }
 
-        return Type::union(...$currentConditions);
+        return Type::union(...array_map(fn ($t) => $t->type, array_filter($currentConditions)));
     }
 }
