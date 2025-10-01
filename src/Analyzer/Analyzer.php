@@ -38,6 +38,14 @@ class Analyzer
             return $this;
         }
 
+        if (AnalyzedCache::isInProgress($path)) {
+            Debug::log("⏳ Waiting for analysis to complete: {$shortPath}");
+
+            return $this;
+        }
+
+        AnalyzedCache::inProgress($path);
+
         Debug::log("🧠 Analyzing: {$shortPath}");
 
         $analyzed = $this->parser->parse(file_get_contents($path), $path);
