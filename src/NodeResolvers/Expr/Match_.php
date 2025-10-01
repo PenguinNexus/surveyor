@@ -2,9 +2,9 @@
 
 namespace Laravel\Surveyor\NodeResolvers\Expr;
 
-use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use Laravel\Surveyor\NodeResolvers\Shared\CapturesConditionalChanges;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class Match_ extends AbstractResolver
@@ -14,14 +14,9 @@ class Match_ extends AbstractResolver
     public function resolve(Node\Expr\Match_ $node)
     {
         $this->scope->startConditionAnalysis();
-        $result = $this->from($node->cond);
+        $this->from($node->cond);
         $this->scope->endConditionAnalysis();
 
-        if ($result !== null) {
-            // Debug::ddAndOpen($node, $result, 'result is not null in match');
-        }
-
-        // TODO: We're not doing anything with this yet, we... should
         $currentConditions = [];
 
         foreach ($node->arms as $arm) {
@@ -40,6 +35,6 @@ class Match_ extends AbstractResolver
             }
         }
 
-        return null;
+        return Type::union(...$currentConditions);
     }
 }
