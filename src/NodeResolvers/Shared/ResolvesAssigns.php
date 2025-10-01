@@ -24,11 +24,9 @@ trait ResolvesAssigns
                 // If it's assigned in the condition, it should not be terminated
                 $result->markNonTerminable();
             }
-
-            return $result;
         }
 
-        return null;
+        return $result;
     }
 
     protected function getResult(Node\Expr\Assign|Node\Expr\AssignRef $node)
@@ -81,6 +79,14 @@ trait ResolvesAssigns
         }
 
         $result = $this->from($node->expr);
+
+        if ($result === null) {
+            dd($node);
+        }
+
+        if ($result instanceof VariableState) {
+            $result = $result->type();
+        }
 
         return $this->scope->state()->add($node->var, $result);
     }

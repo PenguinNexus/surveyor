@@ -18,8 +18,15 @@ class AssignRef extends AbstractResolver
         $result = $this->resolveAssign($node);
 
         if ($result instanceof VariableState) {
-            $reference = $this->from($node->expr);
-            $result->addReference($reference);
+            if (property_exists($node->expr, 'name')) {
+                $reference = $node->expr->name;
+            } else {
+                $reference = $this->from($node->expr);
+            }
+
+            if (is_string($reference)) {
+                $result->addReference($reference);
+            }
         }
 
         return $result;

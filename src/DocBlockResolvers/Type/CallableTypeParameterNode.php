@@ -10,6 +10,10 @@ class CallableTypeParameterNode extends AbstractResolver
 {
     public function resolve(Ast\Type\CallableTypeParameterNode $node)
     {
+        if (! property_exists($node->type, 'name')) {
+            return Type::callable([], $this->from($node->type));
+        }
+
         $templateTag = $this->scope->getTemplateTag($node->type->name);
 
         if ($templateTag) {
