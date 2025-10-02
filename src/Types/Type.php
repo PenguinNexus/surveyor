@@ -163,7 +163,20 @@ class Type
                 return $result;
             }
 
-            if (method_exists(self::class, $value) && ! in_array($value, ['from', 'collapse'])) {
+            $typeMethods = [
+                'int',
+                'float',
+                'bool',
+                'string',
+                'null',
+                'callable',
+                'array',
+                'object',
+                'void',
+                'mixed',
+            ];
+
+            if (method_exists(self::class, $value) && in_array($value, $typeMethods)) {
                 return self::$value();
             }
 

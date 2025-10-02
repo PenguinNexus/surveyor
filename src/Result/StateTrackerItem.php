@@ -7,7 +7,9 @@ use InvalidArgumentException;
 use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Support\ShimmedNode;
 use Laravel\Surveyor\Types\ArrayType;
+use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
+use Laravel\Surveyor\Types\IntType;
 use Laravel\Surveyor\Types\MixedType;
 use Laravel\Surveyor\Types\StringType;
 use Laravel\Surveyor\Types\Type;
@@ -237,7 +239,15 @@ class StateTrackerItem
             return Type::string();
         }
 
-        Debug::ddAndOpen($lastValue->type(), $key, $type, 'last value is not accounted for');
+        if ($lastValue->type() instanceof IntType) {
+            return Type::int();
+        }
+
+        if ($lastValue->type() instanceof ClassType && $lastValue->type()->value === 'SplFixedArray') {
+            return Type::int();
+        }
+
+        Debug::ddAndOpen($lastValue->type(), $key, $type, 'last array key type value is not accounted for');
 
         return new ArrayType($newArray);
     }
