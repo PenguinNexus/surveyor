@@ -19,7 +19,7 @@ class PropertyFetch extends AbstractResolver
 
     public function resolveForCondition(Node\Expr\PropertyFetch $node)
     {
-        $type = $this->fromOutsideOfCondition($node);
+        $type = $this->resolve($node);
 
         return new Condition($node, $type);
     }
