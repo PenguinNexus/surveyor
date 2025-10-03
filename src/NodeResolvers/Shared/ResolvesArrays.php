@@ -13,7 +13,13 @@ trait ResolvesArrays
         $var = $node->var;
 
         while ($var instanceof Node\Expr\ArrayDimFetch) {
-            $keys[] = $this->fromOutsideOfCondition($var->dim)->value;
+            $result = $this->fromOutsideOfCondition($var->dim);
+
+            if (! property_exists($result, 'value')) {
+                break;
+            }
+
+            $keys[] = $result->value;
             $var = $var->var;
         }
 
