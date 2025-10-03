@@ -36,7 +36,7 @@ class GenericTypeNode extends AbstractResolver
             case 'list':
                 return Type::arrayShape(Type::int(), Type::union(...$genericTypes));
             case 'class-string':
-                return Type::union(...array_map(fn ($t) => $this->resolveClassStringType($t), $genericTypes));
+                return Type::union(...array_map(fn ($t) => $t === null ? null : $this->resolveClassStringType($t), $genericTypes));
             case 'array-key':
                 return Type::union(...$genericTypes);
             case 'object':
