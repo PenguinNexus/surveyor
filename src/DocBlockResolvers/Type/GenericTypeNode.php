@@ -73,6 +73,10 @@ class GenericTypeNode extends AbstractResolver
             return Type::intersection(...array_map(fn ($t) => $this->resolveClassStringType($t), $type->types));
         }
 
+        if (! property_exists($type, 'value')) {
+            return Type::mixed();
+        }
+
         return new ClassType($this->scope->getUse($type->value));
     }
 
