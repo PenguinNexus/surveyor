@@ -86,7 +86,7 @@ class GenericTypeNode extends AbstractResolver
         $tags = [];
 
         foreach ($node->genericTypes as $index => $tag) {
-            if ($templateTag = $this->scope->getTemplateTag($tag->name)) {
+            if (property_exists($tag, 'name') && $templateTag = $this->scope->getTemplateTag($tag->name)) {
                 $tags[] = $templateTag;
             } else {
                 $tags[] = $genericTypes[$index];

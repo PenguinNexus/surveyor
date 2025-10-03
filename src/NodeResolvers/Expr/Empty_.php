@@ -3,7 +3,6 @@
 namespace Laravel\Surveyor\NodeResolvers\Expr;
 
 use Laravel\Surveyor\Analysis\Condition;
-use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
 use Laravel\Surveyor\Types\Type;
@@ -21,7 +20,8 @@ class Empty_ extends AbstractResolver
         $type = $this->from($node->expr);
 
         if (! $type instanceof Condition) {
-            Debug::ddAndOpen($type, $node, 'empty assessment is not a condition');
+            // TODO: Circle back to this
+            return null;
         }
 
         return $type

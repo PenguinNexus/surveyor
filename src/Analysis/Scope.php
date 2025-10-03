@@ -229,12 +229,12 @@ class Scope
             }
         }
 
-        if ($this->namespace && Util::isClassOrInterface($this->namespace.'\\'.$candidate)) {
-            return $this->namespace.'\\'.$candidate;
-        }
-
         if ($this->parent) {
             return $this->parent->getUse($candidate);
+        }
+
+        if ($this->namespace && Util::isClassOrInterface($this->namespace.'\\'.$candidate)) {
+            return $this->namespace.'\\'.$candidate;
         }
 
         return $candidate;

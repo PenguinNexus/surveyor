@@ -27,6 +27,7 @@ use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionProperty;
 use ReflectionUnionType;
+use Throwable;
 
 class Reflector
 {
@@ -410,6 +411,10 @@ class Reflector
 
     protected function hasMacro(string $className, Node $node): bool
     {
-        return method_exists($className, 'hasMacro') && $className::hasMacro($node->name->name);
+        try {
+            return method_exists($className, 'hasMacro') && $className::hasMacro($node->name->name);
+        } catch (Throwable $e) {
+            return false;
+        }
     }
 }
