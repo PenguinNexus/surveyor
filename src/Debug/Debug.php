@@ -38,7 +38,13 @@ class Debug
         $indent = str_repeat('    ', self::depth());
 
         if (is_array($data) || is_object($data)) {
-            $data = collect(explode(PHP_EOL, json_encode($data, JSON_PRETTY_PRINT)))->map(fn ($line) => $indent.$line)->implode(PHP_EOL);
+            $data = implode(
+                PHP_EOL,
+                array_map(
+                    fn ($line) => $indent.$line,
+                    explode(PHP_EOL, json_encode($data, JSON_PRETTY_PRINT)),
+                ),
+            );
         }
 
         $formattedMessage = (is_string($message) ? $message : json_encode($message));
