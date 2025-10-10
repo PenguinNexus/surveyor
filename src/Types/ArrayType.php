@@ -9,12 +9,9 @@ class ArrayType extends AbstractType implements Contracts\Type
         //
     }
 
-    /**
-     * @return Collection<int|string, mixed>
-     */
-    public function keys()
+    public function keys(): array
     {
-        return collect($this->value)->keys();
+        return array_keys($this->value);
     }
 
     public function keyType(): Contracts\Type
@@ -51,6 +48,6 @@ class ArrayType extends AbstractType implements Contracts\Type
 
     public function id(): string
     {
-        return collect($this->value)->toJson();
+        return json_encode($this->value);
     }
 }

@@ -51,7 +51,10 @@ class ReturnTypeAnalyzer extends AbstractResolver
             return;
         }
 
-        $hasView = collect($this->returnTypes)->first(fn ($type) => $type instanceof View);
+        $hasView = array_find(
+            $this->returnTypes,
+            fn ($type) => $type instanceof View,
+        );
 
         if ($type->value === ViewView::class && $hasView) {
             return;

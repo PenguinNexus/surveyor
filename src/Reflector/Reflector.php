@@ -345,15 +345,19 @@ class Reflector
 
         if ($returnType instanceof ReflectionUnionType) {
             return Type::union(
-                ...collect($returnType->getTypes())
-                    ->map(fn ($t) => Type::from($t->getName())->nullable($t->allowsNull())),
+                ...array_map(
+                    fn ($t) => Type::from($t->getName())->nullable($t->allowsNull()),
+                    $returnType->getTypes(),
+                ),
             );
         }
 
         if ($returnType instanceof ReflectionIntersectionType) {
             return Type::intersection(
-                ...collect($returnType->getTypes())
-                    ->map(fn ($t) => $this->returnType($t)?->nullable($t->allowsNull())),
+                ...array_map(
+                    fn ($t) => $this->returnType($t)?->nullable($t->allowsNull()),
+                    $returnType->getTypes(),
+                ),
             );
         }
 

@@ -89,8 +89,9 @@ class DocBlockParser
 
         $this->parseTemplateTags($docBlock);
 
-        $value = collect($paramTags)->first(
-            fn ($tag) => ltrim($tag->parameterName, '$') === ltrim($name, '$'),
+        $value = array_find(
+            $paramTags,
+            fn ($tag) => ltrim($tag->parameterName, '$') === ltrim($name, '$')
         );
 
         if ($value) {
@@ -130,9 +131,10 @@ class DocBlockParser
     {
         $this->parse($docBlock);
 
-        return collect($this->parsed->getMixinTagValues())
-            ->map(fn (MixinTagValueNode $node) => $this->resolve($node->type))
-            ->all();
+        return array_map(
+            fn (MixinTagValueNode $node) => $this->resolve($node->type),
+            $this->parsed->getMixinTagValues(),
+        );
     }
 
     protected function parse(string $docBlock): PhpDocNode

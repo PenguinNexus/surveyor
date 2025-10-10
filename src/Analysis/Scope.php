@@ -280,7 +280,10 @@ class Scope
 
     public function methodScope(string $methodName): Scope
     {
-        return collect($this->children)->first(fn ($child) => $child->methodName() === $methodName);
+        return array_find(
+            $this->children,
+            fn ($child) => $child->methodName() === $methodName,
+        );
     }
 
     public function startConditionAnalysis($quiet = false): void
@@ -355,6 +358,9 @@ class Scope
 
     public function getTemplateTag(string $name): ?TemplateTagType
     {
-        return collect($this->templateTags)->first(fn ($tag) => $tag->name === $name);
+        return array_find(
+            $this->templateTags,
+            fn ($tag) => $tag->name === $name,
+        );
     }
 }

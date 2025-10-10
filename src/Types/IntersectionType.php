@@ -11,6 +11,6 @@ class IntersectionType extends AbstractType implements Contracts\MultiType, Cont
 
     public function id(): string
     {
-        return collect($this->types)->toJson();
+        return json_encode($this->types);
     }
 }
