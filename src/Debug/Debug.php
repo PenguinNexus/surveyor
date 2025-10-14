@@ -42,7 +42,6 @@ class Debug
     {
         self::$timings[$label] ??= [];
         self::$timings[$label][] = microtime(true) - self::$currentlyTiming[$label];
-        unset(self::$currentlyTiming[$label]);
     }
 
     public static function getTimings()
