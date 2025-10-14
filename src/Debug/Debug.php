@@ -47,7 +47,19 @@ class Debug
 
     public static function getTimings()
     {
-        return self::$timings;
+        $timings = [];
+
+        foreach (self::$timings as $label => $timing) {
+            $timings[$label] = [
+                'count' => count($timing),
+                'total' => array_sum($timing),
+                'average' => array_sum($timing) / count($timing),
+                'minimum' => min($timing),
+                'maximum' => max($timing),
+            ];
+        }
+
+        return $timings;
     }
 
     public static function log($message, $data = null, $level = 1)
