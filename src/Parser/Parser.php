@@ -36,6 +36,9 @@ class Parser
         return $this->typeResolver;
     }
 
+    /**
+     * @return Scope[]
+     */
     public function parse(string|ReflectionClass|ReflectionFunction|ReflectionMethod|SplFileInfo $code, string $path): array
     {
         $this->parseCode($code, $path);
