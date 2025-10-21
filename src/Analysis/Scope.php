@@ -204,6 +204,15 @@ class Scope
         return $this->parent;
     }
 
+    public function clearParent(): void
+    {
+        $this->parent = null;
+
+        foreach ($this->children as $child) {
+            $child->clearParent();
+        }
+    }
+
     public function newChildScope(): self
     {
         $instance = new self($this);
