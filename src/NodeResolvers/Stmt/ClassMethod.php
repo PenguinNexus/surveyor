@@ -4,6 +4,7 @@ namespace Laravel\Surveyor\NodeResolvers\Stmt;
 
 use Laravel\Surveyor\Analysis\EntityType;
 use Laravel\Surveyor\Analysis\Scope;
+use Laravel\Surveyor\Analyzed\MethodResult;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use PhpParser\Node;
 
@@ -32,6 +33,14 @@ class ClassMethod extends AbstractResolver
 
     public function exitScope(): Scope
     {
+        $result = new MethodResult(
+            name: $this->scope->methodName(),
+            parameters: $this->scope->parameters(),
+            returnTypes: $this->scope->returnTypes(),
+        );
+
+        $this->scope->parent()->result()?->addMethod($result);
+
         return $this->scope->parent();
     }
 }

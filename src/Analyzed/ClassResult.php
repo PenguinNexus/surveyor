@@ -7,34 +7,36 @@ use Laravel\Surveyor\Analysis\Scope;
 
 class ClassResult
 {
+    /** @var array<string, PropertyResult> */
+    protected array $properties = [];
+
+    /** @var array<string, ConstantResult> */
+    protected array $constants = [];
+
+    /** @var list<string> */
+    protected array $traits = [];
+
+    /** @var array<string, MethodResult> */
+    protected array $methods = [];
+
+    /**
+     * @param  list<string>  $extends
+     * @param  list<string>  $implements
+     * @param  array<string, string>  $uses
+     */
     public function __construct(
-        public readonly string $name,
-        public readonly string $namespace,
-        public readonly array $extends,
-        public readonly array $implements,
-        /** @var array<string, PropertyResult> */
-        public readonly array $properties,
-        public readonly array $constants,
-        public readonly array $traits,
-        public readonly array $uses,
-        public readonly array $methods,
+        protected string $name,
+        protected string $namespace,
+        protected array $extends,
+        protected array $implements,
+        protected array $uses,
     ) {
         //
     }
 
-    public static function fromScope(Scope $scope): self
+    public function addMethod(MethodResult $method): void
     {
-        return new static(
-            name: $scope->entityName(),
-            namespace: $scope->namespace(),
-            extends: $scope->extends(),
-            implements: $scope->implements(),
-            properties: self::mapProperties($scope->state()->properties()->variables()),
-            constants: self::mapConstants($scope->constants()),
-            traits: $scope->traits(),
-            uses: $scope->uses(),
-            methods: self::mapMethods($scope->children()),
-        );
+        $this->methods[$method->name] = $method;
     }
 
     /**

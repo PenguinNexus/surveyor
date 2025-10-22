@@ -4,6 +4,7 @@ namespace Laravel\Surveyor\Analysis;
 
 use Exception;
 use Illuminate\Support\Arr;
+use Laravel\Surveyor\Analyzed\ClassResult;
 use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Result\StateTracker;
 use Laravel\Surveyor\Support\Util;
@@ -20,7 +21,7 @@ class Scope
 
     protected StateTracker $stateTracker;
 
-    protected array $children = [];
+    protected ?ClassResult $result = null;
 
     protected array $uses = [];
 
@@ -58,6 +59,16 @@ class Scope
     public function __construct(protected ?Scope $parent = null)
     {
         $this->stateTracker = new StateTracker;
+    }
+
+    public function attachResult(ClassResult $result): void
+    {
+        $this->result = $result;
+    }
+
+    public function result(): ?ClassResult
+    {
+        return $this->result;
     }
 
     public function extends(): array
@@ -135,11 +146,6 @@ class Scope
         $this->constants[$constant] = $type;
     }
 
-    public function children()
-    {
-        return $this->children;
-    }
-
     public function getConstant(string $constant): ?Type
     {
         if (! array_key_exists($constant, $this->constants)) {
@@ -208,15 +214,6 @@ class Scope
         return $this->parent;
     }
 
-    public function clearParent(): void
-    {
-        $this->parent = null;
-
-        foreach ($this->children as $child) {
-            $child->clearParent();
-        }
-    }
-
     public function newChildScope(): self
     {
         $instance = new self($this);
@@ -260,8 +257,6 @@ class Scope
                 );
             }
         }
-
-        $this->children[] = $instance;
 
         return $instance;
     }
@@ -362,10 +357,11 @@ class Scope
 
     public function methodScope(string $methodName): Scope
     {
-        return Arr::first(
-            $this->children,
-            fn ($child) => $child->methodName() === $methodName,
-        );
+        throw new Exception('We hit method scope, lets figure out what to do about it');
+        // return Arr::first(
+        //     $this->children,
+        //     fn($child) => $child->methodName() === $methodName,
+        // );
     }
 
     public function startConditionAnalysis($quiet = false): void

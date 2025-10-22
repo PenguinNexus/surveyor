@@ -24,16 +24,11 @@ class Analyze extends Command
 
         $path = $this->option('path');
 
-        $result = $analyzer->analyze(getcwd().'/'.$path)->analyzed();
-
-        foreach ($result as $class) {
-            foreach ($class->children() as $method) {
-                dump($method->returnTypes());
-            }
-        }
+        $result = $analyzer->analyze(getcwd().'/'.$path);
 
         dd([
-            'results' => $result,
+            // 'scope' => $result->analyzed(),
+            'result' => $result->result(),
             'counts' => Debug::getCounts(),
             'timings' => Debug::getTimings(),
             'tracked' => Debug::getTracked(),

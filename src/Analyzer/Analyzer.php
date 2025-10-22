@@ -53,8 +53,6 @@ class Analyzer
         $analyzed = $this->parser->parse(file_get_contents($path), $path);
 
         foreach ($analyzed as $result) {
-            // $result->clearParent();
-
             if ($result->fullPath() === $path) {
                 $this->analyzed = $result;
             }
@@ -74,15 +72,6 @@ class Analyzer
 
     public function result()
     {
-        switch ($this->analyzed->entityType()) {
-            case EntityType::CLASS_TYPE:
-                return ClassResult::fromScope($this->analyzed);
-                // case EntityType::METHOD_TYPE:
-                //     return new MethodResult($this->analyzed);
-                // case EntityType::PROPERTY_TYPE:
-                //     return new PropertyResult($this->analyzed);
-                // case EntityType::CONSTANT_TYPE:
-                //     return new ConstantResult($this->analyzed);
-        }
+        return $this->analyzed->result();
     }
 }

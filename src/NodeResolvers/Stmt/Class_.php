@@ -3,6 +3,8 @@
 namespace Laravel\Surveyor\NodeResolvers\Stmt;
 
 use Laravel\Surveyor\Analysis\EntityType;
+use Laravel\Surveyor\Analysis\Scope;
+use Laravel\Surveyor\Analyzed\ClassResult;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
@@ -34,6 +36,16 @@ class Class_ extends AbstractResolver
             //     $scope->addReturnType($type, 0);
             // }
         }
+
+        $result = new ClassResult(
+            name: $this->scope->entityName(),
+            namespace: $this->scope->namespace(),
+            extends: $this->scope->extends(),
+            implements: $this->scope->implements(),
+            uses: $this->scope->uses(),
+        );
+
+        $this->scope->attachResult($result);
 
         return null;
     }
