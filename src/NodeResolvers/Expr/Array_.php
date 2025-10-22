@@ -11,7 +11,7 @@ class Array_ extends AbstractResolver
 {
     public function resolve(Node\Expr\Array_ $node)
     {
-        $isList = Arr::first($node->items, fn ($item) => $item->key !== null);
+        $isList = Arr::first($node->items, fn ($item) => $item->key === null) !== null;
 
         if ($isList) {
             return Type::array(
@@ -29,6 +29,6 @@ class Array_ extends AbstractResolver
             $result[$item->key->value ?? null] = $this->from($item->value);
         }
 
-        return Type::array(array_values($result));
+        return Type::array($result);
     }
 }
