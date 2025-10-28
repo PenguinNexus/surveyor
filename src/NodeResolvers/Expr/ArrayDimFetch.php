@@ -25,7 +25,13 @@ class ArrayDimFetch extends AbstractResolver
         }
 
         if (property_exists($dim, 'value')) {
-            return $var->value[$dim->value] ?? Type::mixed();
+            $type = $var->value[$dim->value] ?? null;
+
+            if ($type === null) {
+                return Type::mixed();
+            }
+
+            return Type::from($type);
         }
 
         return Type::mixed();
