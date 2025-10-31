@@ -34,7 +34,7 @@ trait ResolvesPropertyFetches
         if ($node->name instanceof Node\Expr\Variable || $node->name instanceof Node\VarLikeIdentifier) {
             $result = $this->from($node->name);
 
-            if (! Type::is($result, StringType::class) || $result->value === null) {
+            if ($result === null || ! Type::is($result, StringType::class) || $result->value === null) {
                 return Type::mixed();
             }
 
