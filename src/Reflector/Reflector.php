@@ -54,9 +54,7 @@ class Reflector
         $returnTypes = [];
         $reflection = new ReflectionFunction($name);
 
-        $known = $this->tryKnownFunctions($name, $node);
-
-        if ($known) {
+        if ($known = $this->tryKnownFunctions($name, $node)) {
             return $known;
         }
 
