@@ -235,6 +235,7 @@ class StateTrackerItem
                     array_map(fn ($t) => ! $t instanceof ArrayType ? $t : new ArrayType(array_merge($t->value, $newArray)), $existingTypes)
                 );
             } catch (Throwable $e) {
+                Debug::error('Merging union types: '.$e->getMessage());
                 Debug::ddAndOpen($key, $type, $existingTypes, $this, $e->getMessage(), 't->value is null??');
             }
         }
