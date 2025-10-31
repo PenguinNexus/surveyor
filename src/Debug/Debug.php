@@ -61,6 +61,11 @@ class Debug
         return $timings;
     }
 
+    public static function error($message, $data = null, $level = 1)
+    {
+        self::log('🚨 Error ['.$message.']', $data, $level);
+    }
+
     public static function log($message, $data = null, $level = 1)
     {
         if (self::$logLevel < $level) {
