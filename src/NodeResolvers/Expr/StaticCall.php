@@ -2,10 +2,13 @@
 
 namespace Laravel\Surveyor\NodeResolvers\Expr;
 
+use Laravel\Surveyor\Analysis\Condition;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use Laravel\Surveyor\Support\Util;
 use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\Contracts\MultiType;
+use Laravel\Surveyor\Types\Entities\InertiaRender;
+use Laravel\Surveyor\Types\Entities\View;
 use Laravel\Surveyor\Types\StringType;
 use Laravel\Surveyor\Types\Type;
 use Laravel\Surveyor\Types\UnionType;
@@ -39,9 +42,57 @@ class StaticCall extends AbstractResolver
             return Type::union(...$returnTypes);
         }
 
-        $returnTypes = $this->reflector->methodReturnType($class, $method, $node);
+        if ($class instanceof Condition) {
+            $class = $class->type;
+        }
+
+        $returnTypes = array_merge(
+            $this->handleEntities($class, $method, $node),
+            $this->reflector->methodReturnType($class, $method, $node),
+        );
 
         return Type::union(...$returnTypes);
+    }
+
+    protected function handleEntities(ClassType $class, string $method, Node\Expr\StaticCall $node): array
+    {
+        return match ($class->value) {
+            'Inertia\Inertia' => $this->handleInertiaEntity($method, $node),
+            'Illuminate\Support\Facades\View' => $this->handleViewEntity($method, $node),
+            default => [],
+        };
+    }
+
+    protected function handleInertiaEntity(string $method, Node\Expr\StaticCall $node): array
+    {
+        if ($method !== 'render') {
+            return [];
+        }
+
+        $args = array_map(fn ($arg) => $this->from($arg->value), $node->getArgs());
+
+        return [
+            new InertiaRender(
+                $args[0]->value,
+                $args[1] ?? Type::arrayShape(Type::string(), Type::mixed()),
+            ),
+        ];
+    }
+
+    protected function handleViewEntity(string $method, Node\Expr\StaticCall $node): array
+    {
+        if ($method !== 'render') {
+            return [];
+        }
+
+        $args = array_map(fn ($arg) => $this->from($arg->value), $node->getArgs());
+
+        return [
+            new View(
+                $args[0]->value,
+                $args[1] ?? Type::arrayShape(Type::string(), Type::mixed()),
+            ),
+        ];
     }
 
     public function resolveForCondition(Node\Expr\StaticCall $node)

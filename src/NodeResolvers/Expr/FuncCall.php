@@ -5,6 +5,8 @@ namespace Laravel\Surveyor\NodeResolvers\Expr;
 use Laravel\Surveyor\Analysis\Condition;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
 use Laravel\Surveyor\Types;
+use Laravel\Surveyor\Types\Entities\InertiaRender;
+use Laravel\Surveyor\Types\Entities\View;
 use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
@@ -34,9 +36,53 @@ class FuncCall extends AbstractResolver
 
         $name = $node->name->toString();
 
-        $returnTypes = $this->reflector->functionReturnType($name, $node);
+        $returnTypes = array_merge(
+            $this->reflector->functionReturnType($name, $node),
+            $this->handleEntities($name, $node),
+        );
 
         return Type::union(...$returnTypes);
+    }
+
+    protected function handleEntities(string $name, Node\Expr\FuncCall $node): array
+    {
+        return match ($name) {
+            'view' => $this->handleViewEntity($node),
+            'inertia' => $this->handleInertiaEntity($node),
+            default => [],
+        };
+    }
+
+    protected function handleViewEntity(Node\Expr\FuncCall $node): array
+    {
+        $args = array_map(fn ($arg) => $this->from($arg->value), $node->getArgs());
+
+        if (count($args) === 0) {
+            return [];
+        }
+
+        return [
+            new View(
+                $args[0]->value,
+                $args[1] ?? Type::arrayShape(Type::string(), Type::mixed()),
+            ),
+        ];
+    }
+
+    protected function handleInertiaEntity(Node\Expr\FuncCall $node): array
+    {
+        $args = array_map(fn ($arg) => $this->from($arg->value), $node->getArgs());
+
+        if (count($args) === 0) {
+            return [];
+        }
+
+        return [
+            new InertiaRender(
+                $args[0]->value,
+                $args[1] ?? Type::arrayShape(Type::string(), Type::mixed()),
+            ),
+        ];
     }
 
     public function resolveForCondition(Node\Expr\FuncCall $node)

@@ -5,7 +5,7 @@ namespace Laravel\Surveyor\Types\Entities;
 use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
 
-class View extends ClassType implements TypeContract
+class InertiaRender extends ClassType implements TypeContract
 {
     public function __construct(
         public readonly string $view,
