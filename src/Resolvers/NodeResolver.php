@@ -25,6 +25,9 @@ class NodeResolver
         //
     }
 
+    /**
+     * @return array{0: TypeContract, 1: Scope}
+     */
     public function fromWithScope(NodeAbstract $node, Scope $scope)
     {
         $resolver = $this->resolveClassInstance($node);
@@ -48,11 +51,7 @@ class NodeResolver
         } catch (Throwable $e) {
             Debug::error('Resolving node: '.$e->getMessage());
 
-            if (Debug::$throw) {
-                throw $e;
-            }
-
-            return [Type::mixed(), $newScope];
+            return Debug::throwOr($e, fn () => [Type::mixed(), $newScope]);
         }
 
         return [$resolved, $newScope];
