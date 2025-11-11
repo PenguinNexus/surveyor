@@ -61,9 +61,9 @@ class Debug
         return $timings;
     }
 
-    public static function error($message, $data = null, $level = 1)
+    public static function error(Throwable $e, $message, $data = null, $level = 1)
     {
-        self::log('🚨 Error ['.$message.']', $data, $level);
+        self::log('🚨 '.$message.' ['.$e->getMessage().'] at '.$e->getFile().':'.$e->getLine(), $data, $level);
     }
 
     public static function throwOr(Throwable $e, callable $callback)
