@@ -263,7 +263,7 @@ class Reflector
         try {
             $reflection = $this->reflectClass($class);
         } catch (Throwable $e) {
-            Debug::error('Error reflecting class: '.$e->getMessage());
+            Debug::error($e, 'Error reflecting class');
 
             return null;
         }
