@@ -23,7 +23,7 @@ class ClassResult
      */
     public function __construct(
         protected string $name,
-        protected string $namespace,
+        protected ?string $namespace,
         protected array $extends,
         protected array $implements,
         protected array $uses,
