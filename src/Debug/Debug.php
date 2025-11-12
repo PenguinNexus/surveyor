@@ -155,6 +155,20 @@ class Debug
         return self::$depths[self::activePath()] ?? 0;
     }
 
+    public static function reportMemoryUsage($print = true)
+    {
+        $memory = memory_get_usage(true);
+        $memory = $memory / 1024 / 1024;
+        $memory = round($memory, 2);
+        $memory = $memory.'MB';
+
+        if ($print) {
+            info('Memory Usage: '.$memory);
+        }
+
+        return $memory;
+    }
+
     public static function increaseDepth()
     {
         self::$depths[self::activePath()]++;
