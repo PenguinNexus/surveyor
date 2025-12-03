@@ -54,7 +54,8 @@ class Identical extends AbstractResolver
         $type = $this->fromOutsideOfCondition($other[0]);
 
         if ($type === null) {
-            Debug::ddAndOpen($other[0], $node, 'type is null?');
+            // Debug::ddAndOpen($other[0], $node, 'type is null?');
+            return null;
         }
 
         if ($type instanceof VariableState) {
