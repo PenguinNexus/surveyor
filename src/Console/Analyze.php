@@ -3,12 +3,13 @@
 namespace Laravel\Surveyor\Console;
 
 use Illuminate\Console\Command;
+use Laravel\Surveyor\Analyzer\AnalyzedCache;
 use Laravel\Surveyor\Analyzer\Analyzer;
 use Laravel\Surveyor\Debug\Debug;
 
 class Analyze extends Command
 {
-    protected $signature = 'analyze {--path=} {--dump} {--v} {--vv} {--vvv}';
+    protected $signature = 'analyze {--path=} {--dump} {--cache} {--cache-dir=} {--v} {--vv} {--vvv}';
 
     protected $description = '';
 
@@ -21,6 +22,13 @@ class Analyze extends Command
             $this->option('vvv') => 3,
             default => 0,
         };
+
+        if ($this->option('cache')) {
+            $cacheDir = $this->option('cache-dir') ?? storage_path('surveyor-cache');
+            AnalyzedCache::setCacheDirectory($cacheDir);
+            AnalyzedCache::enable();
+            $this->info("Disk cache enabled: {$cacheDir}");
+        }
 
         $path = $this->option('path');
 

@@ -6,6 +6,7 @@ namespace Laravel\Surveyor;
 // ini_set('memory_limit', '1G');
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Surveyor\Analyzer\AnalyzedCache;
 use Laravel\Surveyor\Console\Analyze;
 use Laravel\Surveyor\Console\MeasureScope;
 use Laravel\Surveyor\Console\RemoveAbstractClasses;
@@ -43,6 +44,16 @@ class SurveyorServiceProvider extends ServiceProvider
     {
         // $this->registerPublishing();
         $this->registerCommands();
+        $this->configureCaching();
+    }
+
+    protected function configureCaching()
+    {
+        if (env('SURVEYOR_CACHE_ENABLED', false)) {
+            $cacheDir = env('SURVEYOR_CACHE_DIR', storage_path('surveyor-cache'));
+            AnalyzedCache::setCacheDirectory($cacheDir);
+            AnalyzedCache::enable();
+        }
     }
 
     /**
