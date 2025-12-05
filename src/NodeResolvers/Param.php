@@ -2,11 +2,16 @@
 
 namespace Laravel\Surveyor\NodeResolvers;
 
+use Illuminate\Foundation\Http\FormRequest;
+use Laravel\Surveyor\Concerns\LazilyLoadsDependencies;
+use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class Param extends AbstractResolver
 {
+    use LazilyLoadsDependencies;
+
     public function resolve(Node\Param $node)
     {
         $type = $this->resolveType($node);
@@ -21,6 +26,15 @@ class Param extends AbstractResolver
             $node,
             $type,
         );
+
+        if (Type::is($type, ClassType::class) && is_subclass_of($type->value, FormRequest::class)) {
+            $analyzed = $this->getAnalyzer()->analyze($this->reflector->reflectClass($type->value)->getFileName());
+            $validationRules = $analyzed->analyzed()->result()->getMethod('rules')?->validationRules() ?? [];
+
+            foreach ($validationRules as $key => $rules) {
+                $this->scope->result()->addValidationRule($key, $rules);
+            }
+        }
 
         return null;
     }

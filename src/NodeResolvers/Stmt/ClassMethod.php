@@ -2,11 +2,17 @@
 
 namespace Laravel\Surveyor\NodeResolvers\Stmt;
 
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidationRuleParser;
 use Laravel\Surveyor\Analysis\EntityType;
 use Laravel\Surveyor\Analysis\Scope;
 use Laravel\Surveyor\Analyzed\MethodResult;
 use Laravel\Surveyor\Analyzed\PropertyResult;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\Types\ArrayType;
+use Laravel\Surveyor\Types\Contracts\Type as TypeContract;
+use Laravel\Surveyor\Types\StringType;
+use Laravel\Surveyor\Types\Type;
 use PhpParser\Node;
 
 class ClassMethod extends AbstractResolver
@@ -60,12 +66,29 @@ class ClassMethod extends AbstractResolver
             $this->scope->result()->addParameter($parameter->name, $parameter->type);
         }
 
+        $isFormRequestRules = in_array(FormRequest::class, $this->scope->parent()->extends()) && $this->scope->methodName() === 'rules';
+
         foreach ($this->scope->returnTypes() as $returnType) {
             $this->scope->result()->addReturnType($returnType['type'], $returnType['lineNumber']);
-        }
 
-        foreach ($this->scope->validationRules() as $key => $rules) {
-            $this->scope->result()->addValidationRule($key, $rules);
+            if ($isFormRequestRules && Type::is($returnType['type'], ArrayType::class)) {
+                foreach ($returnType['type']->value as $key => $value) {
+                    if ($value instanceof StringType) {
+                        $this->scope->result()->addValidationRule(
+                            $key,
+                            array_map(
+                                fn ($subRule) => ValidationRuleParser::parse($subRule),
+                                explode('|', $value->value),
+                            ),
+                        );
+                    } elseif ($value instanceof ArrayType) {
+                        $this->scope->result()->addValidationRule(
+                            $key,
+                            array_values(array_filter(array_map($this->parseSubRule(...), $value->value))),
+                        );
+                    }
+                }
+            }
         }
 
         $this->scope->parent()->result()->addMethod(
@@ -73,5 +96,15 @@ class ClassMethod extends AbstractResolver
         );
 
         return $this->scope->parent();
+    }
+
+    protected function parseSubRule(TypeContract $subRule)
+    {
+        if (Type::is($subRule, StringType::class)) {
+            return ValidationRuleParser::parse($subRule->value);
+        }
+
+        // TODO: Deal with class based rules
+        return null;
     }
 }
