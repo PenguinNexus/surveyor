@@ -18,6 +18,13 @@ class AnalyzedCache
 
     protected static bool $persistToDisk = false;
 
+    protected static array $dependencies = [];
+
+    public static function addDependency(string $path): void
+    {
+        static::$dependencies[] = $path;
+    }
+
     public static function setCacheDirectory(string $directory): void
     {
         static::$cacheDirectory = $directory;
@@ -114,13 +121,20 @@ class AnalyzedCache
             return null;
         }
 
+        foreach ($data['dependencies'] as $dependency) {
+            if ($dependency['mtime'] !== filemtime($dependency['path'])) {
+                static::invalidate($dependency['path']);
+                static::invalidate($path);
+
+                return null;
+            }
+        }
+
         $serialized = $data['scope'];
         unset($data);
 
-        static::$cached[$path] = unserialize($serialized);
+        static::$cached[$path] = $serialized;
         static::$fileTimes[$path] = $currentModifiedTime;
-
-        unset($serialized);
 
         return static::$cached[$path];
     }
@@ -148,7 +162,7 @@ class AnalyzedCache
     {
         static::clearMemory();
 
-        if (static::$persistToDisk && static::$cacheDirectory && is_dir(static::$cacheDirectory)) {
+        if (static::$cacheDirectory && is_dir(static::$cacheDirectory)) {
             $files = glob(static::$cacheDirectory.'/*.cache');
             foreach ($files as $file) {
                 unlink($file);
@@ -174,9 +188,14 @@ class AnalyzedCache
         }
 
         $cacheFile = static::getCacheFilePath($path);
+
         $data = [
             'mtime' => $mtime,
-            'scope' => serialize($analyzed),
+            'dependencies' => array_values(array_filter(array_map(fn ($dep) => [
+                'path' => $dep,
+                'mtime' => file_exists($dep) ? filemtime($dep) : null,
+            ], array_values(array_unique(self::$dependencies))), fn ($dep) => $dep['mtime'] !== null)),
+            'scope' => $analyzed,
         ];
 
         file_put_contents($cacheFile, serialize($data));

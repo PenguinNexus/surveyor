@@ -21,23 +21,28 @@ class Ternary extends AbstractResolver
         $result = $this->from($node->cond);
         $this->scope->endConditionAnalysis();
 
-        if ($result instanceof Condition) {
-            if (! $result->hasConditions()) {
-                // Probably checking a variable for truthiness
-                $result->whenTrue(fn ($_, TypeContract $type) => $type->nullable(false))
-                    ->whenFalse(fn ($_, TypeContract $type) => $type->nullable(true));
-            }
-
-            if ($this->scope->state()->canHandle($node->if)) {
-                $this->scope->state()->add($node->if, $result->apply());
-            }
-
-            if ($this->scope->state()->canHandle($node->else)) {
-                $this->scope->state()->add($node->else, $result->toggle()->apply());
-            }
+        if (! $result instanceof Condition) {
+            return Type::union($this->from($node->if), $this->from($node->else));
         }
 
-        return Type::union($this->from($node->if), $this->from($node->else));
+        if (! $result->hasConditions()) {
+            // Probably checking a variable for truthiness
+            $result->whenTrue(fn ($_, TypeContract $type) => $type->nullable(false))
+                ->whenFalse(fn ($_, TypeContract $type) => $type->nullable(true));
+        }
+
+        $if = $result->apply();
+        $else = $result->toggle()->apply();
+
+        if ($this->scope->state()->canHandle($node->if)) {
+            $this->scope->state()->add($node->if, $if);
+        }
+
+        if ($this->scope->state()->canHandle($node->else)) {
+            $this->scope->state()->add($node->else, $else);
+        }
+
+        return Type::union($if, $else);
     }
 
     public function resolveForCondition(Node\Expr\Ternary $node)

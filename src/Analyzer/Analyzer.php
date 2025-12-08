@@ -12,6 +12,8 @@ class Analyzer
 {
     protected Scope $analyzed;
 
+    protected int $analyzing = 0;
+
     public function __construct(
         protected Parser $parser,
         protected NodeResolver $resolver,
@@ -28,6 +30,12 @@ class Analyzer
     {
         $shortPath = str_replace($_ENV['HOME'], '~', $path);
 
+        if ($this->analyzing > 0) {
+            AnalyzedCache::addDependency($path);
+        }
+
+        $this->analyzing++;
+
         if ($path === '') {
             Debug::log('⚠️ No path provided to analyze.');
 
@@ -40,6 +48,8 @@ class Analyzer
             Debug::log("🎁 Using cached analysis: {$shortPath}");
 
             $this->analyzed = $cached;
+
+            $this->analyzing--;
 
             return $this;
         }
@@ -65,6 +75,8 @@ class Analyzer
         }
 
         Debug::removePath($path);
+
+        $this->analyzing--;
 
         return $this;
     }

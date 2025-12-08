@@ -2,6 +2,7 @@
 
 namespace Laravel\Surveyor\NodeResolvers\Shared;
 
+use Laravel\Surveyor\Analysis\Condition;
 use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\Contracts\MultiType;
 use Laravel\Surveyor\Types\MixedType;
@@ -16,6 +17,10 @@ trait ResolvesPropertyFetches
         Node\Expr\PropertyFetch|Node\Expr\NullsafePropertyFetch|Node\Expr\StaticPropertyFetch $node,
     ) {
         $type = $node instanceof Node\Expr\StaticPropertyFetch ? $this->from($node->class) : $this->from($node->var);
+
+        if ($type instanceof Condition) {
+            $type = $type->type;
+        }
 
         if ($type instanceof UnionType) {
             foreach ($type->types as $type) {

@@ -7,6 +7,7 @@ namespace Laravel\Surveyor;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Surveyor\Analyzer\AnalyzedCache;
+use Laravel\Surveyor\Analyzer\Analyzer;
 use Laravel\Surveyor\Console\Analyze;
 use Laravel\Surveyor\Console\MeasureScope;
 use Laravel\Surveyor\Console\RemoveAbstractClasses;
@@ -30,6 +31,7 @@ class SurveyorServiceProvider extends ServiceProvider
         $this->app->singleton(DocBlockParser::class);
         $this->app->singleton(NodeResolver::class);
         $this->app->singleton(DocBlockResolver::class);
+        $this->app->singleton(Analyzer::class);
         $this->app->singleton(PhpParserParser::class, function () {
             return (new ParserFactory)->createForHostVersion();
         });
