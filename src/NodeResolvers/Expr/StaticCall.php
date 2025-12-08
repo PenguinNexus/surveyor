@@ -2,8 +2,10 @@
 
 namespace Laravel\Surveyor\NodeResolvers\Expr;
 
+use Illuminate\Support\Facades\Validator;
 use Laravel\Surveyor\Analysis\Condition;
 use Laravel\Surveyor\NodeResolvers\AbstractResolver;
+use Laravel\Surveyor\NodeResolvers\Shared\AddsValidationRules;
 use Laravel\Surveyor\Support\Util;
 use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\Contracts\MultiType;
@@ -16,6 +18,8 @@ use PhpParser\Node;
 
 class StaticCall extends AbstractResolver
 {
+    use AddsValidationRules;
+
     public function resolve(Node\Expr\StaticCall $node)
     {
         $class = $this->from($node->class);
@@ -23,13 +27,12 @@ class StaticCall extends AbstractResolver
 
         if ($method === 'macro') {
             if (Type::is($class, ClassType::class)) {
-                if ($class->value === 'Request') {
-                    // dd([$node->class, $class, $this->scope->entityName(), $node->class, class_exists($class->value)]);
-                }
                 $this->handleMacro($class, $node);
-            } else {
-                // dd([$class, $this->scope->entityName(), $node->class]);
             }
+        }
+
+        if ($class instanceof ClassType && $class->value === Validator::class && $method === 'make') {
+            $this->addValidationRules($node->args[1]->value);
         }
 
         if ($class instanceof UnionType) {
