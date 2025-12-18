@@ -2,6 +2,7 @@
 
 namespace Laravel\Surveyor\Concerns;
 
+use Laravel\Surveyor\Analysis\Resolver;
 use Laravel\Surveyor\Analyzer\Analyzer;
 use Laravel\Surveyor\Parser\DocBlockParser;
 use Laravel\Surveyor\Parser\Parser;
@@ -16,6 +17,8 @@ trait LazilyLoadsDependencies
     protected Parser $parser;
 
     protected Analyzer $analyzer;
+
+    protected Resolver $appResolver;
 
     protected function getDocBlockParser(): DocBlockParser
     {
@@ -35,5 +38,10 @@ trait LazilyLoadsDependencies
     protected function getAnalyzer(): Analyzer
     {
         return $this->analyzer ??= app(Analyzer::class);
+    }
+
+    protected function getResolver(): Resolver
+    {
+        return $this->appResolver ??= app(Resolver::class);
     }
 }

@@ -3,6 +3,8 @@
 namespace Laravel\Surveyor\NodeResolvers\Shared;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as RequestFacade;
+use Laravel\Surveyor\Concerns\LazilyLoadsDependencies;
 use Laravel\Surveyor\Types\ClassType;
 use Laravel\Surveyor\Types\MixedType;
 use Laravel\Surveyor\Types\StringType;
@@ -11,7 +13,7 @@ use PhpParser\Node;
 
 trait ResolvesMethodCalls
 {
-    use AddsValidationRules;
+    use AddsValidationRules, LazilyLoadsDependencies;
 
     protected function resolveMethodCall(Node\Expr\MethodCall|Node\Expr\NullsafeMethodCall $node)
     {
@@ -29,8 +31,13 @@ trait ResolvesMethodCalls
 
         switch ($var->value) {
             case Request::class:
+            case RequestFacade::class:
                 if ($methodName->value === 'validate') {
                     $this->addValidationRules($node->args[0]->value);
+                }
+
+                if ($methodName->value === 'user' && $requestUserType = $this->getResolver()->requestUserType()) {
+                    return $requestUserType;
                 }
                 break;
         }

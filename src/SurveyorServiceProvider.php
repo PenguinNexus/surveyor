@@ -6,6 +6,7 @@ namespace Laravel\Surveyor;
 // ini_set('memory_limit', '1G');
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Surveyor\Analysis\Resolver;
 use Laravel\Surveyor\Analyzer\AnalyzedCache;
 use Laravel\Surveyor\Analyzer\Analyzer;
 use Laravel\Surveyor\Console\Analyze;
@@ -32,6 +33,7 @@ class SurveyorServiceProvider extends ServiceProvider
         $this->app->singleton(NodeResolver::class);
         $this->app->singleton(DocBlockResolver::class);
         $this->app->singleton(Analyzer::class);
+        $this->app->singleton(Resolver::class);
         $this->app->singleton(PhpParserParser::class, function () {
             return (new ParserFactory)->createForHostVersion();
         });

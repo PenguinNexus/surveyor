@@ -5,7 +5,6 @@ namespace Laravel\Surveyor\Analyzer;
 use Laravel\Surveyor\Analysis\Scope;
 use Laravel\Surveyor\Debug\Debug;
 use Laravel\Surveyor\Parser\Parser;
-use Laravel\Surveyor\Resolvers\NodeResolver;
 use ReflectionClass;
 
 class Analyzer
@@ -16,7 +15,6 @@ class Analyzer
 
     public function __construct(
         protected Parser $parser,
-        protected NodeResolver $resolver,
     ) {
         //
     }
