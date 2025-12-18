@@ -2,18 +2,10 @@
 
 namespace Laravel\Surveyor;
 
-// TODO: Temp fix, gotta figure this out...
-// ini_set('memory_limit', '1G');
-
 use Illuminate\Support\ServiceProvider;
 use Laravel\Surveyor\Analysis\Resolver;
 use Laravel\Surveyor\Analyzer\AnalyzedCache;
 use Laravel\Surveyor\Analyzer\Analyzer;
-use Laravel\Surveyor\Console\Analyze;
-use Laravel\Surveyor\Console\MeasureScope;
-use Laravel\Surveyor\Console\RemoveAbstractClasses;
-use Laravel\Surveyor\Console\ScaffoldDocBlockResolversCommand;
-use Laravel\Surveyor\Console\ScaffoldResolversCommand;
 use Laravel\Surveyor\Parser\DocBlockParser;
 use Laravel\Surveyor\Resolvers\DocBlockResolver;
 use Laravel\Surveyor\Resolvers\NodeResolver;
@@ -46,8 +38,6 @@ class SurveyorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // $this->registerPublishing();
-        $this->registerCommands();
         $this->configureCaching();
     }
 
@@ -57,38 +47,6 @@ class SurveyorServiceProvider extends ServiceProvider
             $cacheDir = env('SURVEYOR_CACHE_DIR', storage_path('surveyor-cache'));
             AnalyzedCache::setCacheDirectory($cacheDir);
             AnalyzedCache::enable();
-        }
-    }
-
-    /**
-     * Register the package's publishable resources.
-     *
-     * @return void
-     */
-    protected function registerPublishing()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/static-analyzer.php' => config_path('static-analyzer.php'),
-            ], 'static-analyzer-config');
-        }
-    }
-
-    /**
-     * Register the package's commands.
-     *
-     * @return void
-     */
-    protected function registerCommands()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                Analyze::class,
-                ScaffoldResolversCommand::class,
-                ScaffoldDocBlockResolversCommand::class,
-                RemoveAbstractClasses::class,
-                MeasureScope::class,
-            ]);
         }
     }
 }
