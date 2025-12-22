@@ -9,12 +9,12 @@
 
 ## Introduction
 
-Laravel Surveyor is a powerful static analysis tool designed to extract detailed PHP and Laravel-specific information from your code. It parses and analyzes PHP files to extract comprehensive metadata about classes, methods, properties, return types, and more—making this information available in a structured, consumable format for use by other tools and packages.
+Laravel Surveyor is a powerful (mostly) static analysis tool designed to extract detailed PHP and Laravel-specific information from your code. It parses and analyzes PHP files to extract comprehensive metadata about classes, methods, properties, return types, and more — making this information available in a structured, consumable format for use by other tools and packages.
 
-## Requirements
+If you want high-level consumption of the results packaged in detailed DTOs, check out [Laravel Ranger](https://github.com/laravel/ranger).
 
--   PHP 8.2+
--   Laravel 11.0+
+> [!IMPORTANT]
+> Surveyor is currently in Beta, the API is subject (and likely) to change prior to the v1.0.0 release. All notable changes will be documented in the [changelog](./CHANGELOG.md).
 
 ## Installation
 
@@ -24,7 +24,15 @@ You may install Surveyor via Composer:
 composer require laravel/surveyor
 ```
 
-Surveyor's service provider will be automatically registered.
+## Notes
+
+### Not Strictly Static Analysis
+
+While Surveyor is _mostly_ static analysis, it does attempty to inspect your models (which means a brief database connection) and also inspects your app bindings to get more detailed information in the analysis.
+
+### Performance
+
+The performance is not where we want it to be yet, it runs slower than is ideal and uses more memory than we'd like. We're looking for active contributions in those specific areas.
 
 ## Basic Usage
 
@@ -56,7 +64,7 @@ use Laravel\Surveyor\Analyzer\Analyzer;
 
 $analyzer = app(Analyzer::class);
 
-$result = $analyzer->analyzeClass(App\Models\User::class);
+$result = $analyzer->analyzeClass(\App\Models\User::class);
 $classResult = $result->result();
 ```
 
