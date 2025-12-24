@@ -74,7 +74,7 @@ class Type
 
     public static function number(): Contracts\Type
     {
-        return new NumberType();
+        return new NumberType;
     }
 
     public static function bool(?bool $bool = null): Contracts\Type
