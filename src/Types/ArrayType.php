@@ -38,7 +38,15 @@ class ArrayType extends AbstractType implements Contracts\Type
 
     public function isMoreSpecificThan(Contracts\Type $type): bool
     {
-        return $type instanceof ArrayShapeType && $this->value !== [];
+        if ($type instanceof ArrayShapeType && $this->value !== []) {
+            return true;
+        }
+
+        if ($type instanceof ArrayType && $type->value === [] && $this->value !== []) {
+            return true;
+        }
+
+        return false;
     }
 
     public function isList(): bool
