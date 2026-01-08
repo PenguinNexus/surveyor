@@ -120,6 +120,67 @@ describe('ModelAnalyzer attributes', function () {
     });
 });
 
+describe('ModelAnalyzer computed attributes', function () {
+    it('extracts type from Attribute<string> PHPDoc', function () {
+        $analyzer = app(Analyzer::class);
+        $result = $analyzer->analyzeClass(User::class)->result();
+
+        $inspector = app(ModelInspector::class);
+        $info = $inspector->inspect(User::class);
+
+        $attributes = $info['attributes']->keyBy('name');
+
+        if (! $attributes->has('formatted_name')) {
+            $this->markTestSkipped('Model does not have formatted_name computed attribute');
+        }
+
+        expect($result->hasProperty('formatted_name'))->toBeTrue();
+
+        $property = $result->getProperty('formatted_name');
+        expect($property->type->id())->toBe('string');
+    });
+
+    it('extracts union type from Attribute<int|null> PHPDoc', function () {
+        $analyzer = app(Analyzer::class);
+        $result = $analyzer->analyzeClass(User::class)->result();
+
+        $inspector = app(ModelInspector::class);
+        $info = $inspector->inspect(User::class);
+
+        $attributes = $info['attributes']->keyBy('name');
+
+        if (! $attributes->has('age_in_months')) {
+            $this->markTestSkipped('Model does not have age_in_months computed attribute');
+        }
+
+        expect($result->hasProperty('age_in_months'))->toBeTrue();
+
+        $property = $result->getProperty('age_in_months');
+        expect($property->type->id())->toBe('int');
+        expect($property->type->isNullable())->toBeTrue();
+    });
+
+    it('falls back to Attribute return type when no generic PHPDoc', function () {
+        $analyzer = app(Analyzer::class);
+        $result = $analyzer->analyzeClass(User::class)->result();
+
+        $inspector = app(ModelInspector::class);
+        $info = $inspector->inspect(User::class);
+
+        $attributes = $info['attributes']->keyBy('name');
+
+        if (! $attributes->has('without_doc_block')) {
+            $this->markTestSkipped('Model does not have without_doc_block computed attribute');
+        }
+
+        expect($result->hasProperty('without_doc_block'))->toBeTrue();
+
+        $property = $result->getProperty('without_doc_block');
+        // Without a @return PHPDoc with generics, falls back to the method return type
+        expect($property->type->id())->toBe('Illuminate\Database\Eloquent\Casts\Attribute');
+    });
+});
+
 describe('ModelInspector integration', function () {
     it('returns all relations from ModelInspector', function () {
         $inspector = app(ModelInspector::class);
