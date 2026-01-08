@@ -96,7 +96,7 @@ describe('ModelAnalyzer attributes', function () {
 
         $attributeNames = $info['attributes']->pluck('name')->toArray();
 
-        if (empty($attributeNames)) {
+        if (! in_array('id', $attributeNames)) {
             $this->markTestSkipped('Database tables not set up - skipping attribute tests');
         }
 
@@ -111,7 +111,7 @@ describe('ModelAnalyzer attributes', function () {
 
         $attributes = $info['attributes']->keyBy('name');
 
-        if ($attributes->isEmpty()) {
+        if (! $attributes->has('id')) {
             $this->markTestSkipped('Database tables not set up - skipping attribute tests');
         }
 
