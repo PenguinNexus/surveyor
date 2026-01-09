@@ -151,7 +151,7 @@ class Type
                 'void' => self::void(),
                 'mixed' => self::mixed(),
                 'float' => self::float(),
-                'int' => self::int(),
+                'int', 'integer' => self::int(),
                 'string' => self::string(),
                 'bool' => self::bool(),
                 'null' => self::null(),
